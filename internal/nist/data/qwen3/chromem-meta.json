@@ -1,0 +1,6 @@
+{
+  "provider": "ollama",
+  "model": "qwen3-embedding:4b",
+  "built_at": "2026-06-05T08:48:06.062479Z",
+  "control_count": 1196
+}
