@@ -49,17 +49,20 @@ func ServeStdio(s *server.MCPServer) error {
 
 func registerTools(s *server.MCPServer, st *store.Store) {
 	s.AddTool(
-		mcp.NewTool("search_controls",
-			mcp.WithDescription("Semantic search across NIST SP 800-53 Rev 5 control text. Returns ranked controls matching the query."),
+		mcp.NewTool("search",
+			mcp.WithDescription("Semantic search across all indexed documents — NIST SP 800-53 Rev 5 controls and FY 2025 IG FISMA metrics. Returns ranked results with source provenance."),
 			mcp.WithString("query",
 				mcp.Required(),
-				mcp.Description(`Natural-language description of what you are looking for, e.g. "multi-factor authentication" or "audit log retention".`),
+				mcp.Description(`Natural-language description of what you are looking for, e.g. "multi-factor authentication" or "identity management maturity".`),
 			),
 			mcp.WithNumber("limit",
 				mcp.Description("Maximum number of results to return (default 10, max 50)."),
 			),
+			mcp.WithString("source",
+				mcp.Description(`Optional source filter: "nist_800_53" for controls only, "fisma_fy2025" for FISMA metrics only. Omit to search all.`),
+			),
 			mcp.WithString("family",
-				mcp.Description(`Optional control family filter, e.g. "AC" for Access Control.`),
+				mcp.Description(`Optional NIST control family filter, e.g. "AC". Only applies to nist_800_53 results.`),
 			),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -101,6 +104,44 @@ func registerTools(s *server.MCPServer, st *store.Store) {
 			return handleGetFamily(ctx, st, req)
 		},
 	)
+
+	s.AddTool(
+		mcp.NewTool("list_fisma_metrics",
+			mcp.WithDescription("List FY 2025 IG FISMA evaluation metrics. Optionally filter by domain."),
+			mcp.WithString("domain",
+				mcp.Description(`Optional domain filter, e.g. "Identity Management and Access Control". Omit to list all 35 metrics.`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleListFismaMetrics(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_fisma_metric",
+			mcp.WithDescription("Retrieve a single FY 2025 IG FISMA evaluation metric by its numeric ID, including maturity level descriptions and criteria references."),
+			mcp.WithNumber("id",
+				mcp.Required(),
+				mcp.Description("Metric ID (1–35)."),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetFismaMetric(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_metrics_by_control",
+			mcp.WithDescription("Find all FY 2025 IG FISMA metrics that reference a given NIST SP 800-53 control ID."),
+			mcp.WithString("control_id",
+				mcp.Required(),
+				mcp.Description(`NIST SP 800-53 control identifier, e.g. "AC-2" or "SI-3".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetMetricsByControl(ctx, st, req)
+		},
+	)
 }
 
 func handleSearch(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -114,16 +155,17 @@ func handleSearch(ctx context.Context, st *store.Store, req mcp.CallToolRequest)
 		limit = 10
 	}
 
-	results, err := st.SearchControls(ctx, query, limit)
+	source := req.GetString("source", "")
+	results, err := st.Search(ctx, query, limit, source)
 	if err != nil {
 		return nil, err
 	}
 
-	if family := req.GetString("family", ""); family != "" {
-		family = strings.ToUpper(family)
+	// Family filter applies only to NIST control results.
+	if family := strings.ToUpper(req.GetString("family", "")); family != "" {
 		filtered := results[:0]
 		for _, r := range results {
-			if r.Control.FamilyID == family {
+			if r.Source != "nist_800_53" || strings.HasPrefix(r.ID, family+"-") {
 				filtered = append(filtered, r)
 			}
 		}
@@ -165,6 +207,39 @@ func handleGetFamily(ctx context.Context, st *store.Store, req mcp.CallToolReque
 		return nil, err
 	}
 	return jsonResult(controls)
+}
+
+func handleListFismaMetrics(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	domain := req.GetString("domain", "")
+	metrics, err := st.ListFismaMetrics(ctx, domain)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(metrics)
+}
+
+func handleGetFismaMetric(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id := req.GetInt("id", 0)
+	if id <= 0 {
+		return nil, fmt.Errorf("id must be a positive integer")
+	}
+	m, err := st.GetFismaMetric(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(m)
+}
+
+func handleGetMetricsByControl(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	controlID, err := req.RequireString("control_id")
+	if err != nil {
+		return nil, err
+	}
+	metrics, err := st.GetMetricsByControl(ctx, controlID)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(metrics)
 }
 
 func jsonResult(v any) (*mcp.CallToolResult, error) {

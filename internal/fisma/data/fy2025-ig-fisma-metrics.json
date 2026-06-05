@@ -1,0 +1,3176 @@
+[
+  {
+    "id": 1,
+    "domain": "Cybersecurity Governance",
+    "question": "To what extent does the organization develop and maintain cybersecurity profiles that are used to understand, tailor, assess, prioritize and communicate its cybersecurity objectives?",
+    "review_cycle": "FY 2025 Supplemental",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined a formal process for developing and maintaining current and target cybersecurity profile(s).",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined policies and procedures for developing and maintaining current and target profile(s) that includes, at a minimum, consideration of the organization\u2019s mission objectives, threat landscape, resources (including personnel), and constraints. The organization has determined the scope \u2022 Privacy Risk Assessments. of its profile(s) (e.g. Entity level, division level, process level, system level).",
+        "evidence": "\u2022 Cybersecurity program policy; \u2022 Cybersecurity Risk Management policies, procedures, strategies; \u2022 Cybersecurity Framework profiles; \u2022 Information Security Program Plan;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization develops and maintains current and target cybersecurity profile(s). \u2022 Enterprise Risk Profiles; \u2022 Cybersecurity Framework profiles; The target profile(s) considers anticipated changes to the organization\u2019s cybersecurity \u2022 Current and target cybersecurity profile posture. The organization assesses the gaps between its current and target profiles and creates and implements a prioritized action plan.",
+        "evidence": "\u2022 Risk management policies, procedures, and strategies, lessons learned; strategies, plans, and other documents; \u2022 Cybersecurity Framework current/future state implementation documentation.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization periodically monitors and reports on progress in reaching its target profiles through measurable objectives. implementation documentation; Cybersecurity profiles align with the organization\u2019s risk strategy and are used to align security architectures and investments. The organization refines its organizational \u2022 CSRR(s); profiles periodically based on known risk exposure and residual risk. reports (e.g., CDM and SIEM outputs/alerts/reports, vulnerability management dashboards, etc.).",
+        "evidence": "\u2022 Cybersecurity Framework profiles, periodic reviews of risk tolerance levels, etc.; \u2022 Cybersecurity Framework future state \u2022 Governance, Risk, and Compliance (GRC) dashboards/reports; \u2022 Continuous monitoring dashboards and",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization continuously monitors (i.e. near real-time) the achievement of cybersecurity risk management objectives, leveraging predictive analytics and threat intelligence to adjust its target profiles, \u2022 Enterprise-wide and component-level when necessary. As applicable, the organization uses its current profile to document and communicate the organization\u2019s cyber capabilities with external stakeholders. assessments/risk registers; As applicable, the organization uses its target profile to express the organization\u2019s \u2022 Organization-wide risk dashboards; cyber risk management requirements and expectations with external stakeholders. \u2022 Cyber risk dashboards; \u2022 Enterprise risk management program artifacts.",
+        "evidence": "\u2022 Cybersecurity Framework profiles, continuous reviews of risk tolerance levels, etc.; \u2022 Enterprise risk profiles; risk management dashboards; \u2022 Current and Target-state cyber risk profile (see NIST CSF, section 3.3); \u2022 Organization-wide risk",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: Section 3.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.0C-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OC-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OC-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OC-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OC-05",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OV-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OV-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.OV-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53, Rev. 5, PM-1, PM- 11",
+        "control_ids": [
+          "PM-1",
+          "PM-11"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "domain": "Cybersecurity Governance",
+    "question": "To what extent does the organization use a cybersecurity risk management strategy to support operational risk decisions?",
+    "review_cycle": "FY 2025 Supplemental",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not developed a risk management strategy that defines the organization\u2019s priorities, constraints, risk tolerance and appetite statements, and assumptions.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has developed a risk management strategy that includes the organization\u2019s priorities, constraints, risk \u2022 Cybersecurity Risk Management policies, tolerance and appetite statements, and assumptions. Risk management objectives have been established and agreed to by organizational stakeholders. \u2022 Ongoing Authorization policies and Lines of communication are established for cybersecurity risks, including risks from suppliers and other third-parties. \u2022 SDLC policies and procedures; \u2022 EA policies and procedures; \u2022 Risk Executive Council Charters/delegations of authority.",
+        "evidence": "\u2022 Enterprise Risk Management policies, procedures, and strategies; procedures, strategies; \u2022 Risk Assessment Policies and Procedures; procedures; \u2022 Organizational risk profiles;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its risk management strategy at the organizational, mission/business process, and system levels. level Risk Assessments; The organization consistently evaluates and adjusts its cybersecurity risk management strategy based on its threat environment and organization wide cyber and privacy risk assessment. \u2022 System Risk Assessments; The organization consistently calculates, documents, categorizes and prioritizes \u2022 Privacy Threshold Analysis (PTA); cybersecurity risks. \u2022 Privacy Impact Assessment (PIA); \u2022 System Categorization documents/worksheets; \u2022 Cybersecurity Framework profiles; \u2022 Risk registers/Cybersecurity risk registers (CSRRs); \u2022 Risk Detail Records (RDRs); \u2022 Risk heat maps; \u2022 POA&Ms; \u2022 Project plans/taskers; \u2022 Risk Council/steering committee meeting minutes; \u2022 Investment Review meeting minutes/taskers; \u2022 Lessons learned documents.",
+        "evidence": "\u2022 Risk Executive Council Charters; \u2022 Risk Council meeting minutes; \u2022 Organizational, Mission, and System- \u2022 System Security Plans; \u2022 Security Assessment Reports;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization uses qualitative and quantitative data to assess cybersecurity \u2022 CSRR(s)s; risk management effectiveness. Metrics, dashboards, and automated tools inform adjustments to the strategy. \u2022 Risk Council meeting minutes; The organization\u2019s cyber risk management strategy integrates security and privacy \u2022 System-level risk assessments; programs with the management control systems established in the organization\u2019s \u2022 Privacy risk assessments; enterprise risk management strategy. \u2022 Information sharing agreements and/or MOUs; \u2022 Information system authorization procedures; \u2022 Risk management policies, procedures, and strategies, lessons learned; \u2022 Cybersecurity Framework profiles, periodic reviews of risk tolerance levels, etc.; \u2022 Business Impact Assessments.",
+        "evidence": "\u2022 Organization-wide risk assessment(s); \u2022 Risk Executive Council Charters;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization continuously monitors its cybersecurity risk management program in near real-time, leveraging predictive analytics and threat intelligence to proactively adjust strategies. Governance structures ensure near real-time decision- \u2022 System workflow results/interactions; making. \u2022 Investment/staffing documentation The cybersecurity risk management program is fully integrated at the organizational, mission/business process, \u2022 Strategic planning documentation and information system levels, as well as with the entity\u2019s enterprise risk management program. documentation - such as - updates to ISCM documentation, system security plans, system risk assessments; \u2022 Updates to security performance metrics; \u2022 Updates to system security plans; \u2022 Updates to Business Impact Assessment/COOP documents; \u2022 Enterprise risk profiles/documentation \u2022 Results of risk/loss scenario modeling exercises \u2022 NIST Cybersecurity Framework current/future state implementation documentation; etc.",
+        "evidence": "\u2022 Meeting minutes; \u2022 Email communications; \u2022 Cyber risk register updates; updates; updates; \u2022 Updates to the security program",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-06",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 Rev. 5: PM-9, PM- 28, and RA-7",
+        "control_ids": [
+          "PM-9",
+          "PM-28",
+          "RA-7"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "domain": "Cybersecurity Governance",
+    "question": "To what extent do cybersecurity roles, responsibilities, and authorities foster accountability, performance assessment, and continuous improvement?",
+    "review_cycle": "FY 2025 Supplemental",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "Roles and responsibilities have not been fully defined and communicated across the organization, including appropriate levels of authority and dependencies.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined and communicated the structures of its team, roles and responsibilities of stakeholders, and levels of authority and dependencies. \u2022 Organizational charts; \u2022 Delegations of authority; \u2022 Defined roles and responsibilities.",
+        "evidence": "\u2022 Information security program policy; \u2022 Organizational strategy, policies, and procedures;",
+        "assessor_notes": "Review the security plan and ensure the organization has defined roles and responsibilities."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "Individuals are performing the roles and responsibilities that have been defined across the organization. system); \u2022 Agency's IT security budget; \u2022 Interviews with system security staff;",
+        "evidence": "\u2022 Evidence that individuals that are assigned the defined roles are carrying out their responsibilities at all levels (organization, business process, and information",
+        "assessor_notes": "Assessor should review (1) organizational charts and ensure defined roles are filled, and (2) organizations IT security budget to ensure it assesses gaps and vacancies and perform interviews with staff to determine adequate resources."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "Resources (people, processes, and technology) are allocated in a risk-based manner for stakeholders to effectively implement cybersecurity activities. data feeding the metrics/dashboard; Further, stakeholders are held accountable for carrying out their roles and responsibilities effectively. \u2022 Evidence that individuals with security responsibilities are held accountable (e.g., performance rating templates or similar documentation).",
+        "evidence": "\u2022 Evidence of use of performance metrics/dashboards defined in the organizational strategy; \u2022 Evidence of verifications/validation of \u2022 Evidence of coordination amongst other related security domains;",
+        "assessor_notes": "Assessor should evaluate whether the organization has defined metrics to assess roles and ensure individuals with roles have been assessed."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization continuously evaluates and adapts its cybersecurity roles and responsibilities to account for a changing cybersecurity landscape.",
+        "evidence": "\u2022 Evidence of input/knowledge/guidance/lessons learned from oversight agencies (DHS, OMB, CISA, etc.) are being incorporated into decision making for resource allocation.",
+        "assessor_notes": "Assessor should ensure evidence shows that strategies, policies, procedures, and input from oversight agencies are being implemented and incorporated into decision making."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014 Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37, Rev. 2: Tasks P-7 and S-5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-1",
+        "control_ids": [
+          "CA-1"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-137",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF: DE.DP-1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other_federal",
+        "ref_text": "Green Book: Principles 3, 4, and 5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RR-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RR-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RR-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RR-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 Rev. 5: PM-2, PM- 3, PM-13, PM-23, PM-29, PS-9",
+        "control_ids": [
+          "PM-2",
+          "PM-3",
+          "PM-13",
+          "PM-23",
+          "PM-29",
+          "PS-9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "domain": "Cybersecurity Governance",
+    "question": "Provide any additional information on the effectiveness (positive or negative) of the organization\u2019s cybersecurity governance program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the cybersecurity governance program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 5,
+    "domain": "Cybersecurity Supply Chain Risk Management (C-SCRM)",
+    "question": "To what extent does the organization ensure that products, system components, systems, and services of external providers are consistent with the organization\u2019s cybersecurity and supply chain requirements?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined and communicated policies, procedures, and processes to ensure that [organizationally defined products, system components, systems, and services] adhere to its cybersecurity and supply chain risk management requirements.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined and communicated policies and procedures to ensure that [organizationally defined products, system components, systems, and services] adhere to its cybersecurity and supply chain risk management requirements. threats, and appropriate controls; The following components, at a minimum, are defined \u2022 The identification and prioritization of externally provided systems, system components, and services as well how the organization maintains awareness of its upstream suppliers. \u2022 Integration of acquisition processes, including the use of contractual agreements that stipulate appropriate C-SCRM measures for external providers. \u2022 Tools and techniques to use the acquisition process to protect the supply chain, including, risk-based processes for evaluating cyber supply chain risks associated with third party providers, as appropriate. Contract tools or procurement methods to confirm contractors are meeting their contractual C SCRM obligations.",
+        "evidence": "\u2022 Organizational SCRM policies, procedures and strategies that addresses the SCRM role and responsibilities; \u2022 SCRM policies and procedures include the organization\u2019s risk profile and persistent \u2022 SCRM processes and monitoring strategies; baseline for assessing SCRM risks to IT assets, including threats to the IT system and assets and the supply chain.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization ensures that its policies, procedures, and processes are consistently implemented for assessing and reviewing the supply chain-related risks associated with suppliers or contractors and the system, system component. assessment and testing; In addition, the organization obtains sufficient assurance, through audits, test results, software producer self-attestation (in accordance with M-22-18), or other forms of evaluation, that the security and supply chain controls of systems or services provided by contractors or other entities on behalf of the \u2022 Log showing lessons learned used to organization meet FISMA requirements, OMB policy, and applicable NIST guidance. \u2022 Evidence of communication regarding issues and challenges in reducing the risk Furthermore, the organization maintains visibility into its upstream suppliers and can consistently track changes in suppliers \u2022 Security control mapping of SCRM security characteristics to cybersecurity standards and best practices solutions; \u2022 Where applicable, evidence of SCRM suppliers and third-party partners routine assessment and audits.",
+        "evidence": "\u2022 SCRM Risk analysis and evaluation documents; \u2022 Evidence of SCRM threat analysis/evaluation/scenario; \u2022 Evidence of SCRM vulnerability \u2022 Evidence of SCRM internal and external communication with stakeholders, such as cybersecurity, IT, operations, legal, HR and Engineering teams; update the SCRM strategy; of a compromise to products in their supply chain;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization uses qualitative and quantitative performance metrics (e.g., those defined within SLAs) to measure, report on, and monitor the C-SCRM performance of organizationally defined products, systems, and services provided by external providers. \u2022 Change logs showing the data was used to In addition, the organization has incorporated supplier risk evaluations, based on criticality, into its continuous monitoring practices to maintain situational awareness into the cyber- related supply chain risks",
+        "evidence": "\u2022 Evidence of SCRM qualitative and quantitative metrics were collected; \u2022 Templates to support SCRM data is obtained accurately, consistently, and in a reproduceable format; make program improvements.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization analyzes, in a near-real time basis, the impact of material changes to C- SCRM assurance requirements on its relationships with external providers and ensures that acquisition tools, methods, and processes are updated as soon as possible showing that SCRM related threats have reduced over time based on actions taken by the organization.",
+        "evidence": "\u2022 Evidence to support that the organization has fully integrated (enterprise-wide) risk based SCRM program that can adjust to emerging (evolving) or near real-time threats; \u2022 Evidence of trend analysis performed",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-18",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "The Federal Acquisition Supply Chain Security Act of 2018",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028 Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): SA-4, SR-3, SR-5, and SR-6",
+        "control_ids": [
+          "SA-4",
+          "SR-3",
+          "SR-5",
+          "SR-6"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-152",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-161 (Rev. 1)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-218: Task PO.1.3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8276",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF: GV.SC",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 15",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FedRAMP standard contract clauses",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Cloud computing contract best practices",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "DHS\u2019s ICT Supply Chain Library",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.SC-01 through GV.SC-07",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "domain": "Cybersecurity Supply Chain Risk Management (C-SCRM)",
+    "question": "Provide any additional information on the effectiveness (positive or negative) of the organization\u2019s supply chain risk management program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the supply chain risk management program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 7,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization maintain a comprehensive and accurate inventory of its information systems (including cloud systems, public facing websites, and third-party systems), and system interconnections?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies, procedures, and processes for developing and maintaining a comprehensive and accurate inventory of its information systems and system interconnections",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its policies, procedures, and processes for developing and maintaining a comprehensive and accurate inventory of its information systems and system interconnections and procedures; \u2022 Information Security Program policies and procedures; \u2022 Ongoing authorization policies and procedures.",
+        "evidence": "\u2022 Directives, policies, procedures, standards, strategies, and/or standards associated with the system registration and inventory process; \u2022 System interconnect inventory processes",
+        "assessor_notes": "Assessors should determine whether the agency's system inventory management policies/procedures/processes address the addition of new systems (registration) and the retirement of old systems. Assessors should assess these policies and procedures to determine whether system boundary considerations (e.g., bundling, mobile devices, cloud deployments, etc.) are outlined for inventorying. These policy documents should also outline processes associated with registering information systems and maintaining the organization's information system inventory. Artifacts that support maintaining a current system inventory include those gathered from FISMA compliance tools (e.g., Cybersecurity Assessment and Management (CSAM) and other tools that may be deployed to capture component inventory information, infrastructure configuration management processes, SDLC processes, EA processes, and may be captured in a general Information Security Program policy."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its policies, procedures, and processes to maintain a comprehensive and accurate inventory of its information systems (including cloud systems, public-facing websites, and third-party systems), and system interconnections. \u2022 Data Flow policies/procedures (to validate the completeness of the approved system inventory); \u2022 Enterprise Architecture references (to validate the completeness of the approved system inventory); \u2022 Final Interconnection Security Agreements (ISAs)/MOUs/MOAs/etc.) to validate the completeness of the approved system inventory; \u2022 List of non.gov fully qualified domain names (FQDN) in use by the agency; \u2022 Evidence that agencies provided all non.gov FQDNs used to CISA and GSA (e.g., dashboard reports, email messages, etc.); \u2022 CISA provided data about internet- accessible assets; \u2022 The results of any website scanning services performed by an independent third-party (e.g., OIGs, GSA, etc.) to assess the completeness of the approved system inventory; \u2022 Change control requests; \u2022 FedRAMP PMO communications; \u2022 EA Documentation; \u2022 Web app domain registry information.",
+        "evidence": "\u2022 Organization-wide information systems inventory, including contractor operated information systems, cloud systems, public facing websites, and third-party systems; \u2022 Program/division-level information systems inventories;",
+        "assessor_notes": "As part of the analysis performed by the assessor for public facing web applications, utilize open-source tools/information (e.g., digitaldashboard.gov) to identify the agencies subdomains and related services and compare against the inventory of information maintained by the agency for completeness and accuracy. The assessor should determine if the inventory was approved and completed and maintained in accordance with agency policies and procedures. Determine if the system level inventories reconcile to the organization-wide system inventory. Evidence collected should demonstrate that the agency used the GSA list of non .gov agency websites to reconcile against its approved inventory of webapps/websites sites and performed appropriate actions to update and respond to newly discovered websites/apps. Assessors should use the CISA provided data about agencies\u2019 internet-accessible assets data to evaluate the completeness of the public web app inventory. Assessors may also consider reviewing change control ticket, FedRAMP PMO communications, and EA documentation to confirm the completeness of the approved system inventory (including those hosted on-prem). Assessors should also consider reviewing FISMA compliance tools (e.g., CSAM) records, EA documentation, SDLC/change control records, etc. to ensure the accuracy and completeness of the inventory. Ensure to verify IT assets that are not regularly connected to the agencies\u2019 networks. For examples, they can be: \u2022 New IT equipment that have not been put into service \u2022 Older IT equipment that are not being used, whether decommissioned or not \u2022 IT loaner equipment Agencies that use tools like CSAM as the source of their official IT inventory list do not track the above examples of IT assets since CSAM drops devices that are not connected for some time."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization ensures that the information systems included in its inventory are subject to the monitoring processes defined within the organization's Information Security Continuous Monitoring (ISCM) strategy.",
+        "evidence": "\u2022 ISCM strategy/plan; \u2022 Continuous monitoring reports/dashboards; \u2022 CDM artifacts.",
+        "assessor_notes": "Assessors should reconcile the list of systems in the organization\u2019s approved inventory to ensure those systems are included in the organization's continuous monitoring processes to identify any variances. CDM artifacts, change control tickets, FedRAMP PMO communications, Web App domain registry information, and EA documentation should all be reflected in the system inventory."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization uses automation to develop and maintain a centralized information system inventory that includes hardware and software components from all organizational information systems. The centralized inventory is updated in a near- \u2022 Asset database reports; real time basis. \u2022 Evidence the reports and alerts which indicate changes to the inventory are updated in real-time.",
+        "evidence": "\u2022 Dashboard reports/observations; \u2022 Hardware and software component inventories;",
+        "assessor_notes": "Sample select systems from the organization's approved inventory to determine whether the agency can automatically identify system hardware/software components and supply chain vendors and make updates in a near-real time fashion. Assessors should also ensure that security tools (e.g., IDS, IPS, NAC etc.) and related configuration management solutions (e.g., CMDBs) are updated in real time as new systems are implemented."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Federal Information Technology Acquisition Reform Act (FITARA) of 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-16-12",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 199 Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-3, PM-5, and CM-8",
+        "control_ids": [
+          "CA-3",
+          "PM-5",
+          "CM-8"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 1.1 and 1.5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31, CISA Operational Guidance",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization use standard data elements/taxonomy to develop and maintain an up-to-date inventory of hardware assets (including Government Furnished Equipment (GFE), Internet of Things [IoT], and Bring Your Own Device [BYOD] mobile devices) connected to the organization\u2019s network with the detailed information necessary for tracking and reporting?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined policies, procedures, and processes for using standard data elements/taxonomy to develop and maintain an up-to-date inventory of hardware assets connected to the organization\u2019s network (including through automated asset discovery) with the detailed information necessary for tracking and reporting",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined policies, procedures, and processes for using standard data elements/taxonomy to develop and maintain an up-to-date inventory of hardware assets connected to the organization\u2019s network (including through automated asset discovery) with the detailed \u2022 ISCM policies and procedures; information necessary for tracking and reporting. \u2022 Network Access Control policies and procedures; \u2022 BYOD policies and procedures; \u2022 End user computing device inventory standards; \u2022 Enterprise Architecture bricks; \u2022 Scanning policies (including automated asset discovery policies) and procedures; \u2022 Information system component policies and procedures; \u2022 Control Baselines.",
+        "evidence": "\u2022 Policies and procedures (and related guidance) for hardware asset inventory management; \u2022 Hardware naming standards/standard taxonomy document;",
+        "assessor_notes": "Assessors should determine whether the organization's policies and procedures define the requirements and processes for IT hardware asset management, including the standard data elements/taxonomy required to be recorded, reported, and accurately maintained. Assessors should also ensure that the organization is not double counting system components (please see CM-8 for more information on this). These policies and procedures should also include how automated asset discovery is planned or being used to inventorying IT hardware assets. In addition, assessors should verify that the agency has defined how the organization maintains an up-to-date inventory of the hardware assets connected to its network, and the organization's processes to control which hardware assets (including BYOD mobile devices) can connect to its network. These may be defined in SOPs and control baselines. Assessors should also ensure that these policies and procedures include the DHS BOD 23-01 requirements, such as automated asset discovery frequencies (minimum at least every 7 days), includes (at least) the entire IPv4 space used by the organization, collecting appropriate CISA approvals, and a requirement to perform automated asset recovery upon CISA demand within 72 hours."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently uses its standard data elements/taxonomy to develop and maintain an up-to-date inventory of hardware assets connected to the organization\u2019s network (including through automated asset discovery) and uses this taxonomy to inform which assets can/cannot \u2022 Listing of the hardware purchases (the be introduced into the network. date of receipt, cost, model, serial number, The organization is making sufficient progress towards reporting at least 80% of its GFEs through DHS\u2019 Continuous Diagnostics and Mitigation (CDM) program \u2022 Information System Component Inventories; \u2022 Continuous monitoring reports (e.g., vulnerability scanning reports, Splunk logs/reports, SCCM reports, etc.); \u2022 Enterprise Architecture documents; \u2022 Inventory dashboards; \u2022 Firewall configurations/logs; \u2022 Configuration Management Database dashboards/reports; \u2022 IT asset management (ITAM) solution dashboard/reports (e.g., ServiceNow, CSAM, Forescout, CounterACT, BigFix, etc.); \u2022 DHS CDM dashboards/reports which reconcile 80% to agency records (e.g., scanning results/ITAM reports); \u2022 Scans configured to cover all agency networks and IP ranges (to validate completeness).",
+        "evidence": "\u2022 Authorized hardware inventory (which includes, but not limited to, applications (COTS and GOTS), servers, workstations, input and output devices, network devices, and mobile devices (GFE and non-GFE in an approved BYOD environment); inventory specifications should include manufacturer, supplier information, component type, and physical location); \u2022 Agency SSPs;",
+        "assessor_notes": "Determine if the agency can reconcile its hardware asset inventory to the assets live on its network (i.e., through automated hardware asset discovery. Please note, any sample should include assets connected to the infrastructure physically, virtually, remotely, and those within cloud environments. The sample should also be inclusive of all assets that are regularly connected to the enterprise\u2019s network infrastructure, even if they are not under control of the enterprise. In addition, the organization has made sufficient progress towards reporting at least 80% of its Government Furnished Equipment (GFE) through the DHS CDM program (e.g., if 80% is not achieved a reasonable plan to reach this goal has been documented and approved by the appropriate stakeholders). Assessors should also validate the completeness of the hardware inventory by reconciling the Information System Component Inventories against the hardware inventory. Assessors should also consider reviewing firewall/configuration logs to identify unauthorized hardware."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "(e.g., CDM, PowerBI, Splunk, SOAR, The organization ensures that the hardware assets connected to the network are covered by an organization-wide hardware asset management capability and are subject to the monitoring processes defined within the organization's ISCM strategy. For mobile devices, the agency enforces the \u2022 Mobile device management capability to deny access to agency implementation. enterprise services when security and operating system updates have not been applied within a given period based on agency policy or guidance.",
+        "evidence": "\u2022 Continuous monitoring reports/dashboards SIEM, etc.); \u2022 ISCM reports; \u2022 FISMA compliance tool reports (such as CSAM and RSAM);",
+        "assessor_notes": "Sample select systems and verify that hardware assets are subject to the organization's continuous monitoring processes through an organization-wide hardware asset management capability. Verify that quantifiable metrics are used to manage and measure the implementation of the organization's ISCM processes for the hardware assets sampled. The organization should also ensure that unauthorized assets are removed from the network, quarantined, and the inventory is updated in a timely manner. The organization uses port level access controls to control which hardware devices can authenticate to the network."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization employs automation to track the life cycle of the organization's hardware assets with processes that limit the \u2022 Mobile Device Management solution manual/ procedural methods for asset management. Further, hardware inventories are regularly updated as part of the reports; organization\u2019s enterprise architecture current and future states. \u2022 Enterprise Architecture documentation or reports; \u2022 Examples of security alerts resulting from unauthorized hardware being placed on the network.",
+        "evidence": "\u2022 ITAM/hardware asset management reports; configuration or reports; \u2022 Continuous monitoring dashboards or",
+        "assessor_notes": "Determine whether the organization uses automated tools for ITAM/hardware asset management and dashboarding (such as ServiceNow, CSAM, Forescout, CounterACT, BigFix, MaaS360, CDM, PowerBI, Splunk, etc.) For sampled systems, determine whether the hardware asset information in the automated tools is accurate, complete, reporting in real time, and integrated (either procedurally or automatically) into the organization\u2019s process to update its enterprise architecture."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FITARA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "DHS Binding Operational Directive (BOD) 23-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other_federal",
+        "ref_text": "DHS BOD 23-02 Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-7 and CM-8",
+        "control_ids": [
+          "CA-7",
+          "CM-8"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST 1800-5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8011",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Federal Enterprise Architecture (FEA) Framework, v2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028, Section 3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-24-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-09, Federal Zero Trust Strategy, Section B",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CSF: ID.AM-1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity & Incident Response Playbooks",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 23-01 Implementation Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2): Tasks P- 10 and P-16",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 1.2, 1.3, and 10.8",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization use standard data elements/taxonomy to develop and maintain an up-to-date inventory of the software and associated licenses used within the organization with the detailed information necessary for tracking and reporting?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined policies, procedures, and processes for using standard data elements/taxonomy to develop and maintain an up-to-date inventory of software assets and licenses, including for EO-critical software and mobile applications, used in the organization's environment with the detailed information necessary for tracking and reporting.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined policies, . data elements/taxonomy to develop and maintain an up-to date inventory of software . software and mobile applications, used in the organization's environment with the detailed information necessary for tracking and reporting. mobile app rules); \u2022 Enterprise Architecture bricks; \u2022 Scanning policies and procedures; se \u2022 Information system component policies and procedures; 1- \u2022 ISCM policies and procedures; \u2022 SOPs for software and application: - use of automation to maintain inventories - protecting against unauthorized software - ensuring licensing conformance, restrictions, expiration, etc. - managing licenses utilization.",
+        "evidence": "\u2022 Policies and procedures (and related guidance) for software/license/asset procedures, and processes for using standard management; \u2022 Software naming standards/standard assets and licenses, including for EO-critical taxonomy document; \u2022 Standard software images for devices; \u2022 BYOD policies and procedures (e.g., \u2022 Change control policies and procedures;",
+        "assessor_notes": "Assessors should determine whether the organization's policies and procedures define the requirements and processes for software asset management, including the standard data elements/taxonomy required to be recorded, reported, and maintained. In addition, Assessors should verify that the agency has defined its processes for software license management (including for mobile applications), and ensure these processes include roles and responsibilities. Assessors should also verify that processes are documented which outline how the organization ensures the completeness of the software inventory, including how the organization validates all EO-critical software and mobile applications are included in the software inventory."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently uses its standard data elements/taxonomy to develop and maintain an up to-date inventory of software assets and licenses, including for \u2022 Agency SSPs; EO-critical software and mobile applications, used in the organization's environment and \u2022 Change control tickets; uses this taxonomy to inform which assets can/cannot be introduced into the network. \u2022 Information System Component Inventories (to validate the The organization establishes and maintains a completeness of the software inventory software inventory for all platforms running EO-critical software and all software (both EO-critical and non-EO-critical) deployed to each platform \u2022 Inventory dashboards; \u2022 Firewall configurations/logs; \u2022 CMDB dashboards/reports; \u2022 Software license inventory listing; \u2022 Whitelisting/blacklisting tool (e.g., Applocker) system configurations, etc.).",
+        "evidence": "\u2022 Authorized software inventory which includes EO-critical software; by reconciling against the software inventory); \u2022 Enterprise Architecture documents;",
+        "assessor_notes": "The agency can reconcile its software asset inventory to the assets live on its network (including EO- critical software and mobile applications). Assessors should verify that unauthorized software is removed and the inventory is updated in a timely manner (CIS Controls V. 8, #2.3). In addition, at level 3, the agency should be able to identify unlicensed software from running on the network and restrict licensed software to authorized users/systems. Also, assessors should review the types of EO-critical software defined by NIST and validate that this software types listed are captured in the approved software inventory and that the organization is following its defined processes to validate the completeness of the software inventory. The software inventory should also include all platforms running EO-critical software. Assessors also may also reconcile the Information System Component Inventories to the software inventory to validate the completeness of the software inventory."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization ensures that the software assets, including EO-critical software and mobile applications as appropriate, on the network (and their associated licenses), are covered by an organization-wide software asset management (or Mobile Device Management) capability and are subject to the monitoring processes defined within the organization's ISCM strategy. logs/reports, SCCM/Puppet reports, For mobile devices, the agency enforces the etc.) which list the software assets capability to prevent the execution of (including EO-critical software and unauthorized software (e.g., blacklist, whitelist, or cryptographic containerization). \u2022 ISCM strategy; \u2022 Whitelisting/blacklisting tool (e.g., Applocker) system configurations; \u2022 MaaS configurations, reports. dashboards, etc.; \u2022 Evidence that unauthorized software is blocked.",
+        "evidence": "\u2022 Authorized software inventory; \u2022 Scans that gather device profiles and update information on software assets/licenses (to validate completeness); \u2022 Continuous monitoring reports/dashboards (e.g., vulnerability scanning reports, SOAR, SIEM mobile applications);",
+        "assessor_notes": "The agency has deployed application blacklist, whitelist, or cryptographic containerization technology on mobile devices, as appropriate, to ensure that only authorized software executes, and all unauthorized software is blocked from executing. The scope of the organization\u2019s ISCM program include EO-critical software. The organization's allow listing technology ensures that only authorized software libraries may load into a system process."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization employs automation to track the life cycle of the organization's software assets (and their associated licenses), including for EO-critical software and mobile applications, with processes that limit the manual/procedural methods for asset management. Further, software inventories are regularly updated as part of the organization\u2019s enterprise architecture current and future states. \u2022 EA documentation; \u2022 Software inventory.",
+        "evidence": "\u2022 Scanning and alert results, which provides updates for the solution used to track software throughout its lifecycle on a near-real time basis, or other examples of security alerts resulting from unauthorized hardware/software being placed on the network; \u2022 Network scanning reports; \u2022 MaaS configurations, reports, dashboards, etc.;",
+        "assessor_notes": "Assessors should obtain evidence [ex. network scanning reports designed to identify all instances of software, including EO-critical software and mobile applications, (and their associated licenses) executing on the organization's network(s), and software installation request/project request authorizations] to ensure that the software executing in the organization's network(s) is identified and authorized."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FITARA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-30",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-18 Supplemental Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev 5): CA-7, CM-8, CM- 10, and CM-11",
+        "control_ids": [
+          "CA-7",
+          "CM-8",
+          "CM-10",
+          "CM-11"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev 2): Task P-10",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-137",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207: Section 7.3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST 1800-5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8011 Vol. 1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8011 Vol. 3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software U",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 1.4 and 4. 4.4",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-30",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-18",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FITARA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity Incident Response Playbooks",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization develop and maintain inventories of data and corresponding metadata for designated data types, as appropriate throughout the data lifecycle?",
+    "review_cycle": "FY 2025",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies, procedures, processes, and roles and responsibilities for developing and maintaining a comprehensive and accurate inventory of data and corresponding metadata for its data types, as appropriate. This includes data obtained from third party providers.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "3 The organization has defined its policies, procedures, processes, and roles and ta maintaining a comprehensive and accurate inventory data and corresponding metadata for its data : party providers, as appropriate \u2022 Data Lifecycle Management Policy.",
+        "evidence": "the identification of agency specific data that could include PII, PHI, responsibilities for developing and financial account numbers, intellectual property, operational technology data, etc.; types, to include data obtained from third \u2022 Data Dictionary/Metadata Repository;",
+        "assessor_notes": "Determine if the organization has established clear, documented procedures for data inventory management. This includes clearly defining data types and metadata requirements, and the data lifecycle stages."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its policies, procedures, processes, and roles and responsibilities to maintain a comprehensive and accurate inventory of its data and corresponding metadata for its data types, as appropriate. \u2022 System Configuration In addition, the organization assigns data classifications to designated data types through tags or labels and appropriate metadata, such as provenance, data owner, geolocation, information location, \u2022 etc., are tracked and maintained. for data management have been trained on relevant policies and procedures;",
+        "evidence": "\u2022 Data inventory including data type, data classification, location, owner, retention requirements; \u2022 Metadata inventory; \u2022 Data flow Diagrams; Documentation; \u2022 SOPs; Evidence of Training-training records that demonstrate that staff responsible",
+        "assessor_notes": "Assessors should ensure that standardized templates and processes are implemented across the organization to confirm consistency in data inventory practices."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization ensures that the data and corresponding metadata in its inventories are subject to the monitoring processes defined within the organization's ISCM strategy. \u2022 Audit logs; The organization uses data-centric security controls (e.g. DLP, encryption, \u2022 Data Retention Schedules; rights management) in conjunction with data access controls (e.g., RBAC, CBAC, and ABAC) to secure data at every level and in every location.",
+        "evidence": "\u2022 Data Quality Metrics-dashboards showing metrics related to data quality; \u2022 Data governance reports; \u2022 Incident Response Records-records of data related to security incidents.",
+        "assessor_notes": "Assessors review data inventory to ensure effective monitoring and oversight is implemented. Verify that the organization has mechanisms in place to track changes to data inventories, including additions, modifications, and deletions. Ensure effective management of these inventories requires regular updates and reviews to reflect changes in data assets and associated metadata."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization uses automation to develop and maintain a centralized data \u2022 Technology Upgrade Plans; inventory that includes a mapping to the \u2022 Evidence of regular reviews of data hardware and software components using or storing the data from all organizational information systems. The centralized inventory is updated in a near-real time basis In addition, the organization continuously discovers and analyzes ad hoc data to identify new instances of designated data types and updates its inventories accordingly",
+        "evidence": "\u2022 Data Optimization Reports; policies and procedures.",
+        "assessor_notes": "Determine whether the organization uses automated tools to develop and maintain a centralized data inventory that includes a mapping to the hardware and software components using or storing the data from all organizational information systems."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Privacy Act of 1974",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Federal Records Act",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "44 U.S. Code Section 3511 \u2013 Data Inventory and Federal Data Catalogue",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028 Supplemental Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-171 Rev.",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Critical Security Controls: 3.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Federal Zero Trust Da Security Guide",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM- 07",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 Rev. 5 AC-4, CM-12, CM-13, and RA-2",
+        "control_ids": [
+          "AC-4",
+          "CM-12",
+          "CM-13",
+          "RA-2"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization ensure that information system security risks are adequately managed?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined and communicated the policies, procedures and processes it uses to manage the cybersecurity risks associated with operating and maintaining its information systems. At a minimum, the policies, procedures, and processes do not cover the following areas from a cybersecurity perspective: \u2022 Prepare \u2022 Categorize \u2022 Select \u2022 Implement \u2022 Assess \u2022 Authorize \u2022 Monitor",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined and communicated the policies, procedures and processes it uses to manage the cybersecurity risks associated with operating and maintaining its information systems. The policies, procedures, and processes cover cybersecurity risk management at the organizational, mission/business process, and information system levels and address \u2022 Insider Threat policies and procedures; the following components \u2022 Prepare \u2022 Categorize \u2022 Select \u2022 Implement \u2022 Assess \u2022 Authorize \u2022 Monitor procedures; \u2022 System Categorization policies and procedures and SSPs; \u2022 SDLC policies and procedures; \u2022 EA policies and procedures; \u2022 Risk Executive Council Charters/delegations of authority; \u2022 POA&M policies and procedures; \u2022 Organizational risk profiles.",
+        "evidence": "\u2022 Enterprise Risk Management policies, procedures, and strategies; \u2022 Cybersecurity Risk Management policies, procedures, strategies; \u2022 Risk Assessment Policies and Procedures; \u2022 Data Breaches and Incident Response Polices and Procedures; \u2022 Cybersecurity training and awareness policies and procedures; \u2022 Ongoing Authorization policies and",
+        "assessor_notes": "The organization should demonstrate that it has established the overall context within which the organization functions and includes consideration of cybersecurity factors that affect the ability of an agency to meet its stated mission and objectives and this context should be formally documented in policies, procedures, strategy documents, or similar. These documents should also provide guidance on the form of the risk assessments conducted (including the scope, rigor, and formality of such assessments) and the method of reporting results. Assessors should obtain the organization's risk management policies, procedures, and strategy and ensure that the organization's risk appetite/tolerances are clearly defined and measurable."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its policies, procedures, and processes to manage the cybersecurity risks associated with operating and maintaining its information systems. The organization ensures that decisions to manage cybersecurity risk at the information system level are informed and guided by risk decisions made at the organizational and mission/business levels. \u2022 Security Assessment Reports; System risk assessments are performed [according to organizational defined time frames] and appropriate security controls to mitigate risks identified are implemented on \u2022 System Categorization a consistent basis. The organization uses the common vulnerability scoring system, or similar approach, to communicate the characteristics and severity of software vulnerabilities. (CSRRs); Further, the organization uses a cybersecurity risk register to manage risks, \u2022 Risk Detail Records (RDRs); as appropriate, and is consistently capturing and sharing lessons learned on the effectiveness of cybersecurity risk program accordingly. \u2022 Project plans/taskers; \u2022 Risk Council/steering committee meeting minutes; \u2022 Investment Review meeting minutes/taskers; \u2022 Lessons learned documents.",
+        "evidence": "\u2022 Risk Executive Council Charters; \u2022 Risk Council meeting minutes; \u2022 Organizational, Mission, and System- level Risk Assessments; \u2022 System Security Plans; \u2022 System Risk Assessments; documents/worksheets; \u2022 Cybersecurity Framework profiles; \u2022 Risk registers/Cybersecurity risk registers \u2022 Risk heat maps; \u2022 POA&Ms;",
+        "assessor_notes": "Assessors should ensure that processes implemented, and results of risk assessments align with the defined organizational risk appetite/tolerances. Assessors should also ensure the organization\u2019s CSRRs clearly summarizes the organizations cyber risks and provide adequate support (e.g., CVSS scores, CSF/CIS Top 18, compensating control evidence, etc.) for risk prioritization and proposed risk mitigation approaches."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization consistently monitors the effectiveness of risk responses to ensure that \u2022 CSRR(s)s risk tolerances are maintained at an appropriate level. The organization ensures that information in cybersecurity risk registers is obtained accurately, consistently, and in a reproducible format and is used to (i) quantify and aggregate security risks, (ii) normalize cybersecurity risk information across organizational units, and (iii) prioritize operational risk response \u2022 Information sharing agreements and/or MOUs; \u2022 Information system authorization procedures \u2022 Risk management policies, procedures, and strategies, lessons learned; \u2022 Cybersecurity Framework profiles, periodic reviews of risk tolerance levels, etc.; \u2022 Business Impact Assessments.",
+        "evidence": "\u2022 Organization-wide risk assessment(s); \u2022 Risk Executive Council Charters; \u2022 Risk Council meeting minutes; \u2022 System-level risk assessments; \u2022 Privacy risk assessments; \u2022 Supply chain risk assessment results;",
+        "assessor_notes": "Assessors collect and review the organization-wide risk assessment(s) and ensure that the results of the cyber risk registers and system level risk assessments are represented, and that the defined risk appetites/tolerances are regularly monitored/updated and maintained, and the effectiveness of risk responses are assessed. Assessors should also reconcile the information listed in the organization\u2019s CSRRs to the organization\u2019s RDRs and/or to other sources of risk information, such as incident response documentation, registry of system assets, security assessment reports, penetration test results, Business Impact Assessments (e.g., to identify the organization\u2019s mission essential functions/mission-critical systems), etc. to ensure that the information included in the CSRRs was aggregated, consistent across the documents, and normalized."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization has maximized the use of automation, wherever possible, to increase the speed, effectiveness, and efficiency of steps associated with the risk management framework (e.g., prepare, categorize) \u2022 System workflow results/interactions; The organization has achieved a real-time or near real-time risk-based decision-making process for managing cybersecurity risks. \u2022 Strategic planning documentation updates; \u2022 Updates to the security program documentation - such as - updates to ISCM documentation, system security plans, system risk assessments; \u2022 Updates to security performance metrics; \u2022 Updates to system security plans; \u2022 Updates to Business Impact Assessment/COOP documents; \u2022 Enterprise risk profiles/documentation \u2022 Results of risk/loss scenario modeling exercises \u2022 NIST Cybersecurity Framework current/future",
+        "evidence": "\u2022 Meeting minutes; \u2022 Email communications; \u2022 Cyber risk register updates; \u2022 Investment/staffing documentation updates;",
+        "assessor_notes": "Assessors should obtain artifacts evidencing that the organization utilizes Cybersecurity Framework profiles and enterprise risk profiles to align cybersecurity outcomes with mission or business requirements, and the risk appetite and tolerances of the organization. This includes confirming that the organization is maintaining a current financial valuation of its assets that require protection and/or the mission value of those assets (e.g., impact on mission capability/organizational reputation) and considers those valuations when planning remedial activities. Organizations may maintain this information in a business impact assessment along with risk/loss scenario modeling results which should act as inputs to the CSRR"
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 13800",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-05",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-06",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): RA-3 and PM-9",
+        "control_ids": [
+          "RA-3",
+          "PM-9"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2): Tasks P- 2, P-3, P-14, R-2, and R-3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-39",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286A",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286B",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286C",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286D",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "To what extent does the organization use technology/automation to provide a centralized, enterprise wide (portfolio) view of cybersecurity risk management activities across the organization, including risk control and remediation activities, dependencies, risk scores/levels, and management dashboards?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not identified and defined its requirements for an automated solution to provide a centralized, enterprise wide (portfolio) view of cybersecurity risks across the organization, including risk control and remediation activities, dependences, risk scores/levels, and management dashboards",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has identified and defined its policies, procedures, and strategies; requirements for an automated solution that provides a centralized, enterprise-wide view of \u2022 These automated solutions may include cybersecurity risks across the organization, including risk control and remediation activities, dependencies, risk scores/levels, and management dashboards. cyber risk registers and allow stakeholders to access the risk information based on their need-to- know.",
+        "evidence": "\u2022 Organizational risk management a Governance Risk and Compliance solution, spreadsheets, dashboards, shared information in automated workflow solutions, but should include",
+        "assessor_notes": "Assessors should obtain organizational risk management policies, procedures, and strategies and ensure they define the requirements of an automated solution to provide a centralized, enterprise wide (portfolio) view of cybersecurity risks across the organization, including risk control and remediation activities, dependences, risk scores/levels, and management dashboards."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements an automated solution across the enterprise that provides a centralized, enterprise-wide view of \u2022 Internal communications to cybersecurity risks, including risk control and remediation activities, dependencies, risk scores/levels, and management dashboards. All \u2022 Enterprise wide POA&Ms; necessary sources of cybersecurity risk information are integrated into the solution. \u2022 GRC dashboards/reports; \u2022 CSRR(s).",
+        "evidence": "\u2022 Risk Management documentation (ex. SSP/RAs, SARs, etc.); stakeholders about risk (ex. emails, meeting minutes, etc.); \u2022 System level POA&Ms;",
+        "assessor_notes": "Assessors should observe and collect artifacts from the organization\u2019s automated risk management solution(s) to confirm that the organization has implemented the process outlined in its policies and procedures for centrally managing its risk management process."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "In addition, the organization ensures that cybersecurity risk management information is integrated into ERM reporting tools (such as a governance, risk management, and compliance tool), as appropriate. \u2022 Lessons learned; \u2022 Continuous monitoring dashboards/reports (e.g., CDM and SIEM outputs/alerts/reports, vulnerability management dashboards, etc.).",
+        "evidence": "\u2022 GRC dashboards/reports; \u2022 CSRR(s); \u2022 Threat model exercise reports;",
+        "assessor_notes": "Assessors should collect evidence that demonstrates the organization\u2019s use of automation to perform scenario analysis and model potential responses, including modeling the potential impact of a threat exploiting a vulnerability and the resulting impact to organizational systems and data integrated with the organization\u2019s ERM process."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization has institutionalized the use of advanced technologies for analysis of trends and performance against benchmarks to continuously improve its cybersecurity risk management program. Examples include scenario analysis and modeling, the incorporation of technical indicators from threat intelligence, and the ability to consume open security control assessments language (OSCAL) into its GRC processes. \u2022 Target-state enterprise architecture documentation updates (e.g., desired state EA and a roadmap to address any gaps with near real-time updates), etc.; \u2022 Integrating SOAR to support GRC processes and functionality for real-time trend and analysis; \u2022 GRC dashboards/reports.",
+        "evidence": "\u2022 Enterprise risk profiles \u2022 Enterprise-wide and component-level risk management dashboards; \u2022 Budget/investment/staffing documentation; \u2022 Updates to ERM program documentation, polices, procedures, and strategies;",
+        "assessor_notes": "Assessors should collect evidence demonstrating that the organization has institutionalized the use of advanced technologies for analysis of trends and performance against benchmarks to continuously improve its cybersecurity risk management program. Organizations may maintain threat risk/loss scenario modeling information in a business impact assessment and the results of this modeling should act as an input to the CSRR. Moreover, organizational automate controls where practicable, and organizational GRC solution(s) leverage OSCAL to facilitate/automate the security control assessments and to document its SSPs and POAMs, where possible."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV. RM-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: GV.RM-06",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-5(1) and CA-7",
+        "control_ids": [
+          "CA-5",
+          "CA-7"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-39",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207: Tenets 5 and 7",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-123",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Zero Trust Maturity Model: Pillars 2-4",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "domain": "Risk and Asset Management (RAM)",
+    "question": "Provide any additional information on the effectiveness (positive or negative) of the organization\u2019s RAM program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the RAM program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 14,
+    "domain": "Configuration Management",
+    "question": "To what extent does the organization use configuration settings/common secure configurations for its information systems?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not established policies and procedures for ensuring that configuration settings/common secure configurations are defined, implemented, and monitored.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has developed, documented, and disseminated its policies and procedures for configuration settings/common secure configurations. \u2022 In addition, the organization has developed, documented, and disseminated common secure configurations (hardening guides) that are tailored to its environment. Further, the organization has established a deviation process.",
+        "evidence": "\u2022 Policies and procedures for system baselining/hardening/configuration setting management, including processes for managing deviations; Organization's tailored hardening guides.",
+        "assessor_notes": "Assessors should verify that the organization maintains security configuration standards for all asset types, including: - End user devices (workstations, laptops, etc.) - Input and output devices (multifunction devices, printers, scanners, copiers, etc.) - Operating systems and software (CIS Control 5.1) - Network devices (CIS Control 11.1) - Servers and applications, including web applications Assessors should verify that the organization has developed secure images or templates for all systems in the enterprise based on the organization's approved configuration standards (CIS Control 5.1 and 5.2). Assessors should verify that the organization has documented standards for defining (and justifying) acceptable deviations from externally established hardening guides (e.g., STIGs) as well as deviations from internally developed (customized) hardening guides."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements, assesses, and maintains secure configuration settings for its information systems based on \u2022 Acceptable deviation/exception the principle of least functionality. tailored hardening guides; Further, the organization consistently uses SCAP-validated software assessing (scanning) capabilities against all systems on the network (in accordance with BOD 23- 01see) to assess and manage both code-based and configuration-based vulnerabilities. \u2022 Lessons learned incorporated into the The organization uses lessons learned in secure configuration policies and implementation to make improvements to its procedures. secure configuration policies and procedures",
+        "evidence": "\u2022 Evidence of vulnerability scanning conducted for the last four quarters; lists/justifications for organizationally \u2022 Observation and analysis of Security Content Automation Protocol (SCAP) tools to determine coverage and use of rulesets and frequencies;",
+        "assessor_notes": "For a sample of systems, assessors should conduct vulnerability scanning (including at the operating system, network, database, and application levels) to assess the implementation of the agency's configuration settings/baselines. Assessors may observe the tools used by the organization to conduct vulnerability scanning and verify the use of credentialed scans and coverage of devices/applications. Assessors should also analyze tool settings to verify coverage of scanning, rulesets, and schedules. Assessors should validate that application-level scanning is conducted for all public facing websites. Further, the organization should demonstrate that it proactively scans all systems on its network (at an organization defined frequency; preferably weekly) for vulnerabilities and addresses discovered weaknesses (CIS Control 3). The scanning should cover public-facing web applications (see CIGIE Web Application report for additional details). The organization should be using a dedicated account for authenticated scans which should not be used for other administrative activities and should be tied to specific machines at specific IPs (CIS Control 3.3). Furthermore, assessors should verify that the organization is using up-to-date SCAP compliant scanning tools [e.g., Nessus, BigFix, SCAP Compliance Checker, etc.]. In addition, at Consistently Implemented, assessors should verify that vulnerabilities identified through scanning activities, including for public facing web applications, are consistently remediated for sampled systems. Finally, the assessor should ensure that all assets discovered during the BOD 23-01 scans are configured IAW organizational policy and best practices and the organization scans for known code-based and configuration-based vulnerabilities."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization employs automation to help maintain an up-to-date, complete, accurate, and readily available view of the security configurations for all information system components connected to the organization\u2019s network and makes appropriate modifications in accordance with organization-defined timelines.",
+        "evidence": "\u2022 Dashboards that highlight in real-time the devices on the network and their compliance with the agency's baselines.",
+        "assessor_notes": "The organization should use automation, such as system configuration management tools to monitor security configuration compliance for the devices connected to its network and measure/report on the effectiveness of its configuration management processes accordingly. The difference between level 4 and level 5 is that at level 5, the organization is using automation, in near real-time, to redeploy configuration settings as deviations are identified. The intent at level 4 is to verify that the agency has readily available visibility into the security configurations for the devices connected to its network. At level 4, the organization should demonstrate that it utilizes system configuration management tools to measure the settings of operating systems and applications to look for deviations from standard image configurations."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization deploys system configuration management tools that automatically enforce and redeploy configuration settings to systems at frequent intervals as defined by the organization, or on an event driven basis. \u2022 Automated routing/approval process and queues to enforce process and prevent out-of-sequence events.",
+        "evidence": "\u2022 Evidence of frequent, enforced system configurations; \u2022 Evidence of event-triggered configuration, Automated configuration from Continuous Diagnostics and Mitigation (CDM) events.",
+        "assessor_notes": "The organization should deploy automation to verify all security configuration elements, catalog approved exceptions, and alert when unauthorized changes occur (CIS Control 5.5). At level 5, the organization should demonstrate that it uses system configuration management tools to automatically redeploy settings."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other_federal",
+        "ref_text": "DHS BOD 23-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-70 (Rev. 4)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Controls 4 and 7",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity Incident Response Playbooks",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.PS-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 3.3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CM-6, CM-7, RA-5, and SI-2",
+        "control_ids": [
+          "CM-6",
+          "CM-7",
+          "RA-5",
+          "SI-2"
+        ]
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31, CISA Operational Guidance",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "domain": "Configuration Management",
+    "question": "To what extent does the organization use flaw remediation processes, including asset discovery, vulnerability scanning, analysis, and patch management, to manage software vulnerabilities on all network addressable IP-assets?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not developed, documented, and disseminated its policies and procedures for flaw remediation, including for mobile devices (GFE and non- GFE).",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has developed, documented, and disseminated its policies and procedures for flaw remediation, including for mobile devices. Policies and procedures include processes for: \u2022 BYOD policies and procedures. - identifying, reporting, and correcting information system flaws, - testing software and firmware updates prior to implementation, - installing security relevant updates and patches within organizational- defined timeframes, - and incorporating flaw remediation into the organization's configuration management processes.",
+        "evidence": "\u2022 Patch management/flaw remediation policies and procedures; \u2022 Configuration management policies and procedures;",
+        "assessor_notes": "Assessors should evaluate the organization\u2019s defined policies and procedures for flaw scanning, analysis, and remediation to ensure they address all network addressable IP-assets (which should match inventories assessed in the risk management domain metrics 1-3). The policies and procedures should also define how the network addressable IP assets are documented (e.g., spreadsheet, form, database, etc.), grouped (e.g., function, location, etc.), prioritized (e.g., high, moderate, low risk assets), and updated (e.g., scanning frequency). The scope of these policies and procedures should include, but not be limited to, applications (COTS and GOTS), servers, workstations, input and output devices, network devices, and mobile devices (GFE and non-GFE in an approved BYOD environment). The policies and procedures should, at minimum define the following processes: asset discovery, vulnerability scanning, results analysis, patch testing, and patch management. Consistently implemented: Assessors should determine if the organization implements its defined flaw scanning, analysis, and remediation policies, procedures, and processes for all network addressable IP-assets. BOD 23-01 focuses on scanning, which is the basis for flaw remediation. An organization cannot effectively remediate flaws if it is not properly analyzing the scans and prioritizing the results. Assessors assess if agencies are reviewing scans to identify patch lag, false positives, associate with high value assets, etc. Areas to assess to ensure consistency with BOD\u2019s 22-01 and 23-01, include validating organizations: - perform asset discovery every 7 days (BOD 23-01) - conduct credentialed vulnerability scanning every 14 days (BOD 23-01) - ensure vulnerability detection signatures are updated at an interval no greater than 24 hours - prioritize known exploited vulnerabilities (KEV), according to the CISA-managed catalog, and remediates 2021 and older KEVs within 6 months (BOD 22-01) and all others within two weeks - ensure that patches, hotfixes, service packs rated as critical vulnerabilities are installed within 15 days (BOD 19-02) or have senior agency approved remediation plans for open findings - ensure that patches, hotfixes, and service packs rated as a high vulnerabilities are installed within 30 days (BOD 19-02), or have senior agency approved remediation plans for open findings - implement malicious code protection (e.g. Anti-virus) mechanisms on all computing assets (to the greatest extent possible) to detect and eradicate malicious code, automatically update malicious code protection mechanisms as new releases are available, perform periodic scans of the system, perform real-time scans of files from external sources, and block malicious code execution (NIST SP 800-53 Rev. 5, SI-3) Assessors, throughout this process, should also confirm that the versions of the EO-critical software leveraged by the organization are currently supported."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its flaw remediation policies, procedures, and processes and ensures that patches, hotfixes, \u2022 Screenshots of vulnerability scanning service packs, and anti-virus/malware software updates are identified, prioritized, tested, and installed in a timely manner. tools and processes; In addition, the organization patches critical vulnerabilities within 30 days and uses lessons learned in implementation to make improvements to its flaw remediation policies and procedures. Further, for EO-critical software platforms and all software deployed to those platforms, the organization uses supported software versions. \u2022 Documentation showing lessons learned that were obtained from all levels of the organization and were used to update/enhance policies and procedures. Could be a statement in the policies and procedures change log.",
+        "evidence": "\u2022 Nmap/LanSweeper scans showing all network accessible IP assets; system showing configurations; \u2022 Demonstrations of vulnerability scanning \u2022 Documentation that shows identification, prioritization, and testing of a patch, hotfix, service pack, and/or AV/Malware update; \u2022 Vulnerability scans prior and post update (to prove timeliness); \u2022 Patch management reports.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization centrally manages its flaw remediation process and utilizes automated patch management and software update tools for operating systems, where such tools are \u2022 Metrics to measure (turnaround) available and safe. improvements are reported to appropriate The organization monitors, analyzes, and stakeholders; reports qualitative and quantitative performance measures on the effectiveness of flaw remediation processes and ensures that data supporting the metrics is obtained accurately, consistently, and in a reproducible format.",
+        "evidence": "\u2022 Evidence of automated flaw remediation using trusted, verified repositories for operating systems; performance and make continuous \u2022 Evidence of prioritization of testing and patch management based on risk assessment.",
+        "assessor_notes": "One of the major advancements in Managed and Measurable is the focus on automation for operating systems patching (automation for all other assets is at the Optimized level). The organization compares the results of multiple vulnerability scans to detect and correct trends of failing to patch in accordance with required timelines. For Managed and Measurable assessors should be ensuring that the organization are detecting problems with its scan and patch processes (800-53r5 control RA-5(6)). Assessors should validate the accuracy, completeness (e.g., all network addressable IP-assets are considered in the organizational analyses), and reproducibility of the patch reporting and trend analysis performed by the organization."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization utilizes automated patch management and software update tools for all applications and network devices (including mobile devices), as appropriate, where such tools are available and safe. account for and utilize all flaw discovery As part its flaw remediation processes, the sources. organization performs deeper analysis of software code, such as through patch sourcing and testing.",
+        "evidence": "\u2022 Evidence of automated patch management and software updates using trusted, verified repositories for all applications and network devices; \u2022 Integration with ISCM and IR programs to",
+        "assessor_notes": "The organization centrally manages its implemented flaw remediation processes and uses automated patch management and software update tools for all network addressable IP-assets. Ensures interoperability among tools used for vulnerability management and configuration management tasks."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 18-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 19-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 22-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 23-01 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CM-3, RA-5, SI-2, and SI- 3",
+        "control_ids": [
+          "CM-3",
+          "RA-5",
+          "SI-2",
+          "SI-3"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-40 (Rev. 4)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207: Section 2.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 3.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 1.4, 8.1, and 8.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Controls 4 and 7",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "BOD 23-01 Implementation Guidance",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity Incident Response Playbooks",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "domain": "Configuration Management",
+    "question": "Provide any additional information (positive or negative) of the organization\u2019s configuration management program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the configuration management program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 17,
+    "domain": "Identity and Access Management (IDAM)",
+    "question": "To what extent has the organization implemented phishing-resistant multifactor authentication mechanisms (e.g., PIV, FIDO2, or web authentication) for non-privileged users to access the organization's physical and logical assets [organization-defined entry/exit points], networks, and systems, including for remote access?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not planned for the use of strong authentication mechanisms for non-privileged users of the organization\u2019s facilities [organization-defined entry/exit points], systems, and networks, including for remote access. In addition, the organization has not performed digital identity risk assessments to determine which systems require strong authentication.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has planned for the use of strong authentication mechanisms for non- privileged users of the organization\u2019s facilities [organization-defined entry/exit points], systems, and networks, including the completion of digital identity risk assessments. entry/exit points that must be protected.",
+        "evidence": "\u2022 Project plan or policies and procedures for implementation of strong authentication; \u2022 E-authentication risk assessment policy and procedures; \u2022 Site security plans identifying defined",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization has consistently implemented strong authentication mechanisms for non-privileged users of the organization\u2019s facilities [organization- defined entry/exit points] and networks, including for remote access, in accordance with Federal targets. \u2022 E-authentication risk assessments for For instances where it would be impracticable to use the PIV card, the organization uses an alternative token (derived PIV credential) which can be implemented and deployed with mobile devices. settings related to strong authentication; Further, for public-facing systems that support multifactor authentication, users are \u2022 Mobile device management configuration provided the option of using phishing- resistant multifactor authentication. \u2022 Plans for centralized identity mgt systems; \u2022 Phishing resistant Multifactor Authentication; \u2022 Plans for removal of passwords that require special characters or regular rotation, including in Mobile Device Management solutions.",
+        "evidence": "\u2022 Physical access control system configurations identifying strong authentication mechanisms on all defined protected entry/exit points in accordance with federal and agency-specific requirements; sample systems. \u2022 System security plan for sampled systems; \u2022 OS- and Domain-level (Active Directory or similar directory service) configuration settings related to strong authentication;",
+        "assessor_notes": "Test (with a non-privileged user) login without PIV or LOA4 credential and see if access will still be authenticated. Analyze OS- and domain-level configuration settings to determine whether strong authentication is enabled and enforced."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "All non-privileged users use strong authentication mechanisms to authenticate to applicable organizational systems and facilities [organization-defined entry/exit points]. configurations/documentation To the extent possible, the organization centrally implements support for non-PIV authentication mechanisms in their enterprise identity management system.",
+        "evidence": "\u2022 Review of Active Directory (or similar directory service) configuration setting showing that two-factor is enabled and enforced for all non-privileged users; \u2022 Physical access control demonstrating that all non-privileged users are required to utilize strong authentication mechanisms for entry/exit at defined points.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization has implemented an enterprise-wide single sign on solution and all the organization's systems interface with the solution, resulting in an ability to manage user (non-privileged) accounts and privileges centrally and report on effectiveness on a near real-time basis. manage accounts.",
+        "evidence": "\u2022 Agency documentation of systems that are integrated and support AD/PIV-based login; \u2022 Screenshots of automated tools that manages user accounts and privileges and its reporting feature or request a walkthrough and observe the process to",
+        "assessor_notes": "Select sample systems and test whether AD/PIV-based single sign on is enabled and enforced."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "other",
+        "ref_text": "Cybersecurity Enhancement Act of 2016",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "FIPS 201-2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "HSPD-12",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-17",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.AA-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.AA-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): AC-17, IA-2, IA-5, IA-8, and PE-3",
+        "control_ids": [
+          "AC-17",
+          "IA-2",
+          "IA-5",
+          "IA-8",
+          "PE-3"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-63",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-128",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-157",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207: Tenet 6",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 1.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 6",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 2.3, 2.3.1, 2.3.2, 2.4, 2.9, 2.10, and 2.10.2",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "domain": "Identity and Access Management (IDAM)",
+    "question": "To what extent has the organization implemented phishing-resistant multifactor authentication mechanisms (e.g., PIV, FIDO2, or web authentication) for privileged users to access the organization's physical and logical assets [organization-defined entry/exit points], networks, and systems, including for remote access?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not planned for the use of strong authentication mechanisms for privileged users of the organization\u2019s facilities [organization-defined entry/exit points], systems, and networks, including for remote access. In addition, the organization has not performed digital identity risk assessments to determine which systems require strong authentication.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has planned for the use of strong authentication mechanisms for privileged users of the organization\u2019s facilities [organization-defined entry/exit points], systems, and networks, including the completion of digital identity risk assessments.",
+        "evidence": "\u2022 Project plan for implementation of strong authentication for privileged users; \u2022 E-authentication risk assessment policy and procedures; \u2022 Site security plans identifying defined entry/exit points that must be protected.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization has consistently implemented strong authentication mechanisms for privileged users of the organization\u2019s facilities [organization-defined entry/exit points], and networks, including for remote access, in accordance with Federal targets. systems; For instances where it would be impracticable to use the PIV card, the organization uses an \u2022 alternative token (derived PIV credential) which can be implemented and deployed with \u2022 mobile devices settings related to strong authentication; \u2022 Mobile device management configuration settings related to strong authentication; \u2022 Observation of and/or screenshots for sample systems that show how a non- privileged user logs into the network and system; \u2022 Plans for centralized identity mgt systems; \u2022 Phishing resistant MFA; \u2022 Plans for removal of passwords that require special characters or regular rotation, including in Mobile Device Management solutions.",
+        "evidence": "\u2022 Physical access control system configurations identifying strong authentication mechanisms on all defined protected entry/exit points in accordance with federal and agency-specific requirements; \u2022 Digital identity risk assessments for sample System security plan for sampled systems; OS-and domain-level (Active Directory or similar directory service) configuration",
+        "assessor_notes": "Test (with a privileged user) login without PIV or LOA4 credential and see if access will still be authenticated. Analyze OS- and domain-level configuration settings to determine whether strong authentication is enabled and enforced."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "All privileged users, including those who can make changes to DNS records, use strong authentication mechanisms to authenticate to applicable organizational systems. \u2022 Physical access control configurations/documentation demonstrating that all privileged users are required to utilize strong authentication mechanisms for entry/exit at defined points.",
+        "evidence": "\u2022 Review of AD (or similar directory service) configuration setting showing that two- factor is enabled and enforced for all privileged users;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization has implemented an enterprise-wide single sign on solution and all the organization's systems interface with the \u2022 Screenshot/Observation of automated tool solution, resulting in an ability to manage user (privileged) accounts and privileges centrally and report on effectiveness on a near real-time basis.",
+        "evidence": "\u2022 Agency documentation of systems that support AD/PIV-based login; that manages user accounts and privileges and its reporting feature.",
+        "assessor_notes": "Sample select systems and test whether AD/PIV-based login is enabled and enforced as well as physical access controls."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "FIPS 201-2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "HSPD-12",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-17",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "DHS ED 19-01 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.AA-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.AA-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): AC-17 and PE-3",
+        "control_ids": [
+          "AC-17",
+          "PE-3"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-63",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-128",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-157",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207: Tenet 6",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 1.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 6",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 2.3, 2.4, 2.9, and 2.10",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "domain": "Identity and Access Management (IDAM)",
+    "question": "To what extent does the organization ensure that privileged accounts are provisioned, managed, and reviewed in accordance with the principles of least privilege and separation of duties? Specifically, this includes processes for periodic review and adjustment of privileged user accounts and permissions, inventorying and validating the scope and number of privileged accounts, and ensuring that privileged user account activities are logged and periodically reviewed?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its processes for provisioning, managing, and reviewing privileged accounts.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its processes for provisioning, managing, and reviewing privileged accounts. Defined processes cover \u2022 approval and tracking; inventorying and validating; and logging and reviewing privileged users' accounts. addressing separation of duties and least privilege requirements.",
+        "evidence": "\u2022 ICAM policies and procedures to include privileged accounts; Audit logging policies and procedures to include privileged accounts; \u2022 Access control policies and procedures",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization ensures that its processes for provisioning, managing, and reviewing privileged accounts are consistently implemented across the organization. The organization limits the functions that can be performed when using privileged accounts; limits the duration that privileged accounts can be logged in; and ensures that privileged \u2022 Inventory of privileged user accounts by user activities are logged and periodically reviewed. \u2022 List of auditable events for privileged users by system type; \u2022 List of users by type and role for sampled systems; \u2022 Controls that limit the duration a privileged user can be logged in; \u2022 Controls that limit the privileged functions during remote access.",
+        "evidence": "\u2022 Observation/documentation of domain, operating system, and network device account settings for privileged accounts; \u2022 Log review reports for privileged user accounts (for example, UEBA reports, UAM reports). type;",
+        "assessor_notes": "Review the roles and responsibilities of stakeholders involved in the agency's ICAM activities and identify those that require separation of duties to be enforced (e.g., information system developers and those responsible for configuration management process). Ensure that the principle of separation of duties is enforced for these roles."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization employs automated mechanisms (e.g., machine-based, or user- based enforcement) to support the management of privileged accounts, including for the automatic removal/disabling of temporary, emergency, and inactive accounts, as appropriate. Further, the organization is meeting privileged identity and credential management logging requirements at maturity EL2, in accordance with M-21-31.",
+        "evidence": "\u2022 Screenshots of automated tool or other mechanism that shows the management of privileged accounts and the automatic removal/disabling of temporary/emergency/inactive accounts.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization is making demonstrated progress towards implementing EL3\u2019s advanced requirements for user behavior monitoring to detect and alert on privileged user compromise.",
+        "evidence": "\u2022 Evidence of EL3 requirements for user behavior monitoring; \u2022 Examples of alerts of privileged user compromises;",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "other",
+        "ref_text": "Cybersecurity Enhancement Act of 2016",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-17",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "DHS ED 19-01 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.AA-05",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): AC-1, AC-2, AC-5, AC- 6, AC-17, AU-2, AU-3, AU-6, and IA-4",
+        "control_ids": [
+          "AC-1",
+          "AC-2",
+          "AC-5",
+          "AC-6",
+          "AC-17",
+          "AU-2",
+          "AU-3",
+          "AU-6",
+          "IA-4"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 2.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 3.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Controls 5, 6, and 8",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "domain": "Identity and Access Management (IDAM)",
+    "question": "Provide any additional information (positive or negative) of the organization\u2019s IDAM program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the IDAM program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 21,
+    "domain": "Data Protection and Privacy",
+    "question": "To what extent has the organization implemented the following security controls to protect the confidentiality, integrity, and availability of its PII and other agency sensitive data, as appropriate, throughout the data lifecycle? \u2022 Encryption of data at rest \u2022 Encryption of data in transit \u2022 Limitation of transfer to removable media \u2022 Sanitization of digital media prior to disposal or reuse \u2022 Backups of data are created, protected, maintained, and tested \u2022 Access to personal email, external file sharing and storage sites, and personal communication applications are blocked, as appropriate. [DPP.01]",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies and procedures in one or more of the specified areas.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization's policies and procedures have been defined and communicated for the specified areas. Further, the policies and procedures have been tailored to the organization's environment and include specific considerations based on data classification and sensitivity",
+        "evidence": "\u2022 Information security, data life cycle, and/or protection policies and procedures; \u2022 Data classification/handling policies and procedures; \u2022 Destruction/sanitization policies and procedures.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization's policies and procedures have been consistently implemented for the specified areas, including (i) use of FIPS- validated encryption of PII and other agency sensitive data, as appropriate, both at rest and in transit, (ii) prevention and detection of untrusted removable media, (iii) destruction or reuse, (iv) backup protection of media containing PII or other sensitive agency data, \u2022 Evidence/testing of network access controls or and (v) blocking of access to personal emails, other methods used to prevent and detect external file storage sites, and personal untrusted removable media; communication applications. \u2022 Evidence of destruction/sanitization; \u2022 Evidence of media backup protection; \u2022 Evidence of configurations or tools used to perform blocking of personal emails, external file storage sites, and personal communication applications.",
+        "evidence": "\u2022 Evidence of database, file share, server, full disk encryption, and/or end point encryption where PII or sensitive information is stored; \u2022 Evidence of use of SSL/TLS across external communication boundaries; \u2022 Evidence of capability to communicate PII or sensitive information internally (e.g., email encryption);",
+        "assessor_notes": "Encryption algorithms used to encrypt data at rest and in transit must be FIPS-validated."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization ensures that the security controls for protecting PII and other agency sensitive data, as appropriate, throughout the data lifecycle are subject to the monitoring processes defined within the organization's ISCM strategy",
+        "evidence": "\u2022 ISCM strategy; \u2022 Continuous monitoring reports and evidence of review of applicable privacy controls.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization employs advanced capabilities to enhance protective controls, including: sanitization of devices that contain sensitive \u2022 Remote wiping \u2022 Dual authorization for sanitization of media devices \u2022 Exemption of media marking as long as the media remains within organizationally defined control areas \u2022 Configuring systems to record the date the PII was collected, created, or updated and when the data is to be deleted or destroyed according to an approved data retention schedule. \u2022 Continuously backing up critical data in near real-time.",
+        "evidence": "\u2022 Documentation of agency use of remote wiping for agency devices; \u2022 Evidence of dual authorizations for information; \u2022 Data dictionary for systems containing PII, highlighting the fields used to record PII collection; \u2022 Evidence of data storage/destruction in accordance with the data retention schedule; \u2022 Evidence of continuous backup of critical data in near real-time.",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A- 130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other_federal",
+        "ref_text": "DHS BOD 18-02 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-207",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 2.3 and SM 2.4",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other_federal",
+        "ref_text": "DHS BOD 18-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 2.1, 2.1.1 and 2.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.DS-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.DS-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: PR.DS-11",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.AM-08",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "domain": "Data Protection and Privacy",
+    "question": "To what extent has the organization implemented security controls (e.g., DLP, IDPS, CASB, User and Entity Behavior Analytic tools, SIEM and EDR) to prevent data exfiltration and enhance network defenses?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies and procedures related to data exfiltration, endpoint detection and response, enhanced network defenses, email authentication processes, and mitigation against DNS infrastructure tampering",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined and communicated data exfiltration, endpoint detection and response, enhanced network defenses, email authentication processes, and mitigation against DNS infrastructure tampering",
+        "evidence": "\u2022 Data exfiltration/network defense policies and procedures. it policies and procedures for",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently monitors inbound and outbound network traffic, ensuring that all traffic passes through a web content filter that protects against phishing, \u2022 Evidence of DLP used to monitor malware, and blocks against known outbound traffic to detect encrypted malicious sites. Additionally, the organization checks outbound communications traffic to detect encrypted exfiltration of information, anomalous traffic patterns, and elements of PII. Also, suspected \u2022 Evidence that suspected malicious traffic is malicious traffic is quarantined or blocked. In addition, the organization uses email authentication technology and ensures the use of valid encryption certificates for its domains. \u2022 DNS records audit results; The organization consistently implements capabilities (e.g., using DLP, IDPS, CASB, User and Entity Behavior Analytic tools, SIEM and EDR tools) to support host-level \u2022 Evidence of tools used to support host- visibility, attribution, and response for its level visibility, attribution, and response information systems. for its information systems.",
+        "evidence": "\u2022 Evidence of web content filtering tools to monitor inbound and outbound traffic for phishing, malware, and domain filtering; exfiltration of information, anomalous traffic patterns, and elements of PII; quarantined/blocked. \u2022 Evidence of email authentication utilization; \u2022 Evidence of valid domain encryption certificates;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization analyzes qualitative and quantitative measures on the performance of its data exfiltration and enhanced network defenses. The organization also conducts exfiltration exercises; exfiltration exercises to measure the effectiveness of its data exfiltration and enhanced network defenses. Further, the organization monitors its DNS infrastructure for potential tampering, in accordance with its ISCM strategy. In addition, the organization audits its DNS records. measures on the performance of Further, the organization has assessed its current EDR capabilities, identified any gaps, and is coordinating with CISA for future solution deployments (e.g., using DLP, IDPS, CASB, User and Entity Behavior Analytic tools, SIEM and EDR tools).",
+        "evidence": "\u2022 Data exfiltration and network defense performance measure reports/dashboards; \u2022 After-action reports/meeting minutes from \u2022 Evidence that DNS infrastructure is monitored in accordance with ISCM strategy; \u2022 Evidence of qualitative and quantitative capabilities or tools used to support host- level visibility, attribution, and response for its information systems.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization\u2019s data exfiltration and enhanced network defenses are fully integrated into the ISCM and incident response programs to provide near real-time \u2022 monitoring of the data that is entering and exiting the network, and other suspicious inbound and outbound communications. \u2022 Evidence of continuous device posture The organization continuously runs device posture assessments (e.g., using DLP, IDPS, CASB, User and Entity Behavior Analytic tools, SIEM and EDR tools) to maintain visibility and analytics capabilities related to data exfiltration.",
+        "evidence": "\u2022 ISCM strategy, \u2022 Incident response plan, Evidence showing integration with other security domains, including configuration management, ISCM, and incident response, assessments.",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "other_federal",
+        "ref_text": "DHS BOD 18-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "DHS ED 19-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-07",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-01 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Controls 9 and 10",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: DE.CM-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): SI-3, SI- 7(8), SI-4(4)(18), SC-7(10), and SC- 18",
+        "control_ids": [
+          "SI-3",
+          "SI-7",
+          "SI-4",
+          "SC-7",
+          "SC-18"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software Use: SM 4.3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY2025 CIO FISMA Metrics: 10.8",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "domain": "Data Protection and Privacy",
+    "question": "Provide any additional information (positive or negative) of the organization\u2019s data protection and privacy program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the data protection and privacy program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 24,
+    "domain": "Security Training",
+    "question": "To what extent does the organization use an assessment of the skills, knowledge, and abilities of its workforce to provide specialized security training within the functional areas of: govern, identify, protect, detect, respond, and recover?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its processes for assessing the knowledge, skills, and abilities of its workforce.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its processes for assessing the knowledge, skills, and abilities of its workforce to determine its specialized training needs and periodically updating its assessment to account for a changing risk environment.",
+        "evidence": "\u2022 Workforce assessment policies and procedures (or related documentation); \u2022 Security training policies and procedures.",
+        "assessor_notes": "Assessors reviews policies and procedures related to workforce assessments and staffing plans to ensure that the agency has established methods to assess its own security capabilities and needs. Agency models policies and procedures based on NICE Framework."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization has assessed the knowledge, skills, and abilities of its workforce; tailored its specialized training; and has identified its skill gaps. training programs; Further, the organization periodically updates its assessment to account for a changing risk environment. In addition, the assessment serves as a key \u2022 Training Strategy/Plan(s) tailored by input to updating the organization\u2019s awareness and training strategy/plans.",
+        "evidence": "\u2022 Cybersecurity Workforce assessment considers the agency\u2019s risk profile and includes any relevant skill gaps; \u2022 Content of awareness and role-based \u2022 Action plan to close gaps identified through its workforce assessment; workforce assessment.",
+        "assessor_notes": "Assessors reviews evidence showing the Agency has assessed the KSAs of their cybersecurity workforce and the assessment utilizes the NICE Framework. Additionally, Agency integrates newly emerging security threats into security training by assessing effectiveness of NIST 800-53r5 security control AT-2(c) and AT-2(d) \u201cLiteracy Training and Awareness.\u201d"
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization has addressed its identified knowledge, skills, and abilities gaps through training or talent acquisition. program; \u2022 Evidence of training and talent acquisition to address identified needs and skill gaps.",
+        "evidence": "\u2022 Evidence that the Agency measures workforce/KSA needs, including qualitative or quantitative metrics to ensure the effectiveness of the training",
+        "assessor_notes": "Assessors review evidence showing that workforce assessments have been collected and has been used to inform future strategies. Assessors also examine whether training and talent acquisition utilize workforce assessments to fill gaps."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization\u2019s personnel collectively possess a training level such that the organization can demonstrate that security incidents resulting from personnel actions or inactions are being reduced over time. specialized (role based) training programs are effective and the agency is making continuous program improvements.",
+        "evidence": "\u2022 Evidence of trend analysis performed showing incidents attributable to personnel actions or inactions being reduced over time; \u2022 Evidence that the awareness and",
+        "assessor_notes": "Assessors review evidence to determine whether the Agency can attribute positive security trends to prior workforce training. Examples: tracking the success of phishing exercises and number of user-submitted phishing notifications against phishing and security awareness training, or a positive trend in SOC metrics due to workforce KSA improvement."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "other",
+        "ref_text": "Federal Cybersecurity Workforce Assessment Act of 2015",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "Cybersecurity Enhancement Act of 2016",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 13870",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-50 Rev. 1: Section 3.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): AT-2, AT-3, and PM-13",
+        "control_ids": [
+          "AT-2",
+          "AT-3",
+          "PM-13"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-181",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "National Cybersecurity Workforce Framework",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 14",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 6.1",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "domain": "Security Training",
+    "question": "Provide any additional information (positive or negative) of the organization\u2019s security training program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the security training program effective",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "\u2022",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 26,
+    "domain": "Information Security Continuous Monitoring (ISCM)",
+    "question": "To what extent does the organization use information security continuous monitoring (ISCM) policies and an ISCM strategy that addresses ISCM requirements and activities at each organizational tier?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not developed, tailored, and communicated its ISCM policies and an organization wide ISCM strategy.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has developed, tailored, and communicated its ISCM policies and strategy. 6, \u2022 ISCM policies and procedures; \u2022 Monitoring requirements at each organizational tier \u2022 The minimum monitoring frequencies for 6 organization (The criterion for determining \u2022 List of approved continuous monitoring minimum frequencies is established in coordination with organizational officials se: [e.g., senior accountable official for risk management, system owners, and common control providers] and in accordance with 3 organizational risk tolerance). \u2022 The organization\u2019s ongoing control assessment approach \u2022 How ongoing assessments are to be conducted \u2022 Analyzing ISCM data, reporting findings, and reviewing and updating the ISCM policies, procedures, and strategy.",
+        "evidence": "\u2022 ISCM strategy, including evidence that the strategy was developed for selected systems; The following areas are included: \u2022 Agency-wide information security policy; implemented controls across the tools and technologies.",
+        "assessor_notes": "Review the organization-wide ISCM strategy and confirm the strategy has defined (1) the frequency at which organizational systems will be assessed, (2) how ongoing assessments will be carried out and at what frequency, and (3) a risk-based approach supporting security control assessment frequency selection."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization's ISCM policies and strategy are consistently implemented at the organization, business process, and information system levels. functional with visibility of all In addition, the strategy supports clear visibility into assets, awareness into vulnerabilities, up-to-date threat information, \u2022 Evidence of an ongoing lessons learned and mission/business impacts. The organization also consistently captures lessons learned to make improvements to the ISCM policies and strategy.",
+        "evidence": "\u2022 Continuous monitoring reports, or other assessment products, for selected systems; \u2022 Evidence that agency dashboard is fully organizational assets; process.",
+        "assessor_notes": "Review evidence (e.g., reports or analysis output from an agency dashboard) that support control assessments occur on an ongoing basis and continuous monitoring (e.g., known vulnerabilities, patches, etc.) at all three levels: organization, business process, and information system. Additionally, obtain and review agency dashboard screenshots (e.g., CDM or agency dashboard and/or SIEM etc.) that support the organization\u2019s visibility over the asset and vulnerabilities. Lastly, review reports or other analysis, including shareholders feedback that is utilized to create lessons learned."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization monitors and analyzes qualitative and quantitative performance measures on the effectiveness of its ISCM policies and strategy and makes updates, as appropriate. The organization ensures that data data feeding the metrics/dashboard; supporting metrics are obtained accurately, consistently, and in a reproducible format. performed at frequency defined by The organization has transitioned to ongoing control and system authorization through the implementation of its continuous monitoring policies and strategy. schedules, POA&Ms, SSPs, SARs, and ATO letters).",
+        "evidence": "\u2022 Evidence of ongoing performance metrics/dashboards as defined in the ISCM strategy; \u2022 Evidence of verifications/validation of \u2022 Evidence of control assessments ongoing assessment strategy/schedule; \u2022 Evidence of system authorizations for select systems (including OSA",
+        "assessor_notes": "Ensure the organization has (1) defined qualitative and quantitative performance metrics within its ISCM plan and that they have used them to produce reports and other output for review, (2) evidence (e.g., assessment results) that support control assessments occur on the ongoing basis defined in the systems ISCM strategy, and (3) evidence that authorization decisions are based on the results of ongoing assessments."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization's ISCM policies and strategy are fully integrated with its enterprise and supply chain risk management, configuration management, incident response, and business continuity programs. business continuity. The organization can demonstrate that it is using its ISCM policies and strategy to reduce the cost and increase the efficiency of security and privacy programs",
+        "evidence": "\u2022 Evidence supporting continuous monitoring tools and technologies are used in other security domains, including risk management, configuration management, incident response, and",
+        "assessor_notes": "Ensure the outputs of the ISCM process serve as inputs to the agency's risk management, incident response, business continuity, configuration management, and other related programs on a near-real time basis."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "fisma",
+        "ref_text": "FISMA 2014",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-25-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "NIST FIPS 200 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-7, PM- PM-14, and PM-31",
+        "control_ids": [
+          "CA-7",
+          "PM-14",
+          "PM-31"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37 (Rev. 2): Task P-7",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-137: Sections 3.1 and 3.",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST Security Measures for EO- Critical Software U SM 4.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 1",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "domain": "Information Security Continuous Monitoring (ISCM)",
+    "question": "To what extent does the organization monitor and measure the integrity and security posture of all owned and associated assets?",
+    "review_cycle": "FY 2025 Supplemental",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies and procedures to monitor and measure the integrity and security posture of all owned and associated assets.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its policies and procedures to monitor and measure the integrity and security posture of all owned and associated assets \u2022 Organizational charts; , d",
+        "evidence": "\u2022 Information security program policy; \u2022 ISCM strategy, policies, and procedures; \u2022 Delegations of authority; \u2022 Defined roles and responsibilities.",
+        "assessor_notes": "Review the ISCM plan and ensure the organization has defined roles and responsibilities related to ISCM."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently analyzes the data it collects on potentially adverse events ty and information system); ty monitoring and enforcement mechanisms to identify and manually disconnect or isolate non-compliant devices and virtual assets. The agency employs network monitoring capabilities based on known indicators of compromise to develop situational awareness and correlates telemetry from multiple sources for analysis and monitoring.",
+        "evidence": "\u2022 Evidence that individuals that are assigned the ISCM defined roles are carrying out their responsibilities at all to better understand associated activities. levels (organization, business process, The agency consistently implements \u2022 Agency's IT security budget; \u2022 Interviews with system security staff.",
+        "assessor_notes": "Assessor should review (1) organizational charts and ensure defined roles are filled, and (2) organizations IT security budget to ensure it assesses gaps and vacancies and perform interviews with staff to determine if ISCM is adequately resourced."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization uses up to date cyber threat intelligence in log analysis tools to improve detection accuracy and characterize threat actors, their methods, and indicators of compromise. Further, manual reviews are conducted for technologies that cannot be sufficiently monitored through automation. \u2022 Evidence that individuals with ISCM The organization automates both inventory collection (including endpoint monitoring on all standard user devices and anomaly detection to detect unauthorized devices",
+        "evidence": "\u2022 Evidence of use of performance metrics/dashboards defined in the ISCM strategy; \u2022 Evidence of verifications/validation of data feeding the metrics/dashboard; \u2022 Evidence of coordination amongst other related security domains; responsibilities are held accountable (e.g., performance rating templates or similar documentation).",
+        "assessor_notes": "Assessor should evaluate whether the organization has defined metrics to assess ISCM performance roles and ensure individuals with roles have been assessed."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization has institutionalized the implementation of advanced ISCM technologies for analysis of trends and identification of potentially adverse events and adjusts its ISCM processes and security measures accordingly. The organization continuously verifies insights and enforces compliance throughout the lifetime of devices and virtual assets. The agency integrates device, software, configuration, and vulnerability management across all agency environments, including for virtual assets. The organization employs more sophisticated approaches to continuous monitoring (e.g., combines audit logs with other sources of event data).",
+        "evidence": "\u2022 Evidence that input/knowledge/guidance/lessons learned from oversight agencies (DHS, OMB, CISA, etc.) are being incorporated into decision making for ISCM resource allocation.",
+        "assessor_notes": "Assessor should ensure evidence shows that strategies, policies, procedures, and input from oversight agencies are being implemented and incorporated into ISCM decision making."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: DE.CM-09",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: DE.AE-02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53, Rev. 5: AU-12, CA-7 CM-10, CM-11, SC- 34, SC-35, SI-4, an SI-7",
+        "control_ids": [
+          "AU-12",
+          "CA-7",
+          "CM-10",
+          "CM-11",
+          "SC-34",
+          "SC-35",
+          "SI-4",
+          "SI-7"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-171 Rev. 3",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Critical Securi Controls v8: 8.11",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Critical Securi Controls v8: 10.1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Zero Trust Maturity Model",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "domain": "Information Security Continuous Monitoring (ISCM)",
+    "question": "To what extent does the organization performing ongoing (continuous monitoring) information system assessments to grant system authorizations, including developing and maintaining system security plans, and monitoring system security controls?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not developed system level continuous monitoring strategies/policies that define its processes for performing ongoing security control assessments, granting system authorizations, including developing and maintaining system security plans, and monitoring security controls for individual systems and time- based triggers for ongoing authorization. ,",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has developed system level continuous monitoring strategies/policies that \u2022 Assessment schedules; define its processes for performing ongoing security control assessments, granting system \u2022 ISCM policies and procedures; authorizations, including developing and maintaining system security plans, and monitoring security controls for individual systems and time-based triggers for ongoing authorization. The system level strategy/policies address the monitoring of those controls that are not addressed by the organizational level strategy, as well as how changes to the system are monitored and reported.",
+        "evidence": "\u2022 ISCM strategy; \u2022 Agency-wide information security policy.",
+        "assessor_notes": "Evaluate the agency's ISCM procedures to see whether they include risk determinations and risk acceptance decisions taken at agreed-upon and documented frequencies in accordance with the organization's mission/business requirements and risk tolerance. For moderate and high impact systems, evaluate whether the security-related information provided to the Authorizing Official to support ongoing authorization is produced/analyzed by an independent entity."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements its system level continuous monitoring strategies and related processes, including performing ongoing security control assessments, granting system authorizations, including developing and maintaining system security plans, and monitoring security controls to provide a view of the organizational security posture as well as each system\u2019s contribution to said security posture. strategy, appetite, and tolerance. In conjunction with the overall ISCM strategy, all security control classes (management, operational, and technical) and types (common, hybrid, and system-specific) are assessed and monitored, and their status updated regularly (as defined in the agency\u2019s information security policy) in security plans.",
+        "evidence": "\u2022 Evidence of ongoing security control assessments for a sample of systems at the appropriate level of rigor and frequency; \u2022 Evidence of system authorizations for select systems (including OSA schedules, POA&Ms, SSPs, SARs, and ATO letters); \u2022 Organization-wide risk management",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization utilizes the results of security control assessments and monitoring to maintain ongoing authorizations of information systems, including the maintenance of system security plans. the ISCM strategy. Organization authorization processes include automated analysis tools and manual expert analysis, as appropriate.",
+        "evidence": "\u2022 Evidence of the generation and collection of security-related information for all implemented security controls, including inherited common controls, at the frequencies specified in",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization's system level ISCM policies and strategies are fully integrated with its enterprise and supply chain risk management, configuration management, incident response, and business continuity programs. The organization can demonstrate that it is using its system level ISCM policies and strategy to reduce the cost and increase the efficiency of security and privacy programs.",
+        "evidence": "\u2022 See assessor best practices below.",
+        "assessor_notes": "Ensure automated tools are used to the extent practicable to support authorizing officials in making ongoing authorization decisions. In cases where automation is not feasible, manual or procedural security assessments are conducted to cover the gaps."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-14-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CA-2, CA- 5, CA-6, CA-7, PL-2 and PM-10",
+        "control_ids": [
+          "CA-2",
+          "CA-5",
+          "CA-6",
+          "CA-7",
+          "PL-2",
+          "PM-10"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-18",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-37, Rev. 2: Task S-5",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-137: Section 2.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8011",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8397",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 1.1.3 and 1.1.4",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "domain": "Information Security Continuous Monitoring (ISCM)",
+    "question": "Provide any additional information on the effectiveness (positive or negative) of the organization\u2019s ISCM program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the ISCM program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 30,
+    "domain": "Incident Response (IR)",
+    "question": "To what extent has the organization implemented processes related to incident detection and analysis?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined and communicated its policies, procedures, and processes for incident detection and analysis. In addition, the organization has not defined a common threat vector taxonomy for classifying incidents and its processes for detecting, analyzing, and prioritizing incidents.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "R-6 The organization has defined and communicated its policies, procedures, and processes for incident detection and analysis. In addition, the organization has defined a common threat vector taxonomy and developed handling procedures for specific types of incidents, as appropriate. protection/technologies in place to In addition, the organization has defined its processes and supporting technologies for detecting and analyzing incidents, including \u2022 the potential adverse events and indicators and to detect/analyze potential incidents. how they are generated and reviewed, and for prioritizing incidents.",
+        "evidence": "strategies, policies, procedures, and standards, including a common threat vector taxonomy; \u2022 Enterprise-level incident response plan; \u2022 Network architecture diagram highlighting the layers of detect and analyze incidents; SOPs for supporting technologies used",
+        "assessor_notes": "Assessors should ensure the agency\u2019s logging policies, procedures, and processes prioritizes high value asset (HVA) systems, high impact systems, and the enterprise IT network (including cloud service providers) to meet the requirements of M-21-31. Assessors should evaluate how the agency has made risk-informed decisions about where log collection is most beneficial for improving cybersecurity incident detection and investigation and that this is captured in the organization\u2019s policies, procedures, and processes."
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "those submitted to US-CERT; The organization consistently implements 0.5, enterprise-wide policies, procedures, and processes for incident detection and analysis. following tools: In addition, the organization consistently uses its enterprise-wide threat vector taxonomy to classify incidents and consistently implements its processes for incident detection, analysis, and prioritization. prevention tools, and incident In addition, the organization consistently implements, and analyzes potential adverse events and indicators generated by, for example, the following enterprise-wide technologies: intrusion detection/prevention, security information and event management (SIEM), antivirus and antispam software, and \u2022 Information management, such as file integrity checking software. data loss prevention \u2022 File integrity and endpoint and Further, the organization is consistently server security tools. capturing and sharing lessons learned on the effectiveness of its incident detection policies and procedures and making updates as necessary. detection and analysis policies and In addition, the organization is meeting logging requirements at maturity EL1 (basic), in accordance with M-21-31. (EDR); \u2022 Working w/CISA to identify implementation gaps, coordinate deployment of EDR tools; \u2022 Ensuring EDR tools meet CISA requirements.",
+        "evidence": "\u2022 Sample of incident tickets, including \u2022 Evidence of configurations that show the precursors and indicators captured for the tools listed in Question #58 and for the \u2022 Web application protections, such as web application firewalls. \u2022 Event and incident management, such as intrusion detection and tracking and reporting tools. \u2022 Aggregation and analysis, such as security information and event management (SIEM) products. \u2022 Malware detection, such as antivirus and antispam software technologies. \u2022 Evidence of capturing lessons learned on the effectiveness of the incident procedures; \u2022 Endpoint Detection and Response",
+        "assessor_notes": "Observe technologies and tools supporting incident detection and analysis to verify whether the defined indicators and precursors are being captured and reviewed. As of August 2022, agencies are required to meet the EL1 logging level as directed by M-21-31. Assessors evaluate the implemented logging processes and procedures against the EL1 logging requirements of M-21-31 and CISA implementation guidance. Agencies must collect all Criticality 0 log types to be EL1 compliant. IGs can assess agency actions to implement integrity measures limiting access to and allowing cryptographic verification of logs, as well as logging DNS requests made throughout their environment."
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization monitors and analyzes qualitative and quantitative performance measures on the effectiveness of its incident detection and analysis policies and procedures. The organization ensures that data supporting metrics are obtained accurately, consistently, and in a reproducible format. The organization uses profiling techniques to measure the characteristics of expected activities on its networks and systems so that it can more effectively detect security incidents. Examples of profiling include running file integrity checking software on hosts to derive checksums for critical files and monitoring network bandwidth usage to determine what the average and peak usage levels are on various days and times. Through profiling techniques, the organization maintains a comprehensive baseline of network operations and expected data flows for users and systems. In addition, the organization is meeting logging requirements at maturity EL2 (intermediate), in accordance with M-21-31.",
+        "evidence": "\u2022 Baseline of expected data flows and network operations; \u2022 Evidence of checksums for critical files; \u2022 Evidence of use of performance metrics defined in the incident detection and analysis policies, procedures, and plan.",
+        "assessor_notes": "As of February 2023, agencies are required to meet the EL2 logging level as directed by M-21-31. Evaluate the implemented logging processes and procedures against the EL2 logging requirements of M-21-31 and CISA implementation guidance."
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization is making demonstrated progress towards implementing EL3\u2019s (advanced) requirements for its logging capabilities.",
+        "evidence": "",
+        "assessor_notes": "As of August 2023, agencies are required to meet the EL3 logging level as directed by M-21-31. Evaluate the implemented logging processes and procedures against the EL3 logging requirements of M-21-31 and CISA implementation guidance."
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-20-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-22-01",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-24-04 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): IR-4, IR-5, and I",
+        "control_ids": [
+          "IR-4",
+          "IR-5"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-61 (Rev. 2)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-92",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID- AM-03, DE.AE-02-04 and 08, PR.DS-01, RS.MA-02-03, DE.CM-",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity Incident Response Playbooks",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 17",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "US-CERT Federal Incident Notification Guidelines",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 3.1, 10.4, 1 and 10.6",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "domain": "Incident Response (IR)",
+    "question": "To what extent has the organization implemented processes related to incident handling?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies, procedures, and processes for incident handling to include containment strategies for various types of major incidents, eradication activities to eliminate components of an incident and mitigate any vulnerabilities that were exploited, and recovery of systems.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its policies, procedures, and processes for incident handling to include containment strategies for each key incident type. In developing its strategies, the organization takes into consideration: the potential damage to and theft of resources, the need for evidence preservation, service availability, time and resources needed to implement the strategy, effectiveness of the strategy, and and duration of the solution. In addition, the organization has defined its processes to eradicate components of an incident, mitigate any vulnerabilities that were exploited, and recover system operations.",
+        "evidence": "\u2022 Containment strategies for each major incident type; \u2022 Incident response policies, procedures, and plans.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently implements enterprise-wide incident handling policies, and incident eradication processes were procedures, containment strategies, and incident eradication processes. \u2022 Evidence that vulnerabilities that were In addition, the organization consistently implements enterprise-wide processes to remediate vulnerabilities that may have been exploited on the target system(s) and recovers system operations. on the incident handling policies and Further, the organization is consistently capturing and protecting incident data and metadata at an enterprise-wide level and sharing lessons learned on the effectiveness of its incident handling policies and procedures and making updates as necessary.",
+        "evidence": "\u2022 Sample of incident tickets to obtain evidence that incident handling policies and procedures, containment strategies, followed; exploited and resulted in incidents were remediated (e.g., vulnerability scanning reports, or additional training); \u2022 Evidence of capturing lessons learned procedures.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization monitors and analyzes qualitative and quantitative performance measures on the effectiveness of its incident handling policies and procedures. The organization ensures that data supporting metrics are obtained accurately, consistently, and in a reproducible format. \u2022 Metrics related to successful incidents The organization manages and measures the impact of successful incidents and can quickly mitigate related vulnerabilities on other systems so that they are not subject to exploitation of the same vulnerability.",
+        "evidence": "\u2022 Evidence of use of performance metrics for containment and eradication defined in the incident response policies, procedures, and plan; \u2022 Evidence of verifications / validation of data feeding the metrics; that measure impact and timeliness of vulnerability mitigation on other systems.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization uses dynamic reconfiguration (e.g., changes to router rules, access control lists, and filter rules for firewalls and gateways) to stop attacks, misdirect attackers, and to isolate components of systems.",
+        "evidence": "\u2022 Observe technologies in use for dynamic reconfiguration of network devices in response to incident types.",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-21-31",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-24-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "executive_order",
+        "ref_text": "EO 14028 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): IR-4",
+        "control_ids": [
+          "IR-4"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-61 (Rev. 2)",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8374",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v.2.0: RS.MI-01 and RS.MI- 02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CISA Cybersecurity Incident Response Playbooks",
+        "control_ids": []
+      },
+      {
+        "ref_type": "fisma",
+        "ref_text": "FY 2025 CIO FISMA Metrics: 10.4, 10.5, 10.6",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "domain": "Incident Response (IR)",
+    "question": "Provide any additional information (positive or negative) of the organization\u2019s incident response program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the incident response program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  },
+  {
+    "id": 33,
+    "domain": "Contingency Planning (CP)",
+    "question": "To what extent does the organization ensure that the results of business impact analyses (BIA) are used to guide contingency planning efforts?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "Roles and responsibilities have not been fully defined and communicated across the organization, including appropriate delegations of authority.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "The organization has defined its policies, procedures, and processes for conducting organizational and system-level BIAs and for \u2022 Information system contingency incorporating the results into strategy and plan development efforts, such as its incident response plan, information system contingency plans, and continuity of operations plan (COOP). \u2022 Business Impact Analysis policies, procedures, and processes.",
+        "evidence": "\u2022 Information security strategy and policy; planning strategy, policies, and procedures, including the requirements to use Business Impact.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "The organization consistently incorporates the results of organizational and system level BIAs into strategy and plan development efforts. critically/priorities into strategy and plan development; System level BIAs are integrated with the organizational level BIA and include: \u2022 Characterization of all system components to ensure that BIAs are used to \u2022 Determination of missions/business processes and recovery criticality mission essential functions/high value \u2022 Identification of resource requirements assets; \u2022 Identification of recovery priorities for system resources. ensure organizational systems are covered by business impact analysis. The results of the BIA are consistently used to determine contingency planning requirements and priorities, including mission essential functions/high value assets.",
+        "evidence": "\u2022 Templates for completing BIAs; \u2022 Review organizational level BIAs to ensure it includes system-level components, missions, and recovery \u2022 Sample system-level BIAs or information system contingency plans determine contingency planning requirements and priorities, including \u2022 Recent CIO Metric 10.1.4 results to",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization ensures that the results of organizational and system level BIAs are integrated with enterprise risk management processes, for consistently evaluating, recording, and monitoring the criticality and sensitivity of enterprise assets. criticality and sensitivity of enterprise As appropriate, the organization uses the results of its BIA in conjunction with its risk register to calculate potential losses and inform senior level decision making. calculate potential losses and inform decision making.",
+        "evidence": "\u2022 Evidence that BIA results are integrated with organizational ERM processes; \u2022 Review meeting minutes supporting that the enterprise risk management processes include BIAs as part of the evaluating and monitoring of the assets; \u2022 Evidence that BIA results are integrated with the organization\u2019s risk register to",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "The organization integrates its BIA and asset management processes to improve risk identification, accurate exposure consideration and response; (based on realistic calculations of harmful impacts), and effective risk response. planning efforts reduced its risk profile and facilitated effective risk responses.",
+        "evidence": "\u2022 Evidence that the organization uses BIA results in conjunction with its risk register to improve risk identification \u2022 Evidence that the organization\u2019s",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_fips",
+        "ref_text": "FIPS 199 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.RA-04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CP-2 and RA-9",
+        "control_ids": [
+          "CP-2",
+          "RA-9"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-34 (Rev. 1): Section 3.2",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8179",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST IR 8286D",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FCD-1",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "FCD-2",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "domain": "Contingency Planning (CP)",
+    "question": "To what extent does the organization perform tests/exercises of its information system contingency planning processes?",
+    "review_cycle": "Core",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "The organization has not defined its policies, procedures, and processes for information system contingency plan testing/exercises. ISCP tests are performed in an ad-hoc, reactive manner.",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "Policies, procedures, and processes for information system contingency plan testing and exercises have been defined and include, as applicable, notification procedures, system recovery on an alternate platform from backup media, internal and external connectivity, system performance using alternate equipment, restoration of normal procedures, and coordination with other business areas/continuity plans, and tabletop and functional exercises.",
+        "evidence": "\u2022 Information security strategy and policy; \u2022 Information system contingency planning strategy, policies, and procedures, including the requirements to perform tests or exercises.",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "Information system contingency plan testing and exercises are consistently implemented. ISCP testing and exercises are integrated, to the extent practicable, with testing of related plans, such as incident response plan/COOP/Business Continuity Plan (BCP). \u2022 Review the independent assessment of CP-4 security control across the organization. Assessment determines whether contingency plans are tested, test results are reviewed, and corrective action are in-place if needed; \u2022 Evidence of after-action reports that officials use to improve the contingency planning efforts.",
+        "evidence": "\u2022 Sample information system contingency planning testing results; \u2022 Results of testing of continuity of operations, business continuity, or disaster recovery plans;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "The organization employs automated mechanisms to test system contingency plans more thoroughly and effectively. \u2022 Review the independent assessment of In addition, the organization coordinates plan testing with external stakeholders (e.g., Information and Communications Technology (ICT) supply chain partners/providers), as appropriate. \u2022 Coordination emails and test/exercise plans; \u2022Review after action review results to verify external stakeholder activity.",
+        "evidence": "\u2022 Review the results of information system contingency plan testing and exercises for selected systems; CP-4(3) security control across the organization. Assessment determines whether contingency plan is tested using automated mechanisms;",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "Based on risk, the organization performs a full mechanisms to disrupt or adversely recovery and reconstitution of systems to a known state. effectiveness of testing and the In addition, the organization proactively employs [organization defined mechanisms] to disrupt or adversely affect the system or system component and test the effectiveness of contingency planning processes. CP-4(4) determines whether system has been fully recovered and reconstituted as a part of testing. CP-4(5) determines how resilient a system is using self- inflicted system disruptions (e.g., terminating system components) to reveal unknown component/service dependencies.",
+        "evidence": "\u2022 Evidence of organization defined affect the system or system components on a risk basis that demonstrates the contingency planning process, including full system recovery; \u2022 Review the independent assessment of CP-4(4) and CP-4(5). Assessment of",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": [
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB Circular A-130",
+        "control_ids": []
+      },
+      {
+        "ref_type": "omb",
+        "ref_text": "OMB M-19-03 Guidance:",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.IM- 02",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_csf",
+        "ref_text": "NIST CSF v2.0: ID.IM- 04",
+        "control_ids": []
+      },
+      {
+        "ref_type": "nist_800_53",
+        "ref_text": "NIST SP 800-53 (Rev. 5): CP-3 and CP-4",
+        "control_ids": [
+          "CP-3",
+          "CP-4"
+        ]
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "NIST SP 800-34",
+        "control_ids": []
+      },
+      {
+        "ref_type": "other",
+        "ref_text": "CIS Top 18 Security Controls: Control 11",
+        "control_ids": []
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "domain": "Contingency Planning (CP)",
+    "question": "Provide any additional information on the effectiveness (positive or negative) of the organization\u2019s contingency planning program that was not noted in the questions above. Taking into consideration the overall maturity level generated from the questions above and based on all testing performed, is the contingency planning program effective?",
+    "review_cycle": "Annual",
+    "maturity_levels": [
+      {
+        "level": "Ad Hoc",
+        "description": "",
+        "evidence": "",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Defined",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Consistently Implemented",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Managed and Measurable",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      },
+      {
+        "level": "Optimized",
+        "description": "",
+        "evidence": "\u2022",
+        "assessor_notes": ""
+      }
+    ],
+    "criteria": []
+  }
+]

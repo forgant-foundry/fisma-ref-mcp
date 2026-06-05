@@ -25,6 +25,7 @@ type VectorMeta struct {
 	Model        string    `json:"model"`
 	BuiltAt      time.Time `json:"built_at"`
 	ControlCount int       `json:"control_count"`
+	MetricCount  int       `json:"metric_count"`
 }
 
 // PrebuiltVector is implemented in embed_vector.go (default) or

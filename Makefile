@@ -1,15 +1,11 @@
-.PHONY: all build-all build build-nomic build-qwen3 build-openai-small build-slim \
-        embed-all embed-nomic embed-qwen3 embed-openai-small help
+.PHONY: build-all build-nomic build-qwen3 build-openai-small build-slim \
+        embed-all embed-nomic embed-qwen3 embed-openai-small clean help
 
 BINARY    := fisma-ref-mcp
 GOFLAGS   :=
 OLLAMA_URL ?= http://localhost:11434
 
 # ── local builds ────────────────────────────────────────────────────────────
-
-## build: compile using whichever vector index is in data/ (default, untagged)
-build:
-	go build $(GOFLAGS) -o $(BINARY) .
 
 ## build-nomic: compile with the nomic-embed-text:v1.5 vector index
 build-nomic:
@@ -63,8 +59,13 @@ embed-openai-small:
 ## embed-all: regenerate all three vector indexes (requires Ollama + OPENAI_API_KEY)
 embed-all: embed-nomic embed-qwen3 embed-openai-small
 
-## all: regenerate all indexes then build all variants (requires Ollama + OPENAI_API_KEY)
-all: embed-all build-all
+## parse-fisma: (re)parse the FY 2025 IG FISMA Metrics PDF → internal/fisma/data/fy2025-ig-fisma-metrics.json
+parse-fisma:
+	python3 tools/parse-fisma-metrics/parse.py
+
+## clean: remove compiled binaries
+clean:
+	rm -f $(BINARY) $(BINARY)-nomic $(BINARY)-qwen3 $(BINARY)-openai-small $(BINARY)-slim
 
 help:
 	@grep -E '^## ' Makefile | sed 's/^## //'

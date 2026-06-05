@@ -30,6 +30,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist"
 	"github.com/philippgille/chromem-go"
 )
@@ -58,21 +59,28 @@ func main() {
 		log.Fatalf("load NIST catalog: %v", err)
 	}
 
-	log.Printf("indexing %d controls with %s/%s ...", len(controls), *provider, effectiveModel)
-
-	db := chromem.NewDB()
-	col, err := db.GetOrCreateCollection("controls", nil, embFn)
+	metrics, err := fisma.Load()
 	if err != nil {
-		log.Fatalf("create collection: %v", err)
+		log.Fatalf("load FISMA metrics: %v", err)
 	}
 
-	docs := make([]chromem.Document, 0, len(controls))
+	log.Printf("indexing %d controls + %d FISMA metrics with %s/%s ...", len(controls), len(metrics), *provider, effectiveModel)
+
+	db := chromem.NewDB()
+
+	// NIST SP 800-53 controls collection
+	controlCol, err := db.GetOrCreateCollection("controls", nil, embFn)
+	if err != nil {
+		log.Fatalf("create controls collection: %v", err)
+	}
+
+	controlDocs := make([]chromem.Document, 0, len(controls))
 	for _, c := range controls {
-		content := buildDocument(c)
+		content := buildControlDocument(c)
 		if content == "" {
 			continue
 		}
-		docs = append(docs, chromem.Document{
+		controlDocs = append(controlDocs, chromem.Document{
 			ID:      strings.ToUpper(c.ID),
 			Content: content,
 			Metadata: map[string]string{
@@ -81,13 +89,36 @@ func main() {
 			},
 		})
 	}
-
-	// Parallelise embedding calls up to available CPU count.
-	if err := col.AddDocuments(ctx, docs, runtime.NumCPU()); err != nil {
+	if err := controlCol.AddDocuments(ctx, controlDocs, runtime.NumCPU()); err != nil {
 		log.Fatalf("embed controls: %v", err)
 	}
+	log.Printf("embedded %d controls", len(controlDocs))
 
-	log.Printf("embedded %d documents", len(docs))
+	// FY 2025 IG FISMA metrics collection
+	fismaCol, err := db.GetOrCreateCollection("fisma_metrics", nil, embFn)
+	if err != nil {
+		log.Fatalf("create fisma_metrics collection: %v", err)
+	}
+
+	fismaDocs := make([]chromem.Document, 0, len(metrics))
+	for _, m := range metrics {
+		content := buildMetricDocument(m)
+		if content == "" {
+			continue
+		}
+		fismaDocs = append(fismaDocs, chromem.Document{
+			ID:      fmt.Sprintf("%d", m.ID),
+			Content: content,
+			Metadata: map[string]string{
+				"domain":       m.Domain,
+				"review_cycle": m.ReviewCycle,
+			},
+		})
+	}
+	if err := fismaCol.AddDocuments(ctx, fismaDocs, runtime.NumCPU()); err != nil {
+		log.Fatalf("embed fisma metrics: %v", err)
+	}
+	log.Printf("embedded %d FISMA metrics", len(fismaDocs))
 
 	dataDir := dataPath()
 	if *outputDir != "" {
@@ -111,7 +142,8 @@ func main() {
 		Provider:     *provider,
 		Model:        effectiveModel,
 		BuiltAt:      time.Now().UTC(),
-		ControlCount: len(docs),
+		ControlCount: len(controlDocs),
+		MetricCount:  len(fismaDocs),
 	}
 	metaBytes, _ := json.MarshalIndent(meta, "", "  ")
 	metaPath := filepath.Join(dataDir, "chromem-meta.json")
@@ -156,13 +188,23 @@ func dataPath() string {
 	return filepath.Join(root, "internal", "nist", "data")
 }
 
-func buildDocument(c nist.Control) string {
+func buildControlDocument(c nist.Control) string {
 	parts := []string{c.Title}
 	if c.Statement != "" {
 		parts = append(parts, c.Statement)
 	}
 	if c.Discussion != "" {
 		parts = append(parts, c.Discussion)
+	}
+	return strings.Join(parts, "\n\n")
+}
+
+func buildMetricDocument(m fisma.Metric) string {
+	parts := []string{m.Question}
+	for _, lvl := range m.MaturityLevels {
+		if lvl.Description != "" {
+			parts = append(parts, lvl.Level+": "+lvl.Description)
+		}
 	}
 	return strings.Join(parts, "\n\n")
 }

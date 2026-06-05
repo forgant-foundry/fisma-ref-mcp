@@ -3,13 +3,20 @@ package store
 import (
 	"context"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist"
 )
 
-// SearchResult pairs a control with its relevance score (0–1, higher is better).
+
+// SearchResult is a source-agnostic search hit returned by Search.
+// Source identifies which document corpus the hit came from ("nist_800_53", "fisma_fy2025", …).
+// Use the source-specific Get methods to retrieve the full record.
 type SearchResult struct {
-	Control   nist.Control
-	Relevance float32
+	Source    string  `json:"source"`
+	ID        string  `json:"id"`
+	Title     string  `json:"title"`
+	Body      string  `json:"body"`
+	Relevance float32 `json:"relevance"`
 }
 
 // Store provides deterministic and semantic access to NIST SP 800-53 controls.
@@ -46,14 +53,19 @@ func New(ctx context.Context, cfg Config) (*Store, error) {
 		return nil, err
 	}
 
-	rel, err := newRelationalDB(families, controls)
+	metrics, err := fisma.Load()
+	if err != nil {
+		return nil, err
+	}
+
+	rel, err := newRelationalDB(families, controls, metrics)
 	if err != nil {
 		return nil, err
 	}
 
 	var vec *vectorDB
 	if cfg.EmbeddingProvider != "" {
-		vec, err = newVectorDB(ctx, cfg, controls, rel)
+		vec, err = newVectorDB(ctx, cfg, controls, metrics, rel)
 		if err != nil {
 			return nil, err
 		}
@@ -82,11 +94,30 @@ func (s *Store) GetFamily(ctx context.Context, familyID string) ([]nist.Control,
 	return s.rel.getFamily(ctx, familyID)
 }
 
-// SearchControls performs semantic vector search when an embedding provider is
-// configured, or FTS5 full-text search otherwise.
-func (s *Store) SearchControls(ctx context.Context, query string, limit int) ([]SearchResult, error) {
+// Search performs semantic vector search when an embedding provider is configured,
+// or FTS5 full-text search otherwise. Pass a non-empty source to restrict results
+// to a single corpus ("nist_800_53" or "fisma_fy2025"); pass "" to search all.
+func (s *Store) Search(ctx context.Context, query string, limit int, source string) ([]SearchResult, error) {
 	if s.vec != nil {
-		return s.vec.search(ctx, query, limit)
+		return s.vec.search(ctx, query, limit, source)
 	}
-	return s.rel.search(ctx, query, limit)
+	return s.rel.search(ctx, query, limit, source)
+}
+
+// GetFismaMetric returns a single FY 2025 IG FISMA metric by its numeric ID,
+// including all maturity levels and criteria references.
+func (s *Store) GetFismaMetric(ctx context.Context, id int) (*FismaMetric, error) {
+	return s.rel.getFismaMetric(ctx, id)
+}
+
+// ListFismaMetrics returns all FY 2025 IG FISMA metrics. Pass a non-empty domain
+// string to filter to a specific domain (e.g., "Identity Management and Access Control").
+func (s *Store) ListFismaMetrics(ctx context.Context, domain string) ([]FismaMetric, error) {
+	return s.rel.listFismaMetrics(ctx, domain)
+}
+
+// GetMetricsByControl returns all FISMA metrics that reference a given NIST SP
+// 800-53 control ID.
+func (s *Store) GetMetricsByControl(ctx context.Context, controlID string) ([]FismaMetric, error) {
+	return s.rel.getMetricsByControl(ctx, controlID)
 }
