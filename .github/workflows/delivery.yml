@@ -25,6 +25,7 @@ jobs:
               run: echo "tag=$(vergant new)" >> $GITHUB_OUTPUT
             - if: startsWith(steps.version.outputs.tag, 'v')
               name: Build release binaries
+              shell: bash
               run: |-
                 VERSION="${{ steps.version.outputs.tag }}"
                 SEM="${VERSION#v}"
