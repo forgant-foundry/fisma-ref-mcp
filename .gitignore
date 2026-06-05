@@ -1,0 +1,21 @@
+# Compiled binaries
+fisma-ref-mcp
+fisma-ref-mcp-nomic
+fisma-ref-mcp-qwen3
+fisma-ref-mcp-openai-small
+fisma-ref-mcp-slim
+
+# Go
+vendor/
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
