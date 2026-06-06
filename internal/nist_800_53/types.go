@@ -8,13 +8,14 @@ type Family struct {
 
 // Control is a single NIST SP 800-53 control or control enhancement.
 type Control struct {
-	ID            string `json:"id"`
-	Title         string `json:"title"`
-	FamilyID      string `json:"family_id"`
-	Statement     string `json:"statement"`
-	Discussion    string `json:"discussion"`
-	IsEnhancement bool   `json:"is_enhancement"`
-	ParentID      string `json:"parent_id,omitempty"`
+	ID            string   `json:"id"`
+	Title         string   `json:"title"`
+	FamilyID      string   `json:"family_id"`
+	Statement     string   `json:"statement"`
+	Discussion    string   `json:"discussion"`
+	IsEnhancement bool     `json:"is_enhancement"`
+	ParentID      string   `json:"parent_id,omitempty"`
+	Baselines     []string `json:"baselines,omitempty"` // populated from SP 800-53B at startup
 }
 
 // --- Raw JSON types (unexported) ---

@@ -167,6 +167,19 @@ func registerTools(s *server.MCPServer, st *rel_store.Store) {
 			return handleGetMetricsByControl(ctx, st, req)
 		},
 	)
+
+	s.AddTool(
+		mcp.NewTool("get_baseline",
+			mcp.WithDescription("List all NIST SP 800-53 controls and enhancements in a SP 800-53B impact baseline. Each control includes its baseline memberships."),
+			mcp.WithString("baseline",
+				mcp.Required(),
+				mcp.Description(`Impact baseline: "low", "moderate", "high", or "privacy".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetBaseline(ctx, st, req)
+		},
+	)
 }
 
 func handleSearch(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -265,6 +278,18 @@ func handleGetMetricsByControl(ctx context.Context, st *rel_store.Store, req mcp
 		return nil, err
 	}
 	return jsonResult(metrics)
+}
+
+func handleGetBaseline(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	baseline, err := req.RequireString("baseline")
+	if err != nil {
+		return nil, err
+	}
+	controls, err := st.GetBaseline(ctx, baseline)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(controls)
 }
 
 func handleListCSFFunctions(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {

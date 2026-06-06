@@ -1,6 +1,6 @@
 # fisma-ref-mcp
 
-A local [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that gives AI assistants direct, citeable access to two federal cybersecurity reference corpora: **NIST SP 800-53 Rev 5** security and privacy controls and the **FY 2025 IG FISMA Evaluation Metrics**.
+A local [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that gives AI assistants direct, citeable access to four federal cybersecurity reference corpora: **NIST SP 800-53 Rev 5** security and privacy controls, **NIST SP 800-53B** impact baselines, **NIST Cybersecurity Framework 2.0**, and the **FY 2025 IG FISMA Evaluation Metrics**.
 
 Install it once, point your AI at it, and every suggestion about access control, audit logging, encryption, or identity comes with a traceable reference to the exact control or metric that requires it — not a paraphrase, the official text.
 
@@ -97,7 +97,7 @@ Developers and compliance staff can verify that SSP narratives are written to ad
 | SI | System and Information Integrity |
 | SR | Supply Chain Risk Management |
 
-> **Note:** This dataset reflects **SP 800-53 5.2.0**. It does not include NIST SP 800-53B baseline designations (Low/Moderate/High impact level assignments) or FedRAMP-specific parameter overlays. See [Limitations](#limitations) for details.
+> **Note:** This dataset reflects **SP 800-53 5.2.0**. It does not include FedRAMP-specific parameter overlays. See [Limitations](#limitations) for details.
 
 ### FY 2025 IG FISMA Metrics
 
@@ -113,6 +113,33 @@ Developers and compliance staff can verify that SSP narratives are written to ad
 Each metric includes the evaluation question, full maturity level descriptions, expected evidence, assessor best practices per level, and criteria references (NIST SP 800-53 control IDs, OMB guidance, and NIST publications where applicable).
 
 FISMA domains covered: Identity Management and Access Control · Configuration Management · Data Protection and Privacy · Respond · Recover · Identify · Protect · Detect · Govern
+
+### NIST SP 800-53B
+
+| Field | Value |
+|---|---|
+| Document | Control Baselines for Information Systems and Organizations |
+| Identifier | SP 800-53B |
+| Version | **5.2.0** |
+| Source | [nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53B.pdf) |
+| Low baseline | 149 controls/enhancements |
+| Moderate baseline | 287 controls/enhancements |
+| High baseline | 370 controls/enhancements |
+| Privacy baseline | 96 controls/enhancements |
+
+Baseline membership is surfaced on every control returned by `get_control` and `get_baseline`. A control's `baselines` field lists which of the four profiles it belongs to — enabling questions like "which High baseline controls do we not have coverage for?"
+
+### NIST Cybersecurity Framework 2.0
+
+| Field | Value |
+|---|---|
+| Document | Cybersecurity Framework 2.0 |
+| Source | [nist.gov/cyberframework](https://www.nist.gov/cyberframework) |
+| Functions | 6 (Govern, Identify, Protect, Detect, Respond, Recover) |
+| Categories | 45 |
+| Subcategories | **185** |
+
+Each subcategory includes its outcome statement and implementation examples. CSF 2.0 subcategory IDs (e.g. `GV.OC-01`, `PR.AA-03`) appear as criteria references in the FISMA metrics, making the three corpora navigable together.
 
 ---
 
@@ -211,7 +238,7 @@ The server exposes a [Streamable HTTP MCP](https://modelcontextprotocol.io/docs/
 
 ## MCP tools
 
-Once connected, the AI has access to seven tools.
+Once connected, the AI has access to ten tools.
 
 ### `search`
 
@@ -220,14 +247,15 @@ Semantic search across all indexed documents — NIST SP 800-53 controls and FY 
 ```
 query   string  (required) Natural-language description of what you are looking for
 limit   number  (optional) Max results, default 10, max 50
-source  string  (optional) Restrict to "nist_800_53" or "fisma_fy2025"
-family  string  (optional) Restrict NIST results to a specific family, e.g. "AC"
+source  string  (optional) Restrict to "nist_800_53", "fisma_fy2025", or "nist_csf_v2"
+family  string  (optional) Restrict NIST SP 800-53 results to a specific family, e.g. "AC"
 ```
 
 **Example prompts:**
-- *"What covers multi-factor authentication across both NIST controls and FISMA metrics?"*
+- *"What covers multi-factor authentication across NIST controls, FISMA metrics, and CSF?"*
 - *"Search for incident response requirements"*
 - *"Find FISMA metrics related to zero trust"*
+- *"What does CSF 2.0 say about organizational risk profiles?"*
 
 ### `get_control`
 
@@ -282,6 +310,19 @@ id  number  (required) Metric ID, 1–35
 - *"What does metric 7 require at the Managed and Measurable level?"*
 - *"What evidence do assessors look for in metric 3 at Level 4?"*
 
+### `get_baseline`
+
+Returns all NIST SP 800-53 controls and enhancements included in a given SP 800-53B impact baseline. Each control includes its `baselines` field showing all profiles it belongs to.
+
+```
+baseline  string  (required) "low", "moderate", "high", or "privacy"
+```
+
+**Example prompts:**
+- *"List all controls in the High baseline"*
+- *"What's the difference in scope between the Moderate and High baselines?"*
+- *"Which AC family controls are required at Low impact?"*
+
 ### `get_metrics_by_control`
 
 Returns all FY 2025 IG FISMA metrics that reference a given NIST SP 800-53 control. Use this to understand the FISMA audit impact of implementing or failing a specific control.
@@ -294,6 +335,30 @@ control_id  string  (required) NIST SP 800-53 control ID, e.g. "AC-2" or "SI-3"
 - *"Which FISMA metrics reference AC-2?"*
 - *"If we implement IA-5, which IG metrics does that contribute evidence toward?"*
 - *"What's the FISMA exposure if we have a weakness in CM-6?"*
+
+### `list_csf_functions`
+
+Returns NIST CSF 2.0 functions with their categories. Optionally filter to a single function.
+
+```
+function  string  (optional) Function ID to filter to, e.g. "GV" for Govern
+```
+
+**Example prompts:**
+- *"List all CSF 2.0 functions and their categories"*
+- *"What categories are in the Protect function?"*
+
+### `get_csf_subcategory`
+
+Returns a single NIST CSF 2.0 subcategory by its identifier, including the outcome statement and implementation examples.
+
+```
+id  string  (required) Subcategory identifier, e.g. "GV.OC-01" or "PR.AA-03"
+```
+
+**Example prompts:**
+- *"Get me the full text of GV.OC-01"*
+- *"What does PR.AA-03 require and what are the implementation examples?"*
 
 ---
 
@@ -335,9 +400,7 @@ fisma-ref-mcp serve --stdio
 
 **It does not implement compliance.** The tool is a reference. Your team still has to build, configure, and operate the controls. An AI that knows what SC-28 requires for protection of information at rest still needs you to actually encrypt the database.
 
-**It does not cover baseline selection.** NIST SP 800-53B defines which controls are required at Low, Moderate, and High impact levels. That baseline data is not in this dataset. The tool can retrieve any control, but it does not know which controls are mandatory for your impact level.
-
-**It does not include FedRAMP parameter overlays.** FedRAMP High tightens specific parameters on top of SP 800-53 (e.g., AU-11 mandates one year of audit record retention; the base control leaves the period organization-defined). Those overlays are not present in this dataset.
+**It does not include FedRAMP parameter overlays.** FedRAMP tightens specific parameters on top of SP 800-53B (e.g., AU-11 mandates one year of audit record retention; the base control leaves the period organization-defined). Those parameter values are not present in this dataset.
 
 **It does not generate evidence.** Assessors require artifacts — configuration exports, screenshots, log samples, scan results. This tool helps you describe controls and maturity levels accurately; it does not produce the artifacts that demonstrate implementation.
 

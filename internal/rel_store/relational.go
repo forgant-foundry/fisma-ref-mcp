@@ -7,9 +7,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	_ "modernc.org/sqlite"
 )
 
@@ -17,7 +17,7 @@ type relationalDB struct {
 	db *sql.DB
 }
 
-func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory) (*relationalDB, error) {
+func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, baselines map[string][]string, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory) (*relationalDB, error) {
 	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("open sqlite: %w", err)
@@ -28,6 +28,10 @@ func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Contr
 		return nil, err
 	}
 	if err := seed(db, families, controls); err != nil {
+		db.Close()
+		return nil, err
+	}
+	if err := seedBaselines(db, baselines); err != nil {
 		db.Close()
 		return nil, err
 	}
@@ -64,6 +68,14 @@ func initSchema(db *sql.DB) error {
 
 		CREATE INDEX idx_controls_family ON controls(family_id);
 		CREATE INDEX idx_controls_parent ON controls(parent_id);
+
+		CREATE TABLE control_baselines (
+			control_id TEXT NOT NULL,
+			baseline   TEXT NOT NULL,
+			PRIMARY KEY (control_id, baseline)
+		);
+		CREATE INDEX idx_control_baselines_ctrl ON control_baselines(control_id);
+		CREATE INDEX idx_control_baselines_bl   ON control_baselines(baseline);
 
 		CREATE VIRTUAL TABLE controls_fts USING fts5(
 			id       UNINDEXED,
@@ -379,6 +391,44 @@ func (r *relationalDB) getMetricsByControl(ctx context.Context, controlID string
 	return out, rows.Err()
 }
 
+func seedBaselines(db *sql.DB, baselines map[string][]string) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("begin baselines tx: %w", err)
+	}
+	defer tx.Rollback()
+
+	for controlID, bls := range baselines {
+		for _, bl := range bls {
+			if _, err := tx.Exec(
+				`INSERT OR IGNORE INTO control_baselines (control_id, baseline) VALUES (?, ?)`,
+				controlID, bl,
+			); err != nil {
+				return fmt.Errorf("insert baseline %s/%s: %w", controlID, bl, err)
+			}
+		}
+	}
+	return tx.Commit()
+}
+
+func (r *relationalDB) controlBaselines(ctx context.Context, controlID string) ([]string, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT baseline FROM control_baselines WHERE control_id = ? ORDER BY baseline`, controlID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []string
+	for rows.Next() {
+		var bl string
+		if err := rows.Scan(&bl); err != nil {
+			return nil, err
+		}
+		out = append(out, bl)
+	}
+	return out, rows.Err()
+}
+
 func (r *relationalDB) getControl(ctx context.Context, id string) (*nist_800_53.Control, error) {
 	normalized := nist_800_53.NormalizeID(id)
 	row := r.db.QueryRowContext(ctx,
@@ -389,7 +439,38 @@ func (r *relationalDB) getControl(ctx context.Context, id string) (*nist_800_53.
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("control %q not found", id)
 	}
+	if err != nil {
+		return nil, err
+	}
+	c.Baselines, err = r.controlBaselines(ctx, c.ID)
 	return c, err
+}
+
+func (r *relationalDB) getBaseline(ctx context.Context, baseline string) ([]nist_800_53.Control, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT c.id, c.family_id, c.title, c.statement, c.discussion, c.is_enhancement, COALESCE(c.parent_id,'')
+		 FROM controls c
+		 JOIN control_baselines b ON b.control_id = c.id
+		 WHERE b.baseline = ?
+		 ORDER BY c.id`, baseline)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	controls, err := scanControls(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	// Populate baselines for each returned control.
+	for i := range controls {
+		controls[i].Baselines, err = r.controlBaselines(ctx, controls[i].ID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return controls, nil
 }
 
 func (r *relationalDB) listFamilies(ctx context.Context) ([]nist_800_53.Family, error) {

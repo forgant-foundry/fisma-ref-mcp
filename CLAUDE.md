@@ -19,8 +19,11 @@ The relational DB is always populated at startup from the embedded JSON. The vec
 | Package | Source identifier | Contents |
 |---|---|---|
 | `internal/nist_800_53` | `nist_800_53` | NIST SP 800-53 Rev 5.2.0 — 1,196 controls across 20 families |
+| `internal/nist_800_53b` | *(metadata only)* | NIST SP 800-53B 5.2.0 — baseline profiles (Low/Moderate/High/Privacy) |
 | `internal/nist_csf` | `nist_csf_v2` | NIST CSF 2.0 — 185 subcategories across 6 functions |
 | `internal/fisma` | `fisma_fy2025` | FY 2025 IG FISMA Metrics — 35 metrics with 5-level maturity model |
+
+SP 800-53B is not a separate searchable corpus — it enriches SP 800-53 controls with baseline membership. Every `Control` returned by `get_control` and `get_baseline` includes a `baselines` field.
 
 ### Build-time embedding
 
@@ -54,9 +57,10 @@ fisma-ref-mcp family [<id>]          # list families or controls in a family →
 | Tool | Description |
 |---|---|
 | `search` | Semantic (or FTS5 fallback) search across all corpora; `source` and `family` filters |
-| `get_control` | Deterministic lookup by control ID (e.g. `AC-1`, `ac-2(1)`) |
+| `get_control` | Deterministic lookup by control ID (e.g. `AC-1`, `ac-2(1)`); includes baseline membership |
 | `list_families` | All 20 NIST SP 800-53 control families |
 | `get_family` | All base controls (no enhancements) in a family |
+| `get_baseline` | All controls/enhancements in a SP 800-53B baseline (`low`, `moderate`, `high`, `privacy`) |
 | `list_fisma_metrics` | FY 2025 IG FISMA metrics; optional domain filter |
 | `get_fisma_metric` | Single metric by ID — full maturity levels, evidence, assessor notes, criteria refs |
 | `get_metrics_by_control` | FISMA metrics that reference a given NIST SP 800-53 control ID |
@@ -85,6 +89,8 @@ cmd/
 internal/
   nist_800_53/    NIST SP 800-53 types, OSCAL JSON parsing, Load(), NormalizeID()
     data/         nist-800-53r5.json
+  nist_800_53b/   SP 800-53B baseline profiles, Load() → map[controlID][]baseline
+    data/         nist-800-53b.json
   nist_csf/       NIST CSF 2.0 types, flat-graph JSON parsing, Load()
     data/         nist-csf-2.0.json
   fisma/          FY 2025 IG FISMA types, JSON parsing, Load(), ContextMarkdown
