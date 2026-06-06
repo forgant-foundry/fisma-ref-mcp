@@ -13,7 +13,8 @@ type VectorMeta struct {
 	BuiltAt          time.Time `json:"built_at"`
 	ControlCount     int       `json:"control_count"`
 	MetricCount      int       `json:"metric_count"`
-	SubcategoryCount int `json:"subcategory_count"`
+	SubcategoryCount int       `json:"subcategory_count"`
+	TermCount        int       `json:"term_count"`
 }
 
 func decodePrebuilt(db, metaJSON []byte) ([]byte, *VectorMeta, bool) {

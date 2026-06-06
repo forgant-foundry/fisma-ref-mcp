@@ -27,7 +27,7 @@ SP 800-53B is not a separate searchable corpus — it enriches SP 800-53 control
 
 ### Build-time embedding
 
-Embeddings are generated once by the developer and committed to `internal/vec_store/data/<model>/`. The index covers all three corpora in a single chromem-go DB file.
+Embeddings are generated once by the developer and committed to `internal/vec_store/data/<model>/`. The index covers all four corpora in a single chromem-go DB file.
 
 ```bash
 make embed-nomic          # requires Ollama + nomic-embed-text:v1.5
@@ -69,8 +69,10 @@ fisma-ref-mcp family [<id>]          # list families or controls in a family →
 | `list_fisma_metrics` | FY 2025 IG FISMA metrics; optional domain filter |
 | `get_fisma_metric` | Single metric by ID — full maturity levels, evidence, assessor notes, criteria refs |
 | `get_metrics_by_control` | FISMA metrics that reference a given NIST SP 800-53 control ID |
+| `get_metrics_by_csf_subcategory` | FISMA metrics that reference a given CSF 2.0 subcategory ID |
 | `list_csf_functions` | All 6 CSF 2.0 functions with their categories; optional function filter |
 | `get_csf_subcategory` | Single CSF 2.0 subcategory by ID with implementation examples |
+| `get_csf_subcategories_by_control` | CSF 2.0 subcategories that map to a given SP 800-53 control via the official crosswalk |
 
 ### Embedding configuration
 
@@ -102,20 +104,21 @@ internal/
   fisma/          FY 2025 IG FISMA types, JSON parsing, Load(), ContextMarkdown
     data/         fy2025-ig-fisma-metrics.json, fy2025-ig-fisma-metrics-context.md
   vec_store/      VectorMeta, PrebuiltVector(), build-tag embed files
+                  + vector.go/vector_stub.go (chromem-go index and query)
+                  + documents.go (exported document builders shared with gen-embeddings)
     data/
       nomic/      chromem.db + chromem-meta.json (nomic-embed-text:v1.5)
       qwen3/      chromem.db + chromem-meta.json (qwen3-embedding:4b)
       openai-small/ chromem.db + chromem-meta.json (text-embedding-3-small)
-  rel_store/      Unified data access layer
-    store.go      Store struct, Config, public API
-    relational.go in-memory SQLite: schema, seed, FTS5 queries
-    vector.go     chromem-go: multi-collection index, semantic search
-    vector_stub.go stub for builds without vector support
+  rel_store/      Unified data access layer (see internal/rel_store/README.md)
+    store.go      Store struct, Config, public API; resolves vector hits to SearchResult
+    relational.go in-memory SQLite: seed, FTS5 queries
+    data/schema.sql SQLite schema DDL (//go:embed)
   mcp/
     server.go     NewServer, ServeHTTP, ServeStdio, all tool handlers
 
 tools/
-  gen-embeddings/main.go    //go:build ignore; indexes all three corpora
+  gen-embeddings/main.go    //go:build ignore; indexes all four corpora
   parse-fisma-metrics/      Python PDF parser for the IG FISMA metrics document
 ```
 
@@ -165,7 +168,7 @@ First decide: is this document independently searchable, or is it metadata for a
 
 1. Create `internal/<source_id>/` with `types.go`, `embed.go` (with `//go:embed data/`), and `data/<source>.json`
 2. Add FTS5 table and seed function to `internal/rel_store/relational.go`
-3. Add a new collection constant and collection handling to `internal/rel_store/vector.go` and `vector_stub.go`
+3. Add a new collection constant to `internal/vec_store/vector.go`; add a document builder to `internal/vec_store/documents.go`; add hit resolution to `internal/rel_store/store.go`
 4. Add the new source to `internal/rel_store/store.go` (`New()` and public query methods)
 5. Register MCP tools in `internal/mcp/server.go`
 6. Update `tools/gen-embeddings/main.go` to build the new collection

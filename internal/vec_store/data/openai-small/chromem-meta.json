@@ -1,8 +1,9 @@
 {
   "provider": "openai",
   "model": "text-embedding-3-small",
-  "built_at": "2026-06-06T14:40:39.968668Z",
+  "built_at": "2026-06-06T21:19:17.580866Z",
   "control_count": 1196,
   "metric_count": 35,
-  "subcategory_count": 185
+  "subcategory_count": 185,
+  "term_count": 49
 }

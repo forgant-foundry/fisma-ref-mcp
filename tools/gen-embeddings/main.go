@@ -89,18 +89,16 @@ func main() {
 
 	controlDocs := make([]chromem.Document, 0, len(controls))
 	for _, c := range controls {
-		content := buildControlDocument(c)
-		if content == "" {
-			continue
+		if content := vec_store.BuildControlDocument(c); content != "" {
+			controlDocs = append(controlDocs, chromem.Document{
+				ID:      strings.ToUpper(c.ID),
+				Content: content,
+				Metadata: map[string]string{
+					"family":         c.FamilyID,
+					"is_enhancement": fmt.Sprintf("%v", c.IsEnhancement),
+				},
+			})
 		}
-		controlDocs = append(controlDocs, chromem.Document{
-			ID:      strings.ToUpper(c.ID),
-			Content: content,
-			Metadata: map[string]string{
-				"family":         c.FamilyID,
-				"is_enhancement": fmt.Sprintf("%v", c.IsEnhancement),
-			},
-		})
 	}
 	if err := controlCol.AddDocuments(ctx, controlDocs, runtime.NumCPU()); err != nil {
 		log.Fatalf("embed controls: %v", err)
@@ -115,18 +113,16 @@ func main() {
 
 	fismaDocs := make([]chromem.Document, 0, len(metrics))
 	for _, m := range metrics {
-		content := buildMetricDocument(m)
-		if content == "" {
-			continue
+		if content := vec_store.BuildMetricDocument(m); content != "" {
+			fismaDocs = append(fismaDocs, chromem.Document{
+				ID:      fmt.Sprintf("%d", m.ID),
+				Content: content,
+				Metadata: map[string]string{
+					"domain":       m.Domain,
+					"review_cycle": m.ReviewCycle,
+				},
+			})
 		}
-		fismaDocs = append(fismaDocs, chromem.Document{
-			ID:      fmt.Sprintf("%d", m.ID),
-			Content: content,
-			Metadata: map[string]string{
-				"domain":       m.Domain,
-				"review_cycle": m.ReviewCycle,
-			},
-		})
 	}
 	if err := fismaCol.AddDocuments(ctx, fismaDocs, runtime.NumCPU()); err != nil {
 		log.Fatalf("embed fisma metrics: %v", err)
@@ -141,25 +137,23 @@ func main() {
 
 	csfDocs := make([]chromem.Document, 0, len(subcategories))
 	for _, s := range subcategories {
-		content := buildSubcategoryDocument(s)
-		if content == "" {
-			continue
+		if content := vec_store.BuildSubcategoryDocument(s); content != "" {
+			csfDocs = append(csfDocs, chromem.Document{
+				ID:      s.ID,
+				Content: content,
+				Metadata: map[string]string{
+					"category_id": s.CategoryID,
+					"function_id": s.FunctionID,
+				},
+			})
 		}
-		csfDocs = append(csfDocs, chromem.Document{
-			ID:      s.ID,
-			Content: content,
-			Metadata: map[string]string{
-				"category_id": s.CategoryID,
-				"function_id": s.FunctionID,
-			},
-		})
 	}
 	if err := csfCol.AddDocuments(ctx, csfDocs, runtime.NumCPU()); err != nil {
 		log.Fatalf("embed csf subcategories: %v", err)
 	}
 	log.Printf("embedded %d CSF subcategories", len(csfDocs))
 
-	// FedRAMP 20x KSI indicators and process requirements collection
+	// FedRAMP 20x KSI indicators, process requirements, and glossary terms collection
 	fedCol, err := db.GetOrCreateCollection("fedramp_20x", nil, embFn)
 	if err != nil {
 		log.Fatalf("create fedramp_20x collection: %v", err)
@@ -167,34 +161,41 @@ func main() {
 	var fedDocs []chromem.Document
 	for _, theme := range frmr.KSIThemes {
 		for _, ind := range theme.Indicators {
-			content := ind.Name + "\n\n" + ind.Statement
-			if content == "" {
-				continue
+			if content := vec_store.BuildKSIDocument(ind); content != "" {
+				fedDocs = append(fedDocs, chromem.Document{
+					ID:       ind.ID,
+					Content:  content,
+					Metadata: map[string]string{"theme_id": ind.ThemeID, "type": "ksi"},
+				})
 			}
-			fedDocs = append(fedDocs, chromem.Document{
-				ID:      ind.ID,
-				Content: content,
-				Metadata: map[string]string{"theme_id": ind.ThemeID, "type": "ksi"},
-			})
 		}
 	}
 	for _, rc := range frmr.Requirements {
 		for _, req := range rc.Requirements {
-			content := req.Name + "\n\n" + req.Statement
-			if content == "" {
-				continue
+			if content := vec_store.BuildRequirementDocument(req); content != "" {
+				fedDocs = append(fedDocs, chromem.Document{
+					ID:       req.ID,
+					Content:  content,
+					Metadata: map[string]string{"category": req.Category, "type": "requirement"},
+				})
 			}
+		}
+	}
+	var termCount int
+	for _, t := range frmr.Terms {
+		if content := vec_store.BuildTermDocument(t); content != "" {
 			fedDocs = append(fedDocs, chromem.Document{
-				ID:      req.ID,
-				Content: content,
-				Metadata: map[string]string{"category": req.Category, "type": "requirement"},
+				ID:       t.ID,
+				Content:  content,
+				Metadata: map[string]string{"type": "term"},
 			})
+			termCount++
 		}
 	}
 	if err := fedCol.AddDocuments(ctx, fedDocs, runtime.NumCPU()); err != nil {
 		log.Fatalf("embed fedramp documents: %v", err)
 	}
-	log.Printf("embedded %d FedRAMP documents (%d KSIs + requirements)", len(fedDocs), len(fedDocs))
+	log.Printf("embedded %d FedRAMP documents (%d terms)", len(fedDocs), termCount)
 
 	dataDir := dataPath()
 	if *outputDir != "" {
@@ -221,6 +222,7 @@ func main() {
 		ControlCount:     len(controlDocs),
 		MetricCount:      len(fismaDocs),
 		SubcategoryCount: len(csfDocs),
+		TermCount:        termCount,
 	}
 	metaBytes, _ := json.MarshalIndent(meta, "", "  ")
 	metaPath := filepath.Join(dataDir, "chromem-meta.json")
@@ -263,37 +265,6 @@ func dataPath() string {
 	// data = .../internal/nist/data
 	root := filepath.Join(filepath.Dir(file), "..", "..")
 	return filepath.Join(root, "internal", "vec_store", "data")
-}
-
-func buildSubcategoryDocument(s nist_csf.Subcategory) string {
-	parts := []string{s.Text}
-	for _, ex := range s.Examples {
-		if ex != "" {
-			parts = append(parts, ex)
-		}
-	}
-	return strings.Join(parts, "\n\n")
-}
-
-func buildControlDocument(c nist_800_53.Control) string {
-	parts := []string{c.Title}
-	if c.Statement != "" {
-		parts = append(parts, c.Statement)
-	}
-	if c.Discussion != "" {
-		parts = append(parts, c.Discussion)
-	}
-	return strings.Join(parts, "\n\n")
-}
-
-func buildMetricDocument(m fisma.Metric) string {
-	parts := []string{m.Question}
-	for _, lvl := range m.MaturityLevels {
-		if lvl.Description != "" {
-			parts = append(parts, lvl.Level+": "+lvl.Description)
-		}
-	}
-	return strings.Join(parts, "\n\n")
 }
 
 // ollamaAPIBase ensures the URL has the /api suffix that chromem-go expects.

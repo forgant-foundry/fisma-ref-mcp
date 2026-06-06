@@ -3,6 +3,7 @@ package rel_store
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
@@ -10,7 +11,6 @@ import (
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/vec_store"
 )
-
 
 // SearchResult is a source-agnostic search hit returned by Search.
 // Source identifies which document corpus the hit came from ("nist_800_53", "fisma_fy2025", …).
@@ -26,7 +26,7 @@ type SearchResult struct {
 // Store provides deterministic and semantic access to NIST SP 800-53 controls.
 type Store struct {
 	rel *relationalDB
-	vec *vectorDB // nil when no embedding provider is configured
+	vec *vec_store.VectorDB // nil when no embedding provider is configured
 }
 
 // Config holds embedding provider settings. Leave EmbeddingProvider empty to
@@ -87,9 +87,14 @@ func New(ctx context.Context, cfg Config) (*Store, error) {
 		return nil, err
 	}
 
-	var vec *vectorDB
+	var vec *vec_store.VectorDB
 	if cfg.EmbeddingProvider != "" {
-		vec, err = newVectorDB(ctx, cfg, controls, metrics, csfSubcategories, frmr, rel)
+		vec, err = vec_store.NewVectorDB(ctx, vec_store.EmbedConfig{
+			Provider:  cfg.EmbeddingProvider,
+			Model:     cfg.EmbeddingModel,
+			OpenAIKey: cfg.OpenAIKey,
+			OllamaURL: cfg.OllamaBaseURL,
+		}, controls, metrics, csfSubcategories, frmr)
 		if err != nil {
 			return nil, err
 		}
@@ -123,9 +128,98 @@ func (s *Store) GetFamily(ctx context.Context, familyID string) ([]nist_800_53.C
 // to a single corpus ("nist_800_53" or "fisma_fy2025"); pass "" to search all.
 func (s *Store) Search(ctx context.Context, query string, limit int, source string) ([]SearchResult, error) {
 	if s.vec != nil {
-		return s.vec.search(ctx, query, limit, source)
+		hits, err := s.vec.Query(ctx, query, limit, source)
+		if err != nil {
+			return nil, err
+		}
+		return s.resolveHits(ctx, hits)
 	}
 	return s.rel.search(ctx, query, limit, source)
+}
+
+func (s *Store) resolveHits(ctx context.Context, hits []vec_store.RawHit) ([]SearchResult, error) {
+	results := make([]SearchResult, 0, len(hits))
+	for _, h := range hits {
+		switch h.Source {
+		case "nist_800_53":
+			c, err := s.rel.getControl(ctx, h.ID)
+			if err != nil {
+				continue
+			}
+			results = append(results, SearchResult{
+				Source:    "nist_800_53",
+				ID:        c.ID,
+				Title:     c.ID + " " + c.Title,
+				Body:      c.Statement,
+				Relevance: h.Similarity,
+			})
+		case "fisma_fy2025":
+			id, _ := strconv.Atoi(h.ID)
+			m, err := s.rel.getFismaMetric(ctx, id)
+			if err != nil {
+				continue
+			}
+			results = append(results, SearchResult{
+				Source:    "fisma_fy2025",
+				ID:        h.ID,
+				Title:     m.Domain,
+				Body:      m.Question,
+				Relevance: h.Similarity,
+			})
+		case "nist_csf_v2":
+			sub, err := s.rel.getCSFSubcategory(ctx, h.ID)
+			if err != nil {
+				continue
+			}
+			results = append(results, SearchResult{
+				Source:    "nist_csf_v2",
+				ID:        sub.ID,
+				Title:     sub.ID,
+				Body:      sub.Text,
+				Relevance: h.Similarity,
+			})
+		case "fedramp_20x":
+			switch h.DocType {
+			case "ksi":
+				ind, err := s.rel.getKSI(ctx, h.ID)
+				if err != nil {
+					continue
+				}
+				results = append(results, SearchResult{
+					Source:    "fedramp_20x",
+					ID:        ind.ID,
+					Title:     ind.Name,
+					Body:      ind.Statement,
+					Relevance: h.Similarity,
+				})
+			case "term":
+				term, err := s.rel.getFedRAMPTerm(ctx, h.ID)
+				if err != nil {
+					continue
+				}
+				results = append(results, SearchResult{
+					Source:    "fedramp_20x",
+					ID:        term.ID,
+					Title:     term.Term,
+					Body:      term.Definition,
+					Relevance: h.Similarity,
+				})
+			default: // "requirement"
+				req, err := s.rel.getFedRAMPRequirement(ctx, h.ID)
+				if err != nil {
+					continue
+				}
+				results = append(results, SearchResult{
+					Source:    "fedramp_20x",
+					ID:        req.ID,
+					Title:     req.Name,
+					Body:      req.Statement,
+					Relevance: h.Similarity,
+				})
+			}
+		}
+	}
+	return results, nil
 }
 
 // GetFismaMetric returns a single FY 2025 IG FISMA metric by its numeric ID,

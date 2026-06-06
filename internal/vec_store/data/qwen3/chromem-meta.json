@@ -1,8 +1,9 @@
 {
   "provider": "ollama",
   "model": "qwen3-embedding:4b",
-  "built_at": "2026-06-06T13:56:29.137018Z",
+  "built_at": "2026-06-06T21:18:42.408795Z",
   "control_count": 1196,
   "metric_count": 35,
-  "subcategory_count": 185
+  "subcategory_count": 185,
+  "term_count": 49
 }

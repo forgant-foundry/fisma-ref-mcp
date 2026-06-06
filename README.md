@@ -259,11 +259,11 @@ The server exposes a [Streamable HTTP MCP](https://modelcontextprotocol.io/docs/
 
 ## MCP tools
 
-Once connected, the AI has access to fifteen tools.
+Once connected, the AI has access to seventeen tools.
 
 ### `search`
 
-Semantic search across all indexed documents — NIST SP 800-53 controls and FY 2025 IG FISMA metrics — in a single ranked result set. Each result includes a `source` field (`nist_800_53` or `fisma_fy2025`) for provenance. Uses vector search when the binary includes a pre-built index; falls back to FTS5 otherwise.
+Semantic search across all indexed documents — NIST SP 800-53 controls, FY 2025 IG FISMA metrics, NIST CSF 2.0 subcategories, and FedRAMP 20x KSI indicators, process requirements, and glossary terms — in a single ranked result set. Each result includes a `source` field for provenance. Uses vector search when the binary includes a pre-built index; falls back to FTS5 otherwise.
 
 ```
 query   string  (required) Natural-language description of what you are looking for
@@ -356,6 +356,30 @@ control_id  string  (required) NIST SP 800-53 control ID, e.g. "AC-2" or "SI-3"
 - *"Which FISMA metrics reference AC-2?"*
 - *"If we implement IA-5, which IG metrics does that contribute evidence toward?"*
 - *"What's the FISMA exposure if we have a weakness in CM-6?"*
+
+### `get_csf_subcategories_by_control`
+
+Returns all NIST CSF 2.0 subcategories that map to a given SP 800-53 control via the official NIST crosswalk. Useful for understanding a control's CSF placement or generating framework-aligned evidence narratives.
+
+```
+control_id  string  (required) NIST SP 800-53 control ID, e.g. "AC-2" or "IA-5"
+```
+
+**Example prompts:**
+- *"Which CSF 2.0 subcategories map to AC-17?"*
+- *"What CSF outcomes does implementing IA-5 contribute toward?"*
+
+### `get_metrics_by_csf_subcategory`
+
+Returns all FY 2025 IG FISMA metrics that reference a given CSF 2.0 subcategory ID. Completes the three-way traceability chain: control → CSF subcategory → FISMA metric.
+
+```
+subcategory_id  string  (required) CSF 2.0 subcategory ID, e.g. "GV.OC-01" or "PR.AA-03"
+```
+
+**Example prompts:**
+- *"Which FISMA metrics reference PR.AA-03?"*
+- *"What IG audit metrics are tied to the GV.SC subcategories?"*
 
 ### `list_csf_functions`
 
@@ -508,17 +532,22 @@ internal/
     data/               nist-csf-2.0.json
   fisma/                FY 2025 IG FISMA data types, JSON parsing, embed
     data/               fy2025-ig-fisma-metrics.json + context markdown
-  vec_store/            Pre-built vector index embedding and metadata
+  vec_store/            Vector index: VectorMeta, PrebuiltVector(), build-tag embed files
+                        vector.go/vector_stub.go — chromem-go index and query
+                        documents.go — exported document builders (shared with gen-embeddings)
     data/
       nomic/            chromem.db + chromem-meta.json (nomic-embed-text:v1.5)
       qwen3/            chromem.db + chromem-meta.json (qwen3-embedding:4b)
       openai-small/     chromem.db + chromem-meta.json (text-embedding-3-small)
-  rel_store/            Unified data access layer (SQLite + chromem-go)
+  rel_store/            Unified data access layer — see internal/rel_store/README.md
+    data/schema.sql     SQLite schema DDL (//go:embed)
   mcp/                  MCP server, tool registration, handlers
 tools/
   gen-embeddings/       Build-time embedding generator (indexes all four searchable corpora)
   parse-fisma-metrics/  PDF parser for the IG FISMA metrics document
 ```
+
+The relational database schema, table descriptions, and cross-corpus foreign key relationships are documented in [internal/rel_store/README.md](internal/rel_store/README.md).
 
 ### Build targets
 
@@ -532,7 +561,7 @@ make build-all           # build all four variants to named binaries
 
 ### Regenerating vector indexes
 
-Each embedding model has its own subdirectory under `internal/vec_store/data/`. The index covers all four searchable corpora: NIST SP 800-53 controls, FY 2025 IG FISMA metrics, NIST CSF 2.0 subcategories, and FedRAMP 20x KSI indicators and process requirements. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
+Each embedding model has its own subdirectory under `internal/vec_store/data/`. The index covers all four searchable corpora: NIST SP 800-53 controls, FY 2025 IG FISMA metrics, NIST CSF 2.0 subcategories, and FedRAMP 20x KSI indicators, process requirements, and glossary terms. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
 
 ```bash
 make embed-nomic                          # requires Ollama + nomic-embed-text:v1.5
@@ -544,7 +573,7 @@ make embed-all                            # regenerate all three (requires both)
 After running:
 
 ```bash
-git add internal/nist/data/
+git add internal/vec_store/data/
 git commit -m "update vector indexes"
 git push
 ```
