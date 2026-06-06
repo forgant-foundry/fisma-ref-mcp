@@ -6,7 +6,6 @@ import (
 
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53b"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/vec_store"
 )
@@ -57,7 +56,7 @@ func New(ctx context.Context, cfg Config) (*Store, error) {
 		return nil, err
 	}
 
-	baselines, err := nist_800_53b.Load()
+	baselines, err := nist_800_53.LoadBaselines()
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +138,7 @@ func (s *Store) GetMetricsByControl(ctx context.Context, controlID string) ([]Fi
 // GetBaseline returns all NIST SP 800-53 controls and enhancements included in
 // the given SP 800-53B baseline. Accepted values: "low", "moderate", "high", "privacy".
 func (s *Store) GetBaseline(ctx context.Context, baseline string) ([]nist_800_53.Control, error) {
-	name := nist_800_53b.NormalizeBaseline(baseline)
+	name := nist_800_53.NormalizeBaseline(baseline)
 	if name == "" {
 		return nil, fmt.Errorf("unknown baseline %q: use low, moderate, high, or privacy", baseline)
 	}

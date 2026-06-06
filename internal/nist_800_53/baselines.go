@@ -1,4 +1,4 @@
-package nist_800_53b
+package nist_800_53
 
 import (
 	_ "embed"
@@ -10,7 +10,7 @@ import (
 //go:embed data/nist-800-53b.json
 var baselineJSON []byte
 
-// Baseline names returned by Load.
+// Baseline names returned by LoadBaselines.
 const (
 	BaselineLow      = "low"
 	BaselineModerate = "moderate"
@@ -25,9 +25,9 @@ var baselineIDs = map[string]string{
 	"PB-Yes":      BaselinePrivacy,
 }
 
-// Load parses the embedded SP 800-53B JSON and returns a map of
-// normalized control ID → sorted list of baseline names the control belongs to.
-func Load() (map[string][]string, error) {
+// LoadBaselines parses the embedded SP 800-53B JSON and returns a map of
+// normalized control ID → list of baseline names the control belongs to.
+func LoadBaselines() (map[string][]string, error) {
 	var raw struct {
 		Response struct {
 			Elements struct {
@@ -53,14 +53,14 @@ func Load() (map[string][]string, error) {
 		if !ok {
 			continue
 		}
-		id := normalizeID(r.SourceElementIdentifier)
+		id := NormalizeID(r.SourceElementIdentifier)
 		out[id] = appendUnique(out[id], name)
 	}
 	return out, nil
 }
 
-// NormalizeBaseline accepts "low", "Low", "LOW", "moderate", "high", "privacy"
-// and returns the canonical lowercase form, or "" if unrecognized.
+// NormalizeBaseline accepts "low", "moderate", "high", or "privacy" in any
+// case and returns the canonical lowercase form, or "" if unrecognized.
 func NormalizeBaseline(s string) string {
 	switch strings.ToLower(s) {
 	case "low":
@@ -82,30 +82,4 @@ func appendUnique(s []string, v string) []string {
 		}
 	}
 	return append(s, v)
-}
-
-// normalizeID converts zero-padded identifiers to display form, matching the
-// nist_800_53 package convention. "AC-01" → "AC-1", "AC-02(01)" → "AC-2(1)".
-func normalizeID(id string) string {
-	id = strings.ToUpper(id)
-	hyphen := strings.Index(id, "-")
-	if hyphen < 0 {
-		return id
-	}
-	family := id[:hyphen]
-	rest := id[hyphen+1:]
-	if paren := strings.Index(rest, "("); paren >= 0 {
-		num := stripLeadingZeros(rest[:paren])
-		enh := stripLeadingZeros(rest[paren+1 : len(rest)-1])
-		return family + "-" + num + "(" + enh + ")"
-	}
-	return family + "-" + stripLeadingZeros(rest)
-}
-
-func stripLeadingZeros(s string) string {
-	t := strings.TrimLeft(s, "0")
-	if t == "" {
-		return "0"
-	}
-	return t
 }

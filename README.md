@@ -415,8 +415,8 @@ fisma-ref-mcp serve --stdio
 ```
 cmd/                    CLI commands (serve, search, control, family)
 internal/
-  nist_800_53/          NIST SP 800-53 data types, JSON parsing, embed
-    data/               nist-800-53r5.json
+  nist_800_53/          NIST SP 800-53 + SP 800-53B data types, JSON parsing, embed
+    data/               nist-800-53r5.json, nist-800-53b.json
   nist_csf/             NIST CSF 2.0 data types, JSON parsing, embed
     data/               nist-csf-2.0.json
   fisma/                FY 2025 IG FISMA data types, JSON parsing, embed
