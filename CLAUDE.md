@@ -137,7 +137,23 @@ tools/
 - Build tags for embedding variants: `embed_nomic`, `embed_qwen3`, `embed_openai_small`. Untagged builds fall back to FTS5 (no vector search). The `no_embeddings` tag is no longer used.
 - Source identifiers are versioned strings: `nist_800_53`, `fisma_fy2025`, `nist_csf_v2`. Follow this pattern when adding new corpora.
 
+### Document and vector index organisation
+
+**One package per independently searchable corpus.** Each corpus that can be searched, filtered, and returned as results in its own right gets a dedicated package under `internal/` with a versioned source identifier (e.g. `nist_csf_v2`). The package owns its JSON source, types, and `Load()` function.
+
+**Companion/metadata documents co-locate with their primary corpus.** If a document only annotates or extends another corpus and has no independent search value, add it as an extra file in that corpus's package rather than creating a new package. SP 800-53B is the example: it only assigns controls from SP 800-53 to baselines, so `LoadBaselines()` lives in `internal/nist_800_53/baselines.go` alongside the catalog, not in a separate package.
+
+**The vector index is corpus-neutral.** `internal/vec_store/` holds the pre-built chromem-go DB and its embed variants. It is not owned by any document package. Each independently searchable corpus gets one chromem collection inside the shared DB. Metadata-only documents (like SP 800-53B) do not get a vector collection — their data is accessed via SQL.
+
+**FTS5 is the deterministic fallback.** Every searchable corpus has a corresponding FTS5 virtual table in the SQLite schema. Search routes through vector when available, FTS5 otherwise. Metadata tables (like `control_baselines`) use plain SQL joins, never FTS5.
+
 ### Adding a new corpus
+
+First decide: is this document independently searchable, or is it metadata for an existing corpus?
+
+**If metadata** — add a new `.go` file and embed directive to the relevant existing package. Seed a plain SQL table in `rel_store/relational.go`. No vector collection, no source identifier, no gen-embeddings change.
+
+**If independently searchable:**
 
 1. Create `internal/<source_id>/` with `types.go`, `embed.go` (with `//go:embed data/`), and `data/<source>.json`
 2. Add FTS5 table and seed function to `internal/rel_store/relational.go`
