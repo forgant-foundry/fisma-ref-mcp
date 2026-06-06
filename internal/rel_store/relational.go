@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
@@ -17,7 +18,7 @@ type relationalDB struct {
 	db *sql.DB
 }
 
-func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, baselines map[string][]string, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory) (*relationalDB, error) {
+func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, baselines map[string][]string, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory, frmr *fedramp.Catalog) (*relationalDB, error) {
 	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("open sqlite: %w", err)
@@ -40,6 +41,10 @@ func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Contr
 		return nil, err
 	}
 	if err := seedCSF(db, fns, cats, subs); err != nil {
+		db.Close()
+		return nil, err
+	}
+	if err := seedFedRAMP(db, frmr); err != nil {
 		db.Close()
 		return nil, err
 	}
@@ -158,6 +163,71 @@ func initSchema(db *sql.DB) error {
 			category_id UNINDEXED,
 			function_id UNINDEXED,
 			text,
+			tokenize = 'unicode61'
+		);
+
+		CREATE TABLE fedramp_terms (
+			id         TEXT PRIMARY KEY,
+			term       TEXT NOT NULL,
+			definition TEXT NOT NULL DEFAULT '',
+			note       TEXT NOT NULL DEFAULT ''
+		);
+
+		CREATE TABLE ksi_themes (
+			id         TEXT PRIMARY KEY,
+			short_name TEXT NOT NULL,
+			name       TEXT NOT NULL,
+			theme      TEXT NOT NULL DEFAULT ''
+		);
+
+		CREATE TABLE ksi_indicators (
+			id        TEXT PRIMARY KEY,
+			theme_id  TEXT NOT NULL REFERENCES ksi_themes(id),
+			name      TEXT NOT NULL,
+			statement TEXT NOT NULL DEFAULT ''
+		);
+
+		CREATE INDEX idx_ksi_indicators_theme ON ksi_indicators(theme_id);
+
+		CREATE TABLE ksi_controls (
+			indicator_id TEXT NOT NULL REFERENCES ksi_indicators(id),
+			control_id   TEXT NOT NULL,
+			PRIMARY KEY (indicator_id, control_id)
+		);
+
+		CREATE INDEX idx_ksi_controls_ctrl ON ksi_controls(control_id);
+
+		CREATE TABLE fedramp_requirements (
+			id       TEXT PRIMARY KEY,
+			category TEXT NOT NULL,
+			name     TEXT NOT NULL DEFAULT '',
+			statement TEXT NOT NULL DEFAULT '',
+			keyword  TEXT NOT NULL DEFAULT '',
+			version  TEXT NOT NULL DEFAULT ''
+		);
+
+		CREATE INDEX idx_fedramp_req_category ON fedramp_requirements(category);
+
+		CREATE VIRTUAL TABLE ksi_indicators_fts USING fts5(
+			id       UNINDEXED,
+			theme_id UNINDEXED,
+			name,
+			statement,
+			tokenize = 'unicode61'
+		);
+
+		CREATE VIRTUAL TABLE fedramp_requirements_fts USING fts5(
+			id       UNINDEXED,
+			category UNINDEXED,
+			name,
+			statement,
+			tokenize = 'unicode61'
+		);
+
+		CREATE VIRTUAL TABLE fedramp_terms_fts USING fts5(
+			id   UNINDEXED,
+			term,
+			definition,
 			tokenize = 'unicode61'
 		);
 	`)
@@ -537,6 +607,19 @@ func (r *relationalDB) search(ctx context.Context, query string, limit int, sour
 		out = append(out, res...)
 	}
 
+	if source == "" || source == "fedramp_20x" {
+		res, err := r.searchKSIFTS(ctx, ftsQuery, limit)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, res...)
+		res, err = r.searchFedRAMPReqFTS(ctx, ftsQuery, limit)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, res...)
+	}
+
 	sort.Slice(out, func(i, j int) bool { return out[i].Relevance > out[j].Relevance })
 	if len(out) > limit {
 		out = out[:limit]
@@ -806,13 +889,295 @@ func (r *relationalDB) searchCSFFTS(ctx context.Context, ftsQuery string, limit 
 	return results, nil
 }
 
+func seedFedRAMP(db *sql.DB, frmr *fedramp.Catalog) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("begin fedramp tx: %w", err)
+	}
+	defer tx.Rollback()
+
+	for _, t := range frmr.Terms {
+		if _, err := tx.Exec(`INSERT INTO fedramp_terms (id, term, definition, note) VALUES (?, ?, ?, ?)`,
+			t.ID, t.Term, t.Definition, t.Note); err != nil {
+			return fmt.Errorf("insert fedramp term %s: %w", t.ID, err)
+		}
+		if _, err := tx.Exec(`INSERT INTO fedramp_terms_fts (id, term, definition) VALUES (?, ?, ?)`,
+			t.ID, t.Term, t.Definition); err != nil {
+			return fmt.Errorf("insert fedramp term fts %s: %w", t.ID, err)
+		}
+	}
+
+	for _, theme := range frmr.KSIThemes {
+		if _, err := tx.Exec(`INSERT INTO ksi_themes (id, short_name, name, theme) VALUES (?, ?, ?, ?)`,
+			theme.ID, theme.ShortName, theme.Name, theme.Theme); err != nil {
+			return fmt.Errorf("insert ksi theme %s: %w", theme.ID, err)
+		}
+		for _, ind := range theme.Indicators {
+			if _, err := tx.Exec(`INSERT INTO ksi_indicators (id, theme_id, name, statement) VALUES (?, ?, ?, ?)`,
+				ind.ID, ind.ThemeID, ind.Name, ind.Statement); err != nil {
+				return fmt.Errorf("insert ksi indicator %s: %w", ind.ID, err)
+			}
+			if _, err := tx.Exec(`INSERT INTO ksi_indicators_fts (id, theme_id, name, statement) VALUES (?, ?, ?, ?)`,
+				ind.ID, ind.ThemeID, ind.Name, ind.Statement); err != nil {
+				return fmt.Errorf("insert ksi indicator fts %s: %w", ind.ID, err)
+			}
+			for _, ctrl := range ind.Controls {
+				if _, err := tx.Exec(`INSERT OR IGNORE INTO ksi_controls (indicator_id, control_id) VALUES (?, ?)`,
+					ind.ID, ctrl); err != nil {
+					return fmt.Errorf("insert ksi control %s/%s: %w", ind.ID, ctrl, err)
+				}
+			}
+		}
+	}
+
+	for _, rc := range frmr.Requirements {
+		for _, req := range rc.Requirements {
+			if _, err := tx.Exec(`INSERT INTO fedramp_requirements (id, category, name, statement, keyword, version) VALUES (?, ?, ?, ?, ?, ?)`,
+				req.ID, req.Category, req.Name, req.Statement, req.Keyword, req.Version); err != nil {
+				return fmt.Errorf("insert fedramp requirement %s: %w", req.ID, err)
+			}
+			if _, err := tx.Exec(`INSERT INTO fedramp_requirements_fts (id, category, name, statement) VALUES (?, ?, ?, ?)`,
+				req.ID, req.Category, req.Name, req.Statement); err != nil {
+				return fmt.Errorf("insert fedramp requirement fts %s: %w", req.ID, err)
+			}
+		}
+	}
+
+	return tx.Commit()
+}
+
+func (r *relationalDB) getKSI(ctx context.Context, id string) (*fedramp.KSIIndicator, error) {
+	row := r.db.QueryRowContext(ctx,
+		`SELECT k.id, k.theme_id, k.name, k.statement FROM ksi_indicators k WHERE k.id = ?`,
+		strings.ToUpper(id))
+	var ind fedramp.KSIIndicator
+	if err := row.Scan(&ind.ID, &ind.ThemeID, &ind.Name, &ind.Statement); err == sql.ErrNoRows {
+		return nil, fmt.Errorf("KSI indicator %q not found", id)
+	} else if err != nil {
+		return nil, err
+	}
+	rows, err := r.db.QueryContext(ctx, `SELECT control_id FROM ksi_controls WHERE indicator_id = ? ORDER BY control_id`, ind.ID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var c string
+		if err := rows.Scan(&c); err != nil {
+			return nil, err
+		}
+		ind.Controls = append(ind.Controls, c)
+	}
+	return &ind, rows.Err()
+}
+
+func (r *relationalDB) listKSIThemes(ctx context.Context) ([]fedramp.KSITheme, error) {
+	rows, err := r.db.QueryContext(ctx, `SELECT id, short_name, name, theme FROM ksi_themes ORDER BY id`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var themes []fedramp.KSITheme
+	for rows.Next() {
+		var t fedramp.KSITheme
+		if err := rows.Scan(&t.ID, &t.ShortName, &t.Name, &t.Theme); err != nil {
+			return nil, err
+		}
+		themes = append(themes, t)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	// Populate indicators for each theme.
+	for i, theme := range themes {
+		irows, err := r.db.QueryContext(ctx,
+			`SELECT id, theme_id, name, statement FROM ksi_indicators WHERE theme_id = ? ORDER BY id`, theme.ID)
+		if err != nil {
+			return nil, err
+		}
+		defer irows.Close()
+		for irows.Next() {
+			var ind fedramp.KSIIndicator
+			if err := irows.Scan(&ind.ID, &ind.ThemeID, &ind.Name, &ind.Statement); err != nil {
+				return nil, err
+			}
+			themes[i].Indicators = append(themes[i].Indicators, ind)
+		}
+		if err := irows.Err(); err != nil {
+			return nil, err
+		}
+	}
+	return themes, nil
+}
+
+func (r *relationalDB) getKSIsByControl(ctx context.Context, controlID string) ([]fedramp.KSIIndicator, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT DISTINCT k.id, k.theme_id, k.name, k.statement
+		 FROM ksi_indicators k
+		 JOIN ksi_controls c ON c.indicator_id = k.id
+		 WHERE c.control_id = ?
+		 ORDER BY k.id`, strings.ToUpper(controlID))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []fedramp.KSIIndicator
+	for rows.Next() {
+		var ind fedramp.KSIIndicator
+		if err := rows.Scan(&ind.ID, &ind.ThemeID, &ind.Name, &ind.Statement); err != nil {
+			return nil, err
+		}
+		out = append(out, ind)
+	}
+	return out, rows.Err()
+}
+
+func (r *relationalDB) listFedRAMPRequirements(ctx context.Context, category, version string) ([]fedramp.Requirement, error) {
+	q := `SELECT id, category, name, statement, keyword, version FROM fedramp_requirements WHERE 1=1`
+	var args []any
+	if category != "" {
+		q += ` AND category = ?`
+		args = append(args, strings.ToUpper(category))
+	}
+	if version != "" {
+		q += ` AND (version = ? OR version = 'both')`
+		args = append(args, strings.ToLower(version))
+	}
+	q += ` ORDER BY category, id`
+	rows, err := r.db.QueryContext(ctx, q, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []fedramp.Requirement
+	for rows.Next() {
+		var req fedramp.Requirement
+		if err := rows.Scan(&req.ID, &req.Category, &req.Name, &req.Statement, &req.Keyword, &req.Version); err != nil {
+			return nil, err
+		}
+		out = append(out, req)
+	}
+	return out, rows.Err()
+}
+
+func (r *relationalDB) getFedRAMPTerm(ctx context.Context, id string) (*fedramp.Term, error) {
+	row := r.db.QueryRowContext(ctx,
+		`SELECT id, term, definition, note FROM fedramp_terms WHERE id = ?`, strings.ToUpper(id))
+	var t fedramp.Term
+	if err := row.Scan(&t.ID, &t.Term, &t.Definition, &t.Note); err == sql.ErrNoRows {
+		return nil, fmt.Errorf("FedRAMP term %q not found", id)
+	} else if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func (r *relationalDB) searchKSIFTS(ctx context.Context, ftsQuery string, limit int) ([]SearchResult, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT k.id, k.theme_id, k.name, k.statement, -bm25(ksi_indicators_fts) AS score
+		 FROM ksi_indicators_fts
+		 JOIN ksi_indicators k ON k.id = ksi_indicators_fts.id
+		 WHERE ksi_indicators_fts MATCH ?
+		 ORDER BY bm25(ksi_indicators_fts)
+		 LIMIT ?`, ftsQuery, limit)
+	if err != nil {
+		return nil, fmt.Errorf("fts search ksi: %w", err)
+	}
+	defer rows.Close()
+
+	type rawRow struct {
+		id, themeID, name, statement string
+		score                        float64
+	}
+	var raw []rawRow
+	for rows.Next() {
+		var rr rawRow
+		if err := rows.Scan(&rr.id, &rr.themeID, &rr.name, &rr.statement, &rr.score); err != nil {
+			return nil, err
+		}
+		raw = append(raw, rr)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	if len(raw) == 0 {
+		return nil, nil
+	}
+	maxScore := raw[0].score
+	results := make([]SearchResult, len(raw))
+	for i, rr := range raw {
+		rel := float32(1.0)
+		if maxScore > 0 {
+			rel = float32(rr.score / maxScore)
+		}
+		results[i] = SearchResult{
+			Source:    "fedramp_20x",
+			ID:        rr.id,
+			Title:     rr.name,
+			Body:      rr.statement,
+			Relevance: rel,
+		}
+	}
+	return results, nil
+}
+
+func (r *relationalDB) searchFedRAMPReqFTS(ctx context.Context, ftsQuery string, limit int) ([]SearchResult, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT r.id, r.category, r.name, r.statement, -bm25(fedramp_requirements_fts) AS score
+		 FROM fedramp_requirements_fts
+		 JOIN fedramp_requirements r ON r.id = fedramp_requirements_fts.id
+		 WHERE fedramp_requirements_fts MATCH ?
+		 ORDER BY bm25(fedramp_requirements_fts)
+		 LIMIT ?`, ftsQuery, limit)
+	if err != nil {
+		return nil, fmt.Errorf("fts search fedramp requirements: %w", err)
+	}
+	defer rows.Close()
+
+	type rawRow struct {
+		id, category, name, statement string
+		score                         float64
+	}
+	var raw []rawRow
+	for rows.Next() {
+		var rr rawRow
+		if err := rows.Scan(&rr.id, &rr.category, &rr.name, &rr.statement, &rr.score); err != nil {
+			return nil, err
+		}
+		raw = append(raw, rr)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	if len(raw) == 0 {
+		return nil, nil
+	}
+	maxScore := raw[0].score
+	results := make([]SearchResult, len(raw))
+	for i, rr := range raw {
+		rel := float32(1.0)
+		if maxScore > 0 {
+			rel = float32(rr.score / maxScore)
+		}
+		results[i] = SearchResult{
+			Source:    "fedramp_20x",
+			ID:        rr.id,
+			Title:     rr.category + " — " + rr.name,
+			Body:      rr.statement,
+			Relevance: rel,
+		}
+	}
+	return results, nil
+}
+
 // sanitizeFTS strips characters that have special meaning in FTS5 query syntax,
 // preventing parse errors on arbitrary user input.
 func sanitizeFTS(q string) string {
 	var b strings.Builder
 	for _, r := range q {
 		switch r {
-		case '"', '(', ')', '*', '^':
+		case '"', '(', ')', '*', '^', '-', ':':
 			b.WriteRune(' ')
 		default:
 			b.WriteRune(r)

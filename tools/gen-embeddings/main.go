@@ -30,9 +30,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/vec_store"
 	"github.com/philippgille/chromem-go"
 )
@@ -71,7 +72,12 @@ func main() {
 		log.Fatalf("load CSF subcategories: %v", err)
 	}
 
-	log.Printf("indexing %d controls + %d FISMA metrics + %d CSF subcategories with %s/%s ...", len(controls), len(metrics), len(subcategories), *provider, effectiveModel)
+	frmr, err := fedramp.Load()
+	if err != nil {
+		log.Fatalf("load FedRAMP catalog: %v", err)
+	}
+
+	log.Printf("indexing %d controls + %d FISMA metrics + %d CSF subcategories + FedRAMP with %s/%s ...", len(controls), len(metrics), len(subcategories), *provider, effectiveModel)
 
 	db := chromem.NewDB()
 
@@ -152,6 +158,43 @@ func main() {
 		log.Fatalf("embed csf subcategories: %v", err)
 	}
 	log.Printf("embedded %d CSF subcategories", len(csfDocs))
+
+	// FedRAMP 20x KSI indicators and process requirements collection
+	fedCol, err := db.GetOrCreateCollection("fedramp_20x", nil, embFn)
+	if err != nil {
+		log.Fatalf("create fedramp_20x collection: %v", err)
+	}
+	var fedDocs []chromem.Document
+	for _, theme := range frmr.KSIThemes {
+		for _, ind := range theme.Indicators {
+			content := ind.Name + "\n\n" + ind.Statement
+			if content == "" {
+				continue
+			}
+			fedDocs = append(fedDocs, chromem.Document{
+				ID:      ind.ID,
+				Content: content,
+				Metadata: map[string]string{"theme_id": ind.ThemeID, "type": "ksi"},
+			})
+		}
+	}
+	for _, rc := range frmr.Requirements {
+		for _, req := range rc.Requirements {
+			content := req.Name + "\n\n" + req.Statement
+			if content == "" {
+				continue
+			}
+			fedDocs = append(fedDocs, chromem.Document{
+				ID:      req.ID,
+				Content: content,
+				Metadata: map[string]string{"category": req.Category, "type": "requirement"},
+			})
+		}
+	}
+	if err := fedCol.AddDocuments(ctx, fedDocs, runtime.NumCPU()); err != nil {
+		log.Fatalf("embed fedramp documents: %v", err)
+	}
+	log.Printf("embedded %d FedRAMP documents (%d KSIs + requirements)", len(fedDocs), len(fedDocs))
 
 	dataDir := dataPath()
 	if *outputDir != "" {

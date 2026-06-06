@@ -169,6 +169,72 @@ func registerTools(s *server.MCPServer, st *rel_store.Store) {
 	)
 
 	s.AddTool(
+		mcp.NewTool("list_ksi_themes",
+			mcp.WithDescription("List all FedRAMP 20x Key Security Indicator (KSI) themes with their indicators. Each indicator includes its outcome statement and referenced SP 800-53 controls."),
+			mcp.WithString("theme",
+				mcp.Description(`Optional theme short name to filter to a single theme, e.g. "IAM", "MLA", "SVC".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleListKSIThemes(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_ksi",
+			mcp.WithDescription("Retrieve a single FedRAMP 20x KSI indicator by its ID, including its outcome statement and referenced SP 800-53 controls."),
+			mcp.WithString("id",
+				mcp.Required(),
+				mcp.Description(`KSI indicator ID, e.g. "KSI-IAM-MFA" or "KSI-MLA-ALA".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetKSI(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_ksis_by_control",
+			mcp.WithDescription("Find all FedRAMP 20x KSI indicators that reference a given NIST SP 800-53 control ID."),
+			mcp.WithString("control_id",
+				mcp.Required(),
+				mcp.Description(`NIST SP 800-53 control identifier, e.g. "AC-2" or "IA-5".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetKSIsByControl(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("list_fedramp_requirements",
+			mcp.WithDescription("List FedRAMP process requirements (MUST/SHOULD statements). Optionally filter by category (e.g. \"VDR\", \"SCN\") and/or version path (\"rev5\", \"20x\")."),
+			mcp.WithString("category",
+				mcp.Description(`Requirement category, e.g. "VDR" (vulnerability detection), "SCN" (significant change notification), "ADS".`),
+			),
+			mcp.WithString("version",
+				mcp.Description(`FedRAMP path: "rev5", "20x", or omit for all (including "both").`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleListFedRAMPRequirements(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_fedramp_term",
+			mcp.WithDescription("Look up a FedRAMP glossary term definition by its ID."),
+			mcp.WithString("id",
+				mcp.Required(),
+				mcp.Description(`FedRAMP term ID, e.g. "FRD-ACV" (Accepted Vulnerability).`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetFedRAMPTerm(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
 		mcp.NewTool("get_baseline",
 			mcp.WithDescription("List all NIST SP 800-53 controls and enhancements in a SP 800-53B impact baseline. Each control includes its baseline memberships."),
 			mcp.WithString("baseline",
@@ -278,6 +344,69 @@ func handleGetMetricsByControl(ctx context.Context, st *rel_store.Store, req mcp
 		return nil, err
 	}
 	return jsonResult(metrics)
+}
+
+func handleListKSIThemes(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	themes, err := st.ListKSIThemes(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if filter := strings.ToUpper(req.GetString("theme", "")); filter != "" {
+		filtered := themes[:0]
+		for _, t := range themes {
+			if t.ShortName == filter {
+				filtered = append(filtered, t)
+			}
+		}
+		themes = filtered
+	}
+	return jsonResult(themes)
+}
+
+func handleGetKSI(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id, err := req.RequireString("id")
+	if err != nil {
+		return nil, err
+	}
+	ind, err := st.GetKSI(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(ind)
+}
+
+func handleGetKSIsByControl(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	controlID, err := req.RequireString("control_id")
+	if err != nil {
+		return nil, err
+	}
+	inds, err := st.GetKSIsByControl(ctx, controlID)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(inds)
+}
+
+func handleListFedRAMPRequirements(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	category := req.GetString("category", "")
+	version := req.GetString("version", "")
+	reqs, err := st.ListFedRAMPRequirements(ctx, category, version)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(reqs)
+}
+
+func handleGetFedRAMPTerm(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id, err := req.RequireString("id")
+	if err != nil {
+		return nil, err
+	}
+	term, err := st.GetFedRAMPTerm(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(term)
 }
 
 func handleGetBaseline(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
@@ -71,14 +72,19 @@ func New(ctx context.Context, cfg Config) (*Store, error) {
 		return nil, err
 	}
 
-	rel, err := newRelationalDB(families, controls, baselines, metrics, csfFunctions, csfCategories, csfSubcategories)
+	frmr, err := fedramp.Load()
+	if err != nil {
+		return nil, err
+	}
+
+	rel, err := newRelationalDB(families, controls, baselines, metrics, csfFunctions, csfCategories, csfSubcategories, frmr)
 	if err != nil {
 		return nil, err
 	}
 
 	var vec *vectorDB
 	if cfg.EmbeddingProvider != "" {
-		vec, err = newVectorDB(ctx, cfg, controls, metrics, csfSubcategories, rel)
+		vec, err = newVectorDB(ctx, cfg, controls, metrics, csfSubcategories, frmr, rel)
 		if err != nil {
 			return nil, err
 		}
@@ -160,4 +166,32 @@ func (s *Store) ListCSFCategories(ctx context.Context, functionID string) ([]nis
 // ListCSFFunctions returns all six NIST CSF v2.0 functions.
 func (s *Store) ListCSFFunctions(ctx context.Context) ([]nist_csf.Function, error) {
 	return s.rel.listCSFFunctions(ctx)
+}
+
+// ListKSIThemes returns all FedRAMP 20x KSI themes with their indicators.
+func (s *Store) ListKSIThemes(ctx context.Context) ([]fedramp.KSITheme, error) {
+	return s.rel.listKSIThemes(ctx)
+}
+
+// GetKSI returns a single FedRAMP 20x KSI indicator by its ID (e.g., "KSI-IAM-MFA").
+func (s *Store) GetKSI(ctx context.Context, id string) (*fedramp.KSIIndicator, error) {
+	return s.rel.getKSI(ctx, id)
+}
+
+// GetKSIsByControl returns all FedRAMP 20x KSI indicators that reference a given
+// NIST SP 800-53 control ID.
+func (s *Store) GetKSIsByControl(ctx context.Context, controlID string) ([]fedramp.KSIIndicator, error) {
+	normalized := nist_800_53.NormalizeID(controlID)
+	return s.rel.getKSIsByControl(ctx, normalized)
+}
+
+// ListFedRAMPRequirements returns FedRAMP process requirements. Optionally filter
+// by category (e.g., "VDR") and/or version ("rev5", "20x", "both").
+func (s *Store) ListFedRAMPRequirements(ctx context.Context, category, version string) ([]fedramp.Requirement, error) {
+	return s.rel.listFedRAMPRequirements(ctx, category, version)
+}
+
+// GetFedRAMPTerm returns a single FedRAMP glossary term by its ID (e.g., "FRD-ACV").
+func (s *Store) GetFedRAMPTerm(ctx context.Context, id string) (*fedramp.Term, error) {
+	return s.rel.getFedRAMPTerm(ctx, id)
 }

@@ -19,6 +19,7 @@ The relational DB is always populated at startup from the embedded JSON. The vec
 | Package | Source identifier | Contents |
 |---|---|---|
 | `internal/nist_800_53` | `nist_800_53` | NIST SP 800-53 Rev 5.2.0 — 1,196 controls across 20 families; SP 800-53B baseline profiles co-located in `baselines.go` |
+| `internal/fedramp` | `fedramp_20x` | FedRAMP FRMR — 49 glossary terms, 60 KSI indicators across 11 themes, 163 process requirements |
 | `internal/nist_csf` | `nist_csf_v2` | NIST CSF 2.0 — 185 subcategories across 6 functions |
 | `internal/fisma` | `fisma_fy2025` | FY 2025 IG FISMA Metrics — 35 metrics with 5-level maturity model |
 
@@ -60,6 +61,11 @@ fisma-ref-mcp family [<id>]          # list families or controls in a family →
 | `list_families` | All 20 NIST SP 800-53 control families |
 | `get_family` | All base controls (no enhancements) in a family |
 | `get_baseline` | All controls/enhancements in a SP 800-53B baseline (`low`, `moderate`, `high`, `privacy`) |
+| `list_ksi_themes` | All FedRAMP 20x KSI themes with indicators; optional theme filter |
+| `get_ksi` | Single KSI indicator by ID with outcome statement and SP 800-53 controls |
+| `get_ksis_by_control` | FedRAMP KSI indicators that reference a given SP 800-53 control |
+| `list_fedramp_requirements` | FedRAMP MUST/SHOULD requirements; filter by category and/or version path |
+| `get_fedramp_term` | Single FedRAMP glossary term by ID |
 | `list_fisma_metrics` | FY 2025 IG FISMA metrics; optional domain filter |
 | `get_fisma_metric` | Single metric by ID — full maturity levels, evidence, assessor notes, criteria refs |
 | `get_metrics_by_control` | FISMA metrics that reference a given NIST SP 800-53 control ID |
@@ -89,6 +95,8 @@ internal/
   nist_800_53/    NIST SP 800-53 types, OSCAL JSON parsing, Load(), NormalizeID()
                   + SP 800-53B baseline profiles in baselines.go: LoadBaselines(), NormalizeBaseline()
     data/         nist-800-53r5.json, nist-800-53b.json
+  fedramp/        FedRAMP FRMR types, JSON parsing, Load() → *Catalog
+    data/         FRMR.documentation.json
   nist_csf/       NIST CSF 2.0 types, flat-graph JSON parsing, Load()
     data/         nist-csf-2.0.json
   fisma/          FY 2025 IG FISMA types, JSON parsing, Load(), ContextMarkdown

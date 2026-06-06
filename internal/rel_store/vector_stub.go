@@ -6,14 +6,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 )
 
 type vectorDB struct{}
 
-func newVectorDB(_ context.Context, _ Config, _ []nist_800_53.Control, _ []fisma.Metric, _ []nist_csf.Subcategory, _ *relationalDB) (*vectorDB, error) {
+func newVectorDB(_ context.Context, _ Config, _ []nist_800_53.Control, _ []fisma.Metric, _ []nist_csf.Subcategory, _ *fedramp.Catalog, _ *relationalDB) (*vectorDB, error) {
 	return nil, fmt.Errorf(
 		"this binary was built without embedding support (no_embeddings tag); " +
 			"use 'make embed-nomic', 'make embed-qwen3', or 'make embed-openai-small' " +

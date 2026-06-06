@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
@@ -21,6 +22,7 @@ const (
 	collectionControls     = "controls"
 	collectionFismaMetrics = "fisma_metrics"
 	collectionCSF          = "csf_v2"
+	collectionFedRAMP      = "fedramp_20x"
 )
 
 type vectorDB struct {
@@ -29,7 +31,7 @@ type vectorDB struct {
 	rel  *relationalDB
 }
 
-func newVectorDB(ctx context.Context, cfg Config, controls []nist_800_53.Control, metrics []fisma.Metric, subcategories []nist_csf.Subcategory, rel *relationalDB) (*vectorDB, error) {
+func newVectorDB(ctx context.Context, cfg Config, controls []nist_800_53.Control, metrics []fisma.Metric, subcategories []nist_csf.Subcategory, frmr *fedramp.Catalog, rel *relationalDB) (*vectorDB, error) {
 	embFn, err := embeddingFunc(cfg)
 	if err != nil {
 		return nil, err
@@ -39,7 +41,7 @@ func newVectorDB(ctx context.Context, cfg Config, controls []nist_800_53.Control
 	if hasPrebuilt {
 		return loadPrebuilt(ctx, prebuiltData, meta, cfg, embFn, rel)
 	}
-	return buildFromDocuments(ctx, controls, metrics, subcategories, embFn, rel)
+	return buildFromDocuments(ctx, controls, metrics, subcategories, frmr, embFn, rel)
 }
 
 // loadPrebuilt imports the serialised chromem-go DB embedded at build time.
@@ -67,7 +69,7 @@ func loadPrebuilt(ctx context.Context, data []byte, meta *vec_store.VectorMeta, 
 	// (e.g., a collection added after the index was generated); in that case
 	// the collection simply returns no results until the index is regenerated.
 	cols := make(map[string]*chromem.Collection)
-	for _, name := range []string{collectionControls, collectionFismaMetrics, collectionCSF} {
+	for _, name := range []string{collectionControls, collectionFismaMetrics, collectionCSF, collectionFedRAMP} {
 		col, err := db.GetOrCreateCollection(name, nil, embFn)
 		if err != nil {
 			return nil, fmt.Errorf("attach embedding function to collection %q: %w", name, err)
@@ -80,7 +82,7 @@ func loadPrebuilt(ctx context.Context, data []byte, meta *vec_store.VectorMeta, 
 
 // buildFromDocuments generates embeddings at startup. This is used when no
 // pre-built index is embedded in the binary.
-func buildFromDocuments(ctx context.Context, controls []nist_800_53.Control, metrics []fisma.Metric, subcategories []nist_csf.Subcategory, embFn chromem.EmbeddingFunc, rel *relationalDB) (*vectorDB, error) {
+func buildFromDocuments(ctx context.Context, controls []nist_800_53.Control, metrics []fisma.Metric, subcategories []nist_csf.Subcategory, frmr *fedramp.Catalog, embFn chromem.EmbeddingFunc, rel *relationalDB) (*vectorDB, error) {
 	db := chromem.NewDB()
 	cols := make(map[string]*chromem.Collection)
 
@@ -159,13 +161,51 @@ func buildFromDocuments(ctx context.Context, controls []nist_800_53.Control, met
 		return nil, fmt.Errorf("index csf subcategories: %w", err)
 	}
 
+	fedCol, err := db.GetOrCreateCollection(collectionFedRAMP, nil, embFn)
+	if err != nil {
+		return nil, fmt.Errorf("create fedramp_20x collection: %w", err)
+	}
+	cols[collectionFedRAMP] = fedCol
+
+	var fedDocs []chromem.Document
+	for _, theme := range frmr.KSIThemes {
+		for _, ind := range theme.Indicators {
+			content := buildKSIDocument(ind)
+			if content == "" {
+				continue
+			}
+			fedDocs = append(fedDocs, chromem.Document{
+				ID:      ind.ID,
+				Content: content,
+				Metadata: map[string]string{"theme_id": ind.ThemeID, "type": "ksi"},
+			})
+		}
+	}
+	for _, rc := range frmr.Requirements {
+		for _, req := range rc.Requirements {
+			content := buildRequirementDocument(req)
+			if content == "" {
+				continue
+			}
+			fedDocs = append(fedDocs, chromem.Document{
+				ID:      req.ID,
+				Content: content,
+				Metadata: map[string]string{"category": req.Category, "type": "requirement"},
+			})
+		}
+	}
+	if err := fedCol.AddDocuments(ctx, fedDocs, 0); err != nil {
+		return nil, fmt.Errorf("index fedramp documents: %w", err)
+	}
+
 	return &vectorDB{db: db, cols: cols, rel: rel}, nil
 }
 
 type taggedHit struct {
-	id         string
+	id       string
 	similarity float32
-	source     string
+	source   string
+	docType  string // optional sub-type for disambiguation within a collection
 }
 
 func (v *vectorDB) search(ctx context.Context, query string, limit int, source string) ([]SearchResult, error) {
@@ -203,6 +243,18 @@ func (v *vectorDB) search(ctx context.Context, query string, limit int, source s
 			}
 			for _, h := range hits {
 				tagged = append(tagged, taggedHit{id: h.ID, similarity: h.Similarity, source: "nist_csf_v2"})
+			}
+		}
+	}
+
+	if source == "" || source == "fedramp_20x" {
+		if col, ok := v.cols[collectionFedRAMP]; ok && col.Count() > 0 {
+			hits, err := col.Query(ctx, query, limit, nil, nil)
+			if err != nil {
+				return nil, fmt.Errorf("vector search fedramp: %w", err)
+			}
+			for _, h := range hits {
+				tagged = append(tagged, taggedHit{id: h.ID, similarity: h.Similarity, source: "fedramp_20x", docType: h.Metadata["type"]})
 			}
 		}
 	}
@@ -252,6 +304,34 @@ func (v *vectorDB) search(ctx context.Context, query string, limit int, source s
 				Body:      s.Text,
 				Relevance: h.similarity,
 			})
+		case "fedramp_20x":
+			if h.docType == "ksi" {
+				ind, err := v.rel.getKSI(ctx, h.id)
+				if err != nil {
+					continue
+				}
+				results = append(results, SearchResult{
+					Source:    "fedramp_20x",
+					ID:        ind.ID,
+					Title:     ind.Name,
+					Body:      ind.Statement,
+					Relevance: h.similarity,
+				})
+			} else {
+				var id, name, statement string
+				row := v.rel.db.QueryRowContext(ctx,
+					`SELECT id, name, statement FROM fedramp_requirements WHERE id = ?`, h.id)
+				if err := row.Scan(&id, &name, &statement); err != nil {
+					continue
+				}
+				results = append(results, SearchResult{
+					Source:    "fedramp_20x",
+					ID:        id,
+					Title:     name,
+					Body:      statement,
+					Relevance: h.similarity,
+				})
+			}
 		}
 	}
 	return results, nil
@@ -313,6 +393,20 @@ func buildControlDocument(c nist_800_53.Control) string {
 		parts = append(parts, c.Discussion)
 	}
 	return strings.Join(parts, "\n\n")
+}
+
+func buildKSIDocument(ind fedramp.KSIIndicator) string {
+	if ind.Statement == "" {
+		return ""
+	}
+	return ind.Name + "\n\n" + ind.Statement
+}
+
+func buildRequirementDocument(req fedramp.Requirement) string {
+	if req.Statement == "" {
+		return ""
+	}
+	return req.Name + "\n\n" + req.Statement
 }
 
 func buildSubcategoryDocument(s nist_csf.Subcategory) string {
