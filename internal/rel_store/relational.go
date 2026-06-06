@@ -20,7 +20,7 @@ type relationalDB struct {
 	db *sql.DB
 }
 
-func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, baselines map[string][]string, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory, frmr *fedramp.Catalog) (*relationalDB, error) {
+func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Control, baselines map[string][]string, metrics []fisma.Metric, fns []nist_csf.Function, cats []nist_csf.Category, subs []nist_csf.Subcategory, csfCrosswalk map[string][]string, frmr *fedramp.Catalog) (*relationalDB, error) {
 	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("open sqlite: %w", err)
@@ -43,6 +43,10 @@ func newRelationalDB(families []nist_800_53.Family, controls []nist_800_53.Contr
 		return nil, err
 	}
 	if err := seedCSF(db, fns, cats, subs); err != nil {
+		db.Close()
+		return nil, err
+	}
+	if err := seedCSFCrosswalk(db, csfCrosswalk); err != nil {
 		db.Close()
 		return nil, err
 	}
@@ -161,6 +165,15 @@ func initSchema(db *sql.DB) error {
 		);
 
 		CREATE INDEX idx_csf_examples_sub ON csf_examples(subcategory_id);
+
+		CREATE TABLE csf_controls (
+			subcategory_id TEXT NOT NULL REFERENCES csf_subcategories(id),
+			control_id     TEXT NOT NULL,
+			PRIMARY KEY (subcategory_id, control_id)
+		);
+
+		CREATE INDEX idx_csf_controls_sub  ON csf_controls(subcategory_id);
+		CREATE INDEX idx_csf_controls_ctrl ON csf_controls(control_id);
 
 		CREATE VIRTUAL TABLE csf_subcategories_fts USING fts5(
 			id          UNINDEXED,
@@ -797,6 +810,26 @@ func seedCSF(db *sql.DB, fns []nist_csf.Function, cats []nist_csf.Category, subs
 	return tx.Commit()
 }
 
+func seedCSFCrosswalk(db *sql.DB, crosswalk map[string][]string) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("begin csf crosswalk tx: %w", err)
+	}
+	defer tx.Rollback()
+
+	for subID, controlIDs := range crosswalk {
+		for _, ctrlID := range controlIDs {
+			if _, err := tx.Exec(
+				`INSERT OR IGNORE INTO csf_controls (subcategory_id, control_id) VALUES (?, ?)`,
+				subID, ctrlID,
+			); err != nil {
+				return fmt.Errorf("insert csf control link %s/%s: %w", subID, ctrlID, err)
+			}
+		}
+	}
+	return tx.Commit()
+}
+
 func (r *relationalDB) getCSFSubcategory(ctx context.Context, id string) (*nist_csf.Subcategory, error) {
 	id = strings.ToUpper(id)
 	row := r.db.QueryRowContext(ctx,
@@ -820,7 +853,45 @@ func (r *relationalDB) getCSFSubcategory(ctx context.Context, id string) (*nist_
 		}
 		s.Examples = append(s.Examples, ex)
 	}
-	return &s, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	crows, err := r.db.QueryContext(ctx, `SELECT control_id FROM csf_controls WHERE subcategory_id = ? ORDER BY control_id`, s.ID)
+	if err != nil {
+		return nil, err
+	}
+	defer crows.Close()
+	for crows.Next() {
+		var c string
+		if err := crows.Scan(&c); err != nil {
+			return nil, err
+		}
+		s.Controls = append(s.Controls, c)
+	}
+	return &s, crows.Err()
+}
+
+func (r *relationalDB) getCSFSubcategoriesByControl(ctx context.Context, controlID string) ([]nist_csf.Subcategory, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT DISTINCT s.id, s.category_id, s.function_id, s.text
+		 FROM csf_subcategories s
+		 JOIN csf_controls c ON c.subcategory_id = s.id
+		 WHERE c.control_id = ?
+		 ORDER BY s.id`, strings.ToUpper(controlID))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []nist_csf.Subcategory
+	for rows.Next() {
+		var s nist_csf.Subcategory
+		if err := rows.Scan(&s.ID, &s.CategoryID, &s.FunctionID, &s.Text); err != nil {
+			return nil, err
+		}
+		out = append(out, s)
+	}
+	return out, rows.Err()
 }
 
 func (r *relationalDB) listCSFCategories(ctx context.Context, functionID string) ([]nist_csf.Category, error) {

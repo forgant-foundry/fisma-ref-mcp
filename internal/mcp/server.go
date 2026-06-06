@@ -169,6 +169,19 @@ func registerTools(s *server.MCPServer, st *rel_store.Store) {
 	)
 
 	s.AddTool(
+		mcp.NewTool("get_csf_subcategories_by_control",
+			mcp.WithDescription("Find all NIST CSF 2.0 subcategories that map to a given NIST SP 800-53 control per the official CSF 2.0 crosswalk."),
+			mcp.WithString("control_id",
+				mcp.Required(),
+				mcp.Description(`NIST SP 800-53 control identifier, e.g. "AC-1" or "IA-5".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetCSFSubcategoriesByControl(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
 		mcp.NewTool("get_metrics_by_csf_subcategory",
 			mcp.WithDescription("Find all FY 2025 IG FISMA metrics that reference a given NIST CSF 2.0 subcategory ID."),
 			mcp.WithString("subcategory_id",
@@ -357,6 +370,18 @@ func handleGetMetricsByControl(ctx context.Context, st *rel_store.Store, req mcp
 		return nil, err
 	}
 	return jsonResult(metrics)
+}
+
+func handleGetCSFSubcategoriesByControl(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	controlID, err := req.RequireString("control_id")
+	if err != nil {
+		return nil, err
+	}
+	subs, err := st.GetCSFSubcategoriesByControl(ctx, controlID)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(subs)
 }
 
 func handleGetMetricsByCSFSubcategory(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {

@@ -22,4 +22,5 @@ type Subcategory struct {
 	FunctionID string   `json:"function_id"`
 	Text       string   `json:"text"`
 	Examples   []string `json:"examples"`
+	Controls   []string `json:"controls,omitempty"` // populated from SP 800-53 crosswalk at startup
 }

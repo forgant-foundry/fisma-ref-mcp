@@ -72,12 +72,17 @@ func New(ctx context.Context, cfg Config) (*Store, error) {
 		return nil, err
 	}
 
+	csfCrosswalk, err := nist_csf.LoadCrosswalk()
+	if err != nil {
+		return nil, err
+	}
+
 	frmr, err := fedramp.Load()
 	if err != nil {
 		return nil, err
 	}
 
-	rel, err := newRelationalDB(families, controls, baselines, metrics, csfFunctions, csfCategories, csfSubcategories, frmr)
+	rel, err := newRelationalDB(families, controls, baselines, metrics, csfFunctions, csfCategories, csfSubcategories, csfCrosswalk, frmr)
 	if err != nil {
 		return nil, err
 	}
@@ -172,6 +177,13 @@ func (s *Store) ListCSFCategories(ctx context.Context, functionID string) ([]nis
 // ListCSFFunctions returns all six NIST CSF v2.0 functions.
 func (s *Store) ListCSFFunctions(ctx context.Context) ([]nist_csf.Function, error) {
 	return s.rel.listCSFFunctions(ctx)
+}
+
+// GetCSFSubcategoriesByControl returns all CSF 2.0 subcategories that map to a
+// given NIST SP 800-53 control ID per the official crosswalk.
+func (s *Store) GetCSFSubcategoriesByControl(ctx context.Context, controlID string) ([]nist_csf.Subcategory, error) {
+	normalized := nist_800_53.NormalizeID(controlID)
+	return s.rel.getCSFSubcategoriesByControl(ctx, normalized)
 }
 
 // ListKSIThemes returns all FedRAMP 20x KSI themes with their indicators.
