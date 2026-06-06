@@ -1,7 +1,0 @@
-{
-  "provider": "ollama",
-  "model": "nomic-embed-text:v1.5",
-  "built_at": "2026-06-05T18:03:43.949431Z",
-  "control_count": 1196,
-  "metric_count": 35
-}

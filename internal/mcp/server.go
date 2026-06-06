@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/store"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/rel_store"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -18,7 +18,7 @@ const (
 )
 
 // NewServer creates an MCP server with all FISMA reference tools registered.
-func NewServer(st *store.Store) *server.MCPServer {
+func NewServer(st *rel_store.Store) *server.MCPServer {
 	s := server.NewMCPServer(serviceName, version,
 		server.WithToolCapabilities(false),
 	)
@@ -47,7 +47,7 @@ func ServeStdio(s *server.MCPServer) error {
 	return server.ServeStdio(s)
 }
 
-func registerTools(s *server.MCPServer, st *store.Store) {
+func registerTools(s *server.MCPServer, st *rel_store.Store) {
 	s.AddTool(
 		mcp.NewTool("search",
 			mcp.WithDescription("Semantic search across all indexed documents — NIST SP 800-53 Rev 5 controls and FY 2025 IG FISMA metrics. Returns ranked results with source provenance."),
@@ -59,7 +59,7 @@ func registerTools(s *server.MCPServer, st *store.Store) {
 				mcp.Description("Maximum number of results to return (default 10, max 50)."),
 			),
 			mcp.WithString("source",
-				mcp.Description(`Optional source filter: "nist_800_53" for controls only, "fisma_fy2025" for FISMA metrics only. Omit to search all.`),
+				mcp.Description(`Optional source filter: "nist_800_53" for SP 800-53 controls, "fisma_fy2025" for FISMA metrics, "nist_csf_v2" for CSF 2.0 subcategories. Omit to search all.`),
 			),
 			mcp.WithString("family",
 				mcp.Description(`Optional NIST control family filter, e.g. "AC". Only applies to nist_800_53 results.`),
@@ -131,6 +131,31 @@ func registerTools(s *server.MCPServer, st *store.Store) {
 	)
 
 	s.AddTool(
+		mcp.NewTool("list_csf_functions",
+			mcp.WithDescription("List the six NIST CSF 2.0 functions (Govern, Identify, Protect, Detect, Respond, Recover) with their categories."),
+			mcp.WithString("function",
+				mcp.Description(`Optional function ID to filter categories, e.g. "GV" for Govern. Omit to list all functions with all categories.`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleListCSFFunctions(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
+		mcp.NewTool("get_csf_subcategory",
+			mcp.WithDescription("Retrieve a single NIST CSF 2.0 subcategory by its identifier, including the outcome statement and implementation examples."),
+			mcp.WithString("id",
+				mcp.Required(),
+				mcp.Description(`CSF 2.0 subcategory identifier, e.g. "GV.OC-01" or "PR.AA-01".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetCSFSubcategory(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
 		mcp.NewTool("get_metrics_by_control",
 			mcp.WithDescription("Find all FY 2025 IG FISMA metrics that reference a given NIST SP 800-53 control ID."),
 			mcp.WithString("control_id",
@@ -144,7 +169,7 @@ func registerTools(s *server.MCPServer, st *store.Store) {
 	)
 }
 
-func handleSearch(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleSearch(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	query, err := req.RequireString("query")
 	if err != nil {
 		return nil, err
@@ -175,7 +200,7 @@ func handleSearch(ctx context.Context, st *store.Store, req mcp.CallToolRequest)
 	return jsonResult(results)
 }
 
-func handleGetControl(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleGetControl(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	id, err := req.RequireString("id")
 	if err != nil {
 		return nil, err
@@ -188,7 +213,7 @@ func handleGetControl(ctx context.Context, st *store.Store, req mcp.CallToolRequ
 	return jsonResult(c)
 }
 
-func handleListFamilies(ctx context.Context, st *store.Store) (*mcp.CallToolResult, error) {
+func handleListFamilies(ctx context.Context, st *rel_store.Store) (*mcp.CallToolResult, error) {
 	families, err := st.ListFamilies(ctx)
 	if err != nil {
 		return nil, err
@@ -196,7 +221,7 @@ func handleListFamilies(ctx context.Context, st *store.Store) (*mcp.CallToolResu
 	return jsonResult(families)
 }
 
-func handleGetFamily(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleGetFamily(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	id, err := req.RequireString("id")
 	if err != nil {
 		return nil, err
@@ -209,7 +234,7 @@ func handleGetFamily(ctx context.Context, st *store.Store, req mcp.CallToolReque
 	return jsonResult(controls)
 }
 
-func handleListFismaMetrics(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleListFismaMetrics(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	domain := req.GetString("domain", "")
 	metrics, err := st.ListFismaMetrics(ctx, domain)
 	if err != nil {
@@ -218,7 +243,7 @@ func handleListFismaMetrics(ctx context.Context, st *store.Store, req mcp.CallTo
 	return jsonResult(metrics)
 }
 
-func handleGetFismaMetric(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleGetFismaMetric(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	id := req.GetInt("id", 0)
 	if id <= 0 {
 		return nil, fmt.Errorf("id must be a positive integer")
@@ -230,7 +255,7 @@ func handleGetFismaMetric(ctx context.Context, st *store.Store, req mcp.CallTool
 	return jsonResult(m)
 }
 
-func handleGetMetricsByControl(ctx context.Context, st *store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleGetMetricsByControl(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	controlID, err := req.RequireString("control_id")
 	if err != nil {
 		return nil, err
@@ -240,6 +265,64 @@ func handleGetMetricsByControl(ctx context.Context, st *store.Store, req mcp.Cal
 		return nil, err
 	}
 	return jsonResult(metrics)
+}
+
+func handleListCSFFunctions(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	functionID := req.GetString("function", "")
+
+	fns, err := st.ListCSFFunctions(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	cats, err := st.ListCSFCategories(ctx, functionID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Group categories under their functions.
+	type catEntry struct {
+		ID    string `json:"id"`
+		Title string `json:"title"`
+		Text  string `json:"text"`
+	}
+	type fnEntry struct {
+		ID         string     `json:"id"`
+		Title      string     `json:"title"`
+		Text       string     `json:"text"`
+		Categories []catEntry `json:"categories"`
+	}
+
+	catsByFn := make(map[string][]catEntry)
+	for _, c := range cats {
+		catsByFn[c.FunctionID] = append(catsByFn[c.FunctionID], catEntry{c.ID, c.Title, c.Text})
+	}
+
+	var out []fnEntry
+	for _, f := range fns {
+		if functionID != "" && strings.ToUpper(functionID) != f.ID {
+			continue
+		}
+		out = append(out, fnEntry{
+			ID:         f.ID,
+			Title:      f.Title,
+			Text:       f.Text,
+			Categories: catsByFn[f.ID],
+		})
+	}
+	return jsonResult(out)
+}
+
+func handleGetCSFSubcategory(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id, err := req.RequireString("id")
+	if err != nil {
+		return nil, err
+	}
+	s, err := st.GetCSFSubcategory(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(s)
 }
 
 func jsonResult(v any) (*mcp.CallToolResult, error) {

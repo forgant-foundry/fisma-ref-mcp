@@ -12,7 +12,7 @@ import (
 var searchCmd = &cobra.Command{
 	Use:   "search <query>",
 	Short: "Search across all indexed documents by natural-language query",
-	Long:  `Search NIST SP 800-53 controls and FISMA metrics using a natural-language query and print results as JSON.`,
+	Long:  `Search NIST SP 800-53 controls, FY 2025 IG FISMA metrics, and NIST CSF 2.0 subcategories using a natural-language query and print results as JSON.`,
 	Args:  cobra.ExactArgs(1),
 	RunE:  runSearch,
 }
@@ -24,7 +24,7 @@ var (
 
 func init() {
 	searchCmd.Flags().IntVar(&flagSearchLimit, "limit", 10, "Maximum number of results (max 50).")
-	searchCmd.Flags().StringVar(&flagSearchSource, "source", "", `Restrict to a single source: "nist_800_53" or "fisma_fy2025".`)
+	searchCmd.Flags().StringVar(&flagSearchSource, "source", "", `Restrict to a single source: "nist_800_53", "fisma_fy2025", or "nist_csf_v2".`)
 	rootCmd.AddCommand(searchCmd)
 }
 

@@ -320,6 +320,7 @@ fisma-ref-mcp search "identity governance maturity" --limit 5
 # Search within a specific corpus
 fisma-ref-mcp search "multi-factor authentication" --source nist_800_53
 fisma-ref-mcp search "zero trust" --source fisma_fy2025
+fisma-ref-mcp search "organizational risk profile" --source nist_csf_v2
 
 # Start the HTTP MCP server
 fisma-ref-mcp serve --port 8080
@@ -349,19 +350,23 @@ fisma-ref-mcp serve --stdio
 ### Project structure
 
 ```
-cmd/                  CLI commands (serve, search, control, family)
+cmd/                    CLI commands (serve, search, control, family)
 internal/
-  nist/               NIST data types, JSON parsing, embed directives
-    data/             nist-800-53r5.json + per-model vector index subdirectories
-      nomic/          chromem.db + chromem-meta.json (nomic-embed-text:v1.5)
-      qwen3/          chromem.db + chromem-meta.json (qwen3-embedding:4b)
-      openai-small/   chromem.db + chromem-meta.json (text-embedding-3-small)
-  fisma/              FY 2025 IG FISMA data types, JSON parsing, embed directives
-    data/             fy2025-ig-fisma-metrics.json + context markdown
-  store/              Unified data access layer (SQLite + chromem-go)
-  mcp/                MCP server, tool registration, handlers
+  nist_800_53/          NIST SP 800-53 data types, JSON parsing, embed
+    data/               nist-800-53r5.json
+  nist_csf/             NIST CSF 2.0 data types, JSON parsing, embed
+    data/               nist-csf-2.0.json
+  fisma/                FY 2025 IG FISMA data types, JSON parsing, embed
+    data/               fy2025-ig-fisma-metrics.json + context markdown
+  vec_store/            Pre-built vector index embedding and metadata
+    data/
+      nomic/            chromem.db + chromem-meta.json (nomic-embed-text:v1.5)
+      qwen3/            chromem.db + chromem-meta.json (qwen3-embedding:4b)
+      openai-small/     chromem.db + chromem-meta.json (text-embedding-3-small)
+  rel_store/            Unified data access layer (SQLite + chromem-go)
+  mcp/                  MCP server, tool registration, handlers
 tools/
-  gen-embeddings/     Build-time embedding generator (indexes both corpora)
+  gen-embeddings/       Build-time embedding generator (indexes all three corpora)
   parse-fisma-metrics/  PDF parser for the IG FISMA metrics document
 ```
 
@@ -377,7 +382,7 @@ make build-all           # build all four variants to named binaries
 
 ### Regenerating vector indexes
 
-Each embedding model has its own subdirectory under `internal/nist/data/`. The index covers both NIST SP 800-53 controls and FISMA metrics. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
+Each embedding model has its own subdirectory under `internal/vec_store/data/`. The index covers all three corpora: NIST SP 800-53 controls, FY 2025 IG FISMA metrics, and NIST CSF 2.0 subcategories. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
 
 ```bash
 make embed-nomic                          # requires Ollama + nomic-embed-text:v1.5
@@ -405,10 +410,11 @@ Vectors from different embedding models are mathematically incompatible. The bin
 ### Running locally
 
 ```bash
-go run . serve --stdio                       # stdio MCP server
-go run . family AC                           # quick NIST lookup
-go run . search "least privilege"            # cross-corpus search
+go run . serve --stdio                                        # stdio MCP server
+go run . family AC                                            # quick NIST lookup
+go run . search "least privilege"                             # cross-corpus search
 go run . search "maturity level" --source fisma_fy2025
+go run . search "organizational risk" --source nist_csf_v2
 ```
 
 ### After forglet synth

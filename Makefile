@@ -21,14 +21,14 @@ build-openai-small:
 
 ## build-slim: compile without any vector index; FTS5 search only
 build-slim:
-	go build -tags no_embeddings $(GOFLAGS) -o $(BINARY) .
+	go build $(GOFLAGS) -o $(BINARY) .
 
 ## build-all: compile all four variants to named binaries (fisma-ref-mcp-nomic, etc.)
 build-all:
-	go build -tags embed_nomic      $(GOFLAGS) -o $(BINARY)-nomic .
-	go build -tags embed_qwen3      $(GOFLAGS) -o $(BINARY)-qwen3 .
+	go build -tags embed_nomic        $(GOFLAGS) -o $(BINARY)-nomic .
+	go build -tags embed_qwen3        $(GOFLAGS) -o $(BINARY)-qwen3 .
 	go build -tags embed_openai_small $(GOFLAGS) -o $(BINARY)-openai-small .
-	go build -tags no_embeddings    $(GOFLAGS) -o $(BINARY)-slim .
+	go build                          $(GOFLAGS) -o $(BINARY)-slim .
 
 # ── index generation (writes to per-model subdirectory, commit the results) ──
 
@@ -38,7 +38,7 @@ embed-nomic:
 	OLLAMA_URL=$(OLLAMA_URL) go run ./tools/gen-embeddings/main.go \
 		--provider ollama \
 		--model nomic-embed-text:v1.5 \
-		--output-dir internal/nist/data/nomic
+		--output-dir internal/vec_store/data/nomic
 
 ## embed-qwen3: regenerate data/qwen3/ vector index using qwen3-embedding:4b via Ollama
 ## Requires: Ollama running at OLLAMA_URL with qwen3-embedding:4b pulled
@@ -46,7 +46,7 @@ embed-qwen3:
 	OLLAMA_URL=$(OLLAMA_URL) go run ./tools/gen-embeddings/main.go \
 		--provider ollama \
 		--model qwen3-embedding:4b \
-		--output-dir internal/nist/data/qwen3
+		--output-dir internal/vec_store/data/qwen3
 
 ## embed-openai-small: regenerate data/openai-small/ vector index using text-embedding-3-small
 ## Requires: OPENAI_API_KEY
@@ -54,7 +54,7 @@ embed-openai-small:
 	go run ./tools/gen-embeddings/main.go \
 		--provider openai \
 		--model text-embedding-3-small \
-		--output-dir internal/nist/data/openai-small
+		--output-dir internal/vec_store/data/openai-small
 
 ## embed-all: regenerate all three vector indexes (requires Ollama + OPENAI_API_KEY)
 embed-all: embed-nomic embed-qwen3 embed-openai-small

@@ -30,8 +30,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_csf"
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fisma"
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/nist_800_53"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/vec_store"
 	"github.com/philippgille/chromem-go"
 )
 
@@ -54,7 +56,7 @@ func main() {
 
 	ctx := context.Background()
 
-	_, controls, err := nist.Load()
+	_, controls, err := nist_800_53.Load()
 	if err != nil {
 		log.Fatalf("load NIST catalog: %v", err)
 	}
@@ -64,7 +66,12 @@ func main() {
 		log.Fatalf("load FISMA metrics: %v", err)
 	}
 
-	log.Printf("indexing %d controls + %d FISMA metrics with %s/%s ...", len(controls), len(metrics), *provider, effectiveModel)
+	_, _, subcategories, err := nist_csf.Load()
+	if err != nil {
+		log.Fatalf("load CSF subcategories: %v", err)
+	}
+
+	log.Printf("indexing %d controls + %d FISMA metrics + %d CSF subcategories with %s/%s ...", len(controls), len(metrics), len(subcategories), *provider, effectiveModel)
 
 	db := chromem.NewDB()
 
@@ -120,6 +127,32 @@ func main() {
 	}
 	log.Printf("embedded %d FISMA metrics", len(fismaDocs))
 
+	// NIST CSF 2.0 subcategories collection
+	csfCol, err := db.GetOrCreateCollection("csf_v2", nil, embFn)
+	if err != nil {
+		log.Fatalf("create csf_v2 collection: %v", err)
+	}
+
+	csfDocs := make([]chromem.Document, 0, len(subcategories))
+	for _, s := range subcategories {
+		content := buildSubcategoryDocument(s)
+		if content == "" {
+			continue
+		}
+		csfDocs = append(csfDocs, chromem.Document{
+			ID:      s.ID,
+			Content: content,
+			Metadata: map[string]string{
+				"category_id": s.CategoryID,
+				"function_id": s.FunctionID,
+			},
+		})
+	}
+	if err := csfCol.AddDocuments(ctx, csfDocs, runtime.NumCPU()); err != nil {
+		log.Fatalf("embed csf subcategories: %v", err)
+	}
+	log.Printf("embedded %d CSF subcategories", len(csfDocs))
+
 	dataDir := dataPath()
 	if *outputDir != "" {
 		abs, err := filepath.Abs(*outputDir)
@@ -138,12 +171,13 @@ func main() {
 	}
 	log.Printf("wrote %s (%s)", dbPath, fileSize(dbPath))
 
-	meta := nist.VectorMeta{
-		Provider:     *provider,
-		Model:        effectiveModel,
-		BuiltAt:      time.Now().UTC(),
-		ControlCount: len(controlDocs),
-		MetricCount:  len(fismaDocs),
+	meta := vec_store.VectorMeta{
+		Provider:         *provider,
+		Model:            effectiveModel,
+		BuiltAt:          time.Now().UTC(),
+		ControlCount:     len(controlDocs),
+		MetricCount:      len(fismaDocs),
+		SubcategoryCount: len(csfDocs),
 	}
 	metaBytes, _ := json.MarshalIndent(meta, "", "  ")
 	metaPath := filepath.Join(dataDir, "chromem-meta.json")
@@ -185,10 +219,20 @@ func dataPath() string {
 	// file = .../tools/gen-embeddings/main.go
 	// data = .../internal/nist/data
 	root := filepath.Join(filepath.Dir(file), "..", "..")
-	return filepath.Join(root, "internal", "nist", "data")
+	return filepath.Join(root, "internal", "vec_store", "data")
 }
 
-func buildControlDocument(c nist.Control) string {
+func buildSubcategoryDocument(s nist_csf.Subcategory) string {
+	parts := []string{s.Text}
+	for _, ex := range s.Examples {
+		if ex != "" {
+			parts = append(parts, ex)
+		}
+	}
+	return strings.Join(parts, "\n\n")
+}
+
+func buildControlDocument(c nist_800_53.Control) string {
 	parts := []string{c.Title}
 	if c.Statement != "" {
 		parts = append(parts, c.Statement)

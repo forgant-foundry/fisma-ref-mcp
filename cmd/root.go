@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/forgant-foundry/fisma-ref-mcp/internal/store"
+	"github.com/forgant-foundry/fisma-ref-mcp/internal/rel_store"
 	"github.com/spf13/cobra"
 )
 
@@ -24,21 +24,7 @@ Or invoke a single tool and receive JSON on stdout:
   fisma-ref-mcp family AC`,
 }
 
-// flags shared across all subcommands
-var (
-	flagEmbeddingProvider string
-	flagEmbeddingModel    string
-	flagOllamaURL         string
-)
-
-func init() {
-	rootCmd.PersistentFlags().StringVar(&flagEmbeddingProvider, "embedding-provider", envOr("EMBEDDING_PROVIDER", ""),
-		`Embedding provider for semantic search: "openai" or "ollama". Omit to use SQL fallback.`)
-	rootCmd.PersistentFlags().StringVar(&flagEmbeddingModel, "embedding-model", envOr("EMBEDDING_MODEL", ""),
-		"Model name for the embedding provider (uses provider default when omitted).")
-	rootCmd.PersistentFlags().StringVar(&flagOllamaURL, "ollama-url", envOr("OLLAMA_URL", "http://localhost:11434"),
-		"Base URL for the Ollama API.")
-}
+func init() {}
 
 // Execute is the entrypoint called from main.
 func Execute() {
@@ -48,13 +34,14 @@ func Execute() {
 	}
 }
 
-// buildStore initialises the Store using current flag values.
-func buildStore(ctx context.Context) (*store.Store, error) {
-	return store.New(ctx, store.Config{
-		EmbeddingProvider: flagEmbeddingProvider,
-		EmbeddingModel:    flagEmbeddingModel,
-		OpenAIKey:         os.Getenv("OPENAI_API_KEY"),
-		OllamaBaseURL:     flagOllamaURL,
+// buildStore initialises the Store. Embedding provider and model are
+// auto-detected from the pre-built index embedded in the binary; the only
+// runtime input is OPENAI_API_KEY (openai variants) or OLLAMA_URL (ollama
+// variants, defaults to http://localhost:11434).
+func buildStore(ctx context.Context) (*rel_store.Store, error) {
+	return rel_store.New(ctx, rel_store.Config{
+		OpenAIKey:     os.Getenv("OPENAI_API_KEY"),
+		OllamaBaseURL: envOr("OLLAMA_URL", "http://localhost:11434"),
 	})
 }
 

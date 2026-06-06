@@ -1,7 +1,0 @@
-{
-  "provider": "openai",
-  "model": "text-embedding-3-small",
-  "built_at": "2026-06-05T20:05:30.824873Z",
-  "control_count": 1196,
-  "metric_count": 35
-}
