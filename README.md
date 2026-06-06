@@ -1,6 +1,6 @@
 # fisma-ref-mcp
 
-A local [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that gives AI assistants direct, citeable access to four federal cybersecurity reference corpora: **NIST SP 800-53 Rev 5** security and privacy controls, **NIST SP 800-53B** impact baselines, **NIST Cybersecurity Framework 2.0**, and the **FY 2025 IG FISMA Evaluation Metrics**.
+A local [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that gives AI assistants direct, citeable access to five federal cybersecurity reference corpora: **NIST SP 800-53 Rev 5** security and privacy controls, **NIST SP 800-53B** impact baselines, **NIST Cybersecurity Framework 2.0**, the **FY 2025 IG FISMA Evaluation Metrics**, and the **FedRAMP Machine-Readable Requirements** (FRMR).
 
 Install it once, point your AI at it, and every suggestion about access control, audit logging, encryption, or identity comes with a traceable reference to the exact control or metric that requires it — not a paraphrase, the official text.
 
@@ -61,12 +61,14 @@ Developers and compliance staff can verify that SSP narratives are written to ad
 
 ## Included data
 
+All corpora are embedded verbatim at build time from the source files listed below. Version identifiers are taken directly from the embedded JSON metadata — they reflect the exact document revision ingested, not a general edition label.
+
 ### NIST SP 800-53 Rev 5
 
 | Field | Value |
 |---|---|
 | Document | Security and Privacy Controls for Information Systems and Organizations |
-| Identifier | SP 800-53 Rev 5 |
+| Identifier | `SP_800_53_5_2_0` |
 | Version | **5.2.0** |
 | Source | [csrc.nist.gov](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final) |
 | Base controls | 324 |
@@ -97,29 +99,12 @@ Developers and compliance staff can verify that SSP narratives are written to ad
 | SI | System and Information Integrity |
 | SR | Supply Chain Risk Management |
 
-> **Note:** This dataset reflects **SP 800-53 5.2.0**. It does not include FedRAMP-specific parameter overlays. See [Limitations](#limitations) for details.
-
-### FY 2025 IG FISMA Metrics
-
-| Field | Value |
-|---|---|
-| Document | FY 2025 Inspector General FISMA Reporting Metrics |
-| Source | CISA / CIGIE, in coordination with OMB and DHS |
-| Total metrics | **35** |
-| Core metrics | 20 (assessed annually) |
-| Supplemental metrics | 5 (new for FY 2025 — Zero Trust Architecture focus) |
-| Maturity levels | Ad Hoc (1) through Optimized (5) |
-
-Each metric includes the evaluation question, full maturity level descriptions, expected evidence, assessor best practices per level, and criteria references (NIST SP 800-53 control IDs, OMB guidance, and NIST publications where applicable).
-
-FISMA domains covered: Identity Management and Access Control · Configuration Management · Data Protection and Privacy · Respond · Recover · Identify · Protect · Detect · Govern
-
 ### NIST SP 800-53B
 
 | Field | Value |
 |---|---|
 | Document | Control Baselines for Information Systems and Organizations |
-| Identifier | SP 800-53B |
+| Identifier | `SP_800_53_B_5_2_0` |
 | Version | **5.2.0** |
 | Source | [nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53B.pdf) |
 | Low baseline | 149 controls/enhancements |
@@ -133,13 +118,49 @@ Baseline membership is surfaced on every control returned by `get_control` and `
 
 | Field | Value |
 |---|---|
-| Document | Cybersecurity Framework 2.0 |
+| Document | Cybersecurity Framework |
+| Identifier | `CSF_2_0_0` |
+| Version | **2.0** |
 | Source | [nist.gov/cyberframework](https://www.nist.gov/cyberframework) |
 | Functions | 6 (Govern, Identify, Protect, Detect, Respond, Recover) |
 | Categories | 45 |
 | Subcategories | **185** |
 
-Each subcategory includes its outcome statement and implementation examples. CSF 2.0 subcategory IDs (e.g. `GV.OC-01`, `PR.AA-03`) appear as criteria references in the FISMA metrics, making the three corpora navigable together.
+Each subcategory includes its outcome statement and implementation examples. CSF 2.0 subcategory IDs (e.g. `GV.OC-01`, `PR.AA-03`) appear as criteria references in the FISMA metrics, making the corpora navigable together.
+
+### FY 2025 IG FISMA Metrics
+
+| Field | Value |
+|---|---|
+| Document | FY 2025 Inspector General FISMA Reporting Metrics |
+| Version | **FY 2025** (published May 5, 2025) |
+| Source | CISA / CIGIE, in coordination with OMB and DHS |
+| Total metrics | **35** |
+| Core metrics | 20 (assessed annually) |
+| Supplemental metrics | 5 (new for FY 2025 — Zero Trust Architecture focus) |
+| Maturity levels | Ad Hoc (1) through Optimized (5) |
+
+Each metric includes the evaluation question, full maturity level descriptions, expected evidence, assessor best practices per level, and criteria references (NIST SP 800-53 control IDs, OMB guidance, and NIST publications where applicable).
+
+FISMA domains covered: Identity Management and Access Control · Configuration Management · Data Protection and Privacy · Respond · Recover · Identify · Protect · Detect · Govern
+
+### FedRAMP Machine-Readable Requirements (FRMR)
+
+| Field | Value |
+|---|---|
+| Document | FedRAMP Machine-Readable Documentation |
+| Version | **0.9.43-beta** |
+| Last updated | 2026-04-08 |
+| Source | fedramp.gov |
+| Glossary terms (FRD) | 49 |
+| KSI themes | 11 |
+| KSI indicators | **60** |
+| Process requirement categories (FRR) | 11 |
+| Process requirements | **163** |
+
+The FRMR captures the FedRAMP 20x framework — a shift from the traditional Low/Moderate/High baseline model to outcome-based **Key Security Indicators (KSIs)**. Each KSI indicator carries explicit SP 800-53 control references, completing the cross-corpus traceability chain: `get_ksis_by_control` shows which FedRAMP 20x outcomes a given control contributes to alongside the existing FISMA metric linkage.
+
+FRR process requirement categories: ADS · CCM · FSI · ICP · MAS · PVA · SCG · SCN · UCM · VDR · KSI (each with rev5, 20x, or both applicability)
 
 ---
 
@@ -238,7 +259,7 @@ The server exposes a [Streamable HTTP MCP](https://modelcontextprotocol.io/docs/
 
 ## MCP tools
 
-Once connected, the AI has access to ten tools.
+Once connected, the AI has access to fifteen tools.
 
 ### `search`
 
@@ -247,14 +268,14 @@ Semantic search across all indexed documents — NIST SP 800-53 controls and FY 
 ```
 query   string  (required) Natural-language description of what you are looking for
 limit   number  (optional) Max results, default 10, max 50
-source  string  (optional) Restrict to "nist_800_53", "fisma_fy2025", or "nist_csf_v2"
+source  string  (optional) Restrict to one corpus: "nist_800_53", "fisma_fy2025", "nist_csf_v2", or "fedramp_20x"
 family  string  (optional) Restrict NIST SP 800-53 results to a specific family, e.g. "AC"
 ```
 
 **Example prompts:**
-- *"What covers multi-factor authentication across NIST controls, FISMA metrics, and CSF?"*
+- *"What covers multi-factor authentication across NIST controls, FISMA metrics, and FedRAMP KSIs?"*
 - *"Search for incident response requirements"*
-- *"Find FISMA metrics related to zero trust"*
+- *"Find FedRAMP 20x requirements for vulnerability detection"*
 - *"What does CSF 2.0 say about organizational risk profiles?"*
 
 ### `get_control`
@@ -360,6 +381,67 @@ id  string  (required) Subcategory identifier, e.g. "GV.OC-01" or "PR.AA-03"
 - *"Get me the full text of GV.OC-01"*
 - *"What does PR.AA-03 require and what are the implementation examples?"*
 
+### `list_ksi_themes`
+
+Returns all FedRAMP 20x Key Security Indicator themes with their indicators. Each indicator includes its outcome statement and the SP 800-53 controls it references. Optionally filter to a single theme.
+
+```
+theme  string  (optional) Theme short name, e.g. "IAM", "MLA", "SVC", "CNA"
+```
+
+**Example prompts:**
+- *"List all FedRAMP 20x KSI themes and their indicators"*
+- *"What KSIs are in the Identity and Access Management theme?"*
+
+### `get_ksi`
+
+Returns a single FedRAMP 20x KSI indicator by its ID, including its outcome statement and referenced SP 800-53 controls.
+
+```
+id  string  (required) KSI indicator ID, e.g. "KSI-IAM-MFA" or "KSI-MLA-ALA"
+```
+
+**Example prompts:**
+- *"Get me the full details of KSI-IAM-MFA"*
+- *"What SP 800-53 controls does KSI-CNA-IBP reference?"*
+
+### `get_ksis_by_control`
+
+Returns all FedRAMP 20x KSI indicators that reference a given NIST SP 800-53 control. Use this to understand which FedRAMP outcome-based security indicators a control implementation contributes toward.
+
+```
+control_id  string  (required) NIST SP 800-53 control identifier, e.g. "IA-5" or "AC-2"
+```
+
+**Example prompts:**
+- *"Which FedRAMP KSIs reference IA-5?"*
+- *"If we implement SC-28, which FedRAMP 20x outcomes does that support?"*
+
+### `list_fedramp_requirements`
+
+Returns FedRAMP process requirements (MUST/SHOULD statements) from the FRR section. Filter by category and/or version path.
+
+```
+category  string  (optional) Requirement category, e.g. "VDR", "SCN", "ADS", "CCM"
+version   string  (optional) FedRAMP path: "rev5", "20x" (also returns "both" requirements)
+```
+
+**Example prompts:**
+- *"List all FedRAMP MUST requirements for vulnerability detection"*
+- *"What does FedRAMP 20x require for significant change notification?"*
+
+### `get_fedramp_term`
+
+Returns a single FedRAMP glossary term definition by its ID.
+
+```
+id  string  (required) FedRAMP term ID, e.g. "FRD-ACV" (Accepted Vulnerability)
+```
+
+**Example prompts:**
+- *"What is the FedRAMP definition of an accepted vulnerability?"*
+- *"Define FRD-PER"*
+
 ---
 
 ## CLI usage
@@ -386,6 +468,7 @@ fisma-ref-mcp search "identity governance maturity" --limit 5
 fisma-ref-mcp search "multi-factor authentication" --source nist_800_53
 fisma-ref-mcp search "zero trust" --source fisma_fy2025
 fisma-ref-mcp search "organizational risk profile" --source nist_csf_v2
+fisma-ref-mcp search "phishing resistant authentication" --source fedramp_20x
 
 # Start the HTTP MCP server
 fisma-ref-mcp serve --port 8080
@@ -400,7 +483,9 @@ fisma-ref-mcp serve --stdio
 
 **It does not implement compliance.** The tool is a reference. Your team still has to build, configure, and operate the controls. An AI that knows what SC-28 requires for protection of information at rest still needs you to actually encrypt the database.
 
-**It does not include FedRAMP parameter overlays.** FedRAMP tightens specific parameters on top of SP 800-53B (e.g., AU-11 mandates one year of audit record retention; the base control leaves the period organization-defined). Those parameter values are not present in this dataset.
+**The FedRAMP FRMR is a beta document.** The embedded version is `0.9.43-beta` (2026-04-08). The FedRAMP 20x framework is still evolving; KSI indicators and process requirements may change before final release.
+
+**FedRAMP parameter overlays are not included.** The FRMR covers outcome-based KSIs and process requirements. The traditional FedRAMP control parameter values (e.g., AU-11 log retention = 1 year) from the Rev 5 baseline profiles are not in this dataset.
 
 **It does not generate evidence.** Assessors require artifacts — configuration exports, screenshots, log samples, scan results. This tool helps you describe controls and maturity levels accurately; it does not produce the artifacts that demonstrate implementation.
 
@@ -415,9 +500,11 @@ fisma-ref-mcp serve --stdio
 ```
 cmd/                    CLI commands (serve, search, control, family)
 internal/
-  nist_800_53/          NIST SP 800-53 + SP 800-53B data types, JSON parsing, embed
-    data/               nist-800-53r5.json, nist-800-53b.json
-  nist_csf/             NIST CSF 2.0 data types, JSON parsing, embed
+  nist_800_53/          SP 800-53 5.2.0 + SP 800-53B 5.2.0 data types, JSON parsing, embed
+    data/               nist-800-53r5.json (SP_800_53_5_2_0), nist-800-53b.json (SP_800_53_B_5_2_0)
+  fedramp/              FedRAMP FRMR 0.9.43-beta types, JSON parsing, embed
+    data/               FRMR.documentation.json
+  nist_csf/             NIST CSF 2.0 (CSF_2_0_0) data types, JSON parsing, embed
     data/               nist-csf-2.0.json
   fisma/                FY 2025 IG FISMA data types, JSON parsing, embed
     data/               fy2025-ig-fisma-metrics.json + context markdown
@@ -429,7 +516,7 @@ internal/
   rel_store/            Unified data access layer (SQLite + chromem-go)
   mcp/                  MCP server, tool registration, handlers
 tools/
-  gen-embeddings/       Build-time embedding generator (indexes all three corpora)
+  gen-embeddings/       Build-time embedding generator (indexes all four searchable corpora)
   parse-fisma-metrics/  PDF parser for the IG FISMA metrics document
 ```
 
@@ -445,7 +532,7 @@ make build-all           # build all four variants to named binaries
 
 ### Regenerating vector indexes
 
-Each embedding model has its own subdirectory under `internal/vec_store/data/`. The index covers all three corpora: NIST SP 800-53 controls, FY 2025 IG FISMA metrics, and NIST CSF 2.0 subcategories. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
+Each embedding model has its own subdirectory under `internal/vec_store/data/`. The index covers all four searchable corpora: NIST SP 800-53 controls, FY 2025 IG FISMA metrics, NIST CSF 2.0 subcategories, and FedRAMP 20x KSI indicators and process requirements. Run the relevant target, then commit the updated files. CI embeds whichever files are committed — no API keys or Ollama required during the build.
 
 ```bash
 make embed-nomic                          # requires Ollama + nomic-embed-text:v1.5
