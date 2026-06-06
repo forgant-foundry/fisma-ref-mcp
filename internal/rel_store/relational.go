@@ -475,6 +475,11 @@ func (r *relationalDB) search(ctx context.Context, query string, limit int, sour
 			return nil, err
 		}
 		out = append(out, res...)
+		res, err = r.searchFedRAMPTermsFTS(ctx, ftsQuery, limit)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, res...)
 	}
 
 	sort.Slice(out, func(i, j int) bool { return out[i].Relevance > out[j].Relevance })
@@ -1092,6 +1097,55 @@ func (r *relationalDB) searchFedRAMPReqFTS(ctx context.Context, ftsQuery string,
 			ID:        rr.id,
 			Title:     rr.category + " — " + rr.name,
 			Body:      rr.statement,
+			Relevance: rel,
+		}
+	}
+	return results, nil
+}
+
+func (r *relationalDB) searchFedRAMPTermsFTS(ctx context.Context, ftsQuery string, limit int) ([]SearchResult, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT t.id, t.term, t.definition, -bm25(fedramp_terms_fts) AS score
+		 FROM fedramp_terms_fts
+		 JOIN fedramp_terms t ON t.id = fedramp_terms_fts.id
+		 WHERE fedramp_terms_fts MATCH ?
+		 ORDER BY bm25(fedramp_terms_fts)
+		 LIMIT ?`, ftsQuery, limit)
+	if err != nil {
+		return nil, fmt.Errorf("fts search fedramp terms: %w", err)
+	}
+	defer rows.Close()
+
+	type rawRow struct {
+		id, term, definition string
+		score                float64
+	}
+	var raw []rawRow
+	for rows.Next() {
+		var rr rawRow
+		if err := rows.Scan(&rr.id, &rr.term, &rr.definition, &rr.score); err != nil {
+			return nil, err
+		}
+		raw = append(raw, rr)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	if len(raw) == 0 {
+		return nil, nil
+	}
+	maxScore := raw[0].score
+	results := make([]SearchResult, len(raw))
+	for i, rr := range raw {
+		rel := float32(1.0)
+		if maxScore > 0 {
+			rel = float32(rr.score / maxScore)
+		}
+		results[i] = SearchResult{
+			Source:    "fedramp_20x",
+			ID:        rr.id,
+			Title:     rr.term,
+			Body:      rr.definition,
 			Relevance: rel,
 		}
 	}
