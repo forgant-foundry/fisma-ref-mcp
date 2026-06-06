@@ -123,7 +123,7 @@ Baseline membership is surfaced on every control returned by `get_control` and `
 | Version | **2.0** |
 | Source | [nist.gov/cyberframework](https://www.nist.gov/cyberframework) |
 | Functions | 6 (Govern, Identify, Protect, Detect, Respond, Recover) |
-| Categories | 45 |
+| Categories | 34 |
 | Subcategories | **185** |
 
 Each subcategory includes its outcome statement and implementation examples. CSF 2.0 subcategory IDs (e.g. `GV.OC-01`, `PR.AA-03`) appear as criteria references in the FISMA metrics, making the corpora navigable together.
