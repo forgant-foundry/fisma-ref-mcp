@@ -928,6 +928,30 @@ func (r *relationalDB) listKSIThemes(ctx context.Context) ([]fedramp.KSITheme, e
 			return nil, err
 		}
 	}
+
+	// Bulk-fetch all SP 800-53 control references and apply to indicators.
+	crows, err := r.db.QueryContext(ctx,
+		`SELECT indicator_id, control_id FROM ksi_controls ORDER BY indicator_id, control_id`)
+	if err != nil {
+		return nil, err
+	}
+	defer crows.Close()
+	controlsByInd := make(map[string][]string)
+	for crows.Next() {
+		var indID, ctrlID string
+		if err := crows.Scan(&indID, &ctrlID); err != nil {
+			return nil, err
+		}
+		controlsByInd[indID] = append(controlsByInd[indID], ctrlID)
+	}
+	if err := crows.Err(); err != nil {
+		return nil, err
+	}
+	for i := range themes {
+		for j := range themes[i].Indicators {
+			themes[i].Indicators[j].Controls = controlsByInd[themes[i].Indicators[j].ID]
+		}
+	}
 	return themes, nil
 }
 

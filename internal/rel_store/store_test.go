@@ -405,20 +405,30 @@ func TestGetKSI_NotFound(t *testing.T) {
 	}
 }
 
+func TestListKSIThemes_ControlsPopulated(t *testing.T) {
+	themes, err := testStore.ListKSIThemes(bg())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, th := range themes {
+		for _, ind := range th.Indicators {
+			if len(ind.Controls) > 0 {
+				return // at least one indicator has controls — pass
+			}
+		}
+	}
+	t.Error("no KSI indicator across all themes has Controls populated; listKSIThemes may be missing the ksi_controls join")
+}
+
 func TestGetKSIsByControl(t *testing.T) {
-	// Use GetKSI on a real indicator to find a control it references —
-	// ListKSIThemes doesn't populate the Controls field (that's a separate join).
+	// Controls are now populated by ListKSIThemes directly.
 	themes, err := testStore.ListKSIThemes(bg())
 	if err != nil {
 		t.Fatal(err)
 	}
 	var controlID string
 	for _, th := range themes {
-		for _, stub := range th.Indicators {
-			ind, err := testStore.GetKSI(bg(), stub.ID)
-			if err != nil {
-				continue
-			}
+		for _, ind := range th.Indicators {
 			if len(ind.Controls) > 0 {
 				controlID = ind.Controls[0]
 				break
@@ -458,6 +468,31 @@ func TestListFedRAMPRequirements(t *testing.T) {
 	}
 	if len(rev5) >= len(all) {
 		t.Errorf("rev5 filter returned %d (same as unfiltered %d); version filter may be broken", len(rev5), len(all))
+	}
+
+	// Requirements with version="both" must appear in rev5 and 20x filtered results.
+	var bothCount int
+	for _, r := range all {
+		if r.Version == "both" {
+			bothCount++
+		}
+	}
+	if bothCount > 0 {
+		for _, label := range []string{"rev5", "20x"} {
+			filtered, err := testStore.ListFedRAMPRequirements(bg(), "", label)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var gotBoth int
+			for _, r := range filtered {
+				if r.Version == "both" {
+					gotBoth++
+				}
+			}
+			if gotBoth != bothCount {
+				t.Errorf("%s filter: got %d 'both' requirements, want %d", label, gotBoth, bothCount)
+			}
+		}
 	}
 }
 
