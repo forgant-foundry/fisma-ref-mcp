@@ -65,6 +65,7 @@ fisma-ref-mcp family [<id>]          # list families or controls in a family →
 | `get_ksi` | Single KSI indicator by ID with outcome statement and SP 800-53 controls |
 | `get_ksis_by_control` | FedRAMP KSI indicators that reference a given SP 800-53 control |
 | `list_fedramp_requirements` | FedRAMP MUST/SHOULD requirements; filter by category and/or version path |
+| `get_fedramp_requirement` | Single FedRAMP process requirement by ID with full statement, keyword, and version path |
 | `get_fedramp_term` | Single FedRAMP glossary term by ID |
 | `list_fisma_metrics` | FY 2025 IG FISMA metrics; optional domain filter |
 | `get_fisma_metric` | Single metric by ID — full maturity levels, evidence, assessor notes, criteria refs |

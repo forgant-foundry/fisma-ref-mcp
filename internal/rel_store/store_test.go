@@ -516,6 +516,35 @@ func TestGetFedRAMPTerm_NotFound(t *testing.T) {
 	}
 }
 
+func TestGetFedRAMPRequirement(t *testing.T) {
+	// Derive a real requirement ID from the list rather than hardcoding.
+	all, err := testStore.ListFedRAMPRequirements(bg(), "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(all) == 0 {
+		t.Fatal("no requirements to test against")
+	}
+	req := all[0]
+	got, err := testStore.GetFedRAMPRequirement(bg(), req.ID)
+	if err != nil {
+		t.Fatalf("GetFedRAMPRequirement(%q): %v", req.ID, err)
+	}
+	if got.ID != req.ID {
+		t.Errorf("got ID %q, want %q", got.ID, req.ID)
+	}
+	if got.Category != req.Category {
+		t.Errorf("got Category %q, want %q", got.Category, req.Category)
+	}
+}
+
+func TestGetFedRAMPRequirement_NotFound(t *testing.T) {
+	_, err := testStore.GetFedRAMPRequirement(bg(), "DOESNOTEXIST-XXX")
+	if err == nil {
+		t.Error("expected error for unknown requirement, got nil")
+	}
+}
+
 // ── FTS5 search ───────────────────────────────────────────────────────────────
 
 func TestSearch_EachSource(t *testing.T) {

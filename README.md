@@ -259,7 +259,7 @@ The server exposes a [Streamable HTTP MCP](https://modelcontextprotocol.io/docs/
 
 ## MCP tools
 
-Once connected, the AI has access to seventeen tools.
+Once connected, the AI has access to eighteen tools.
 
 ### `search`
 
@@ -453,6 +453,18 @@ version   string  (optional) FedRAMP path: "rev5", "20x" (also returns "both" re
 **Example prompts:**
 - *"List all FedRAMP MUST requirements for vulnerability detection"*
 - *"What does FedRAMP 20x require for significant change notification?"*
+
+### `get_fedramp_requirement`
+
+Returns a single FedRAMP process requirement by its ID, including the full MUST/SHOULD statement, category, keyword, and version path (rev5/20x/both).
+
+```
+id  string  (required) Requirement ID, e.g. "VDR-BST-SCA" or "SCN-RTR-NNR"
+```
+
+**Example prompts:**
+- *"Get the full text of FedRAMP requirement VDR-BST-SCA"*
+- *"What exactly does SCN-RTR-NNR require?"*
 
 ### `get_fedramp_term`
 

@@ -261,6 +261,19 @@ func registerTools(s *server.MCPServer, st *rel_store.Store) {
 	)
 
 	s.AddTool(
+		mcp.NewTool("get_fedramp_requirement",
+			mcp.WithDescription("Retrieve a single FedRAMP process requirement by its ID, including its MUST/SHOULD statement, category, keyword, and version path (rev5/20x/both)."),
+			mcp.WithString("id",
+				mcp.Required(),
+				mcp.Description(`Requirement ID, e.g. "VDR-BST-SCA" or "SCN-RTR-NNR".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetFedRAMPRequirement(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
 		mcp.NewTool("get_baseline",
 			mcp.WithDescription("List all NIST SP 800-53 controls and enhancements in a SP 800-53B impact baseline. Each control includes its baseline memberships."),
 			mcp.WithString("baseline",
@@ -445,6 +458,18 @@ func handleListFedRAMPRequirements(ctx context.Context, st *rel_store.Store, req
 		return nil, err
 	}
 	return jsonResult(reqs)
+}
+
+func handleGetFedRAMPRequirement(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id, err := req.RequireString("id")
+	if err != nil {
+		return nil, err
+	}
+	r, err := st.GetFedRAMPRequirement(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(r)
 }
 
 func handleGetFedRAMPTerm(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {

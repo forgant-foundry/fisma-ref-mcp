@@ -307,3 +307,8 @@ func (s *Store) ListFedRAMPRequirements(ctx context.Context, category, version s
 func (s *Store) GetFedRAMPTerm(ctx context.Context, id string) (*fedramp.Term, error) {
 	return s.rel.getFedRAMPTerm(ctx, id)
 }
+
+// GetFedRAMPRequirement returns a single FedRAMP process requirement by its ID (e.g., "VDR-BST-SCA").
+func (s *Store) GetFedRAMPRequirement(ctx context.Context, id string) (*fedramp.Requirement, error) {
+	return s.rel.getFedRAMPRequirement(ctx, id)
+}
