@@ -141,6 +141,12 @@ func (s *Store) GetMetricsByControl(ctx context.Context, controlID string) ([]Fi
 	return s.rel.getMetricsByControl(ctx, controlID)
 }
 
+// GetMetricsByCSFSubcategory returns all FISMA metrics that reference a given
+// NIST CSF 2.0 subcategory ID (e.g., "GV.OC-01").
+func (s *Store) GetMetricsByCSFSubcategory(ctx context.Context, subcategoryID string) ([]FismaMetric, error) {
+	return s.rel.getMetricsByCSFSubcategory(ctx, subcategoryID)
+}
+
 // GetBaseline returns all NIST SP 800-53 controls and enhancements included in
 // the given SP 800-53B baseline. Accepted values: "low", "moderate", "high", "privacy".
 func (s *Store) GetBaseline(ctx context.Context, baseline string) ([]nist_800_53.Control, error) {

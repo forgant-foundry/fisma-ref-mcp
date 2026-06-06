@@ -169,6 +169,19 @@ func registerTools(s *server.MCPServer, st *rel_store.Store) {
 	)
 
 	s.AddTool(
+		mcp.NewTool("get_metrics_by_csf_subcategory",
+			mcp.WithDescription("Find all FY 2025 IG FISMA metrics that reference a given NIST CSF 2.0 subcategory ID."),
+			mcp.WithString("subcategory_id",
+				mcp.Required(),
+				mcp.Description(`NIST CSF 2.0 subcategory identifier, e.g. "GV.OC-01" or "PR.AA-02".`),
+			),
+		),
+		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			return handleGetMetricsByCSFSubcategory(ctx, st, req)
+		},
+	)
+
+	s.AddTool(
 		mcp.NewTool("list_ksi_themes",
 			mcp.WithDescription("List all FedRAMP 20x Key Security Indicator (KSI) themes with their indicators. Each indicator includes its outcome statement and referenced SP 800-53 controls."),
 			mcp.WithString("theme",
@@ -340,6 +353,18 @@ func handleGetMetricsByControl(ctx context.Context, st *rel_store.Store, req mcp
 		return nil, err
 	}
 	metrics, err := st.GetMetricsByControl(ctx, controlID)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResult(metrics)
+}
+
+func handleGetMetricsByCSFSubcategory(ctx context.Context, st *rel_store.Store, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	id, err := req.RequireString("subcategory_id")
+	if err != nil {
+		return nil, err
+	}
+	metrics, err := st.GetMetricsByCSFSubcategory(ctx, id)
 	if err != nil {
 		return nil, err
 	}

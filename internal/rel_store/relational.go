@@ -4,7 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/forgant-foundry/fisma-ref-mcp/internal/fedramp"
@@ -107,15 +109,17 @@ func initSchema(db *sql.DB) error {
 		);
 
 		CREATE TABLE fisma_criteria (
-			id         INTEGER PRIMARY KEY AUTOINCREMENT,
-			metric_id  INTEGER NOT NULL REFERENCES fisma_metrics(id),
-			ref_type   TEXT    NOT NULL,
-			ref_text   TEXT    NOT NULL DEFAULT '',
-			control_id TEXT             -- FK into controls.id when ref_type = 'nist_800_53'
+			id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+			metric_id          INTEGER NOT NULL REFERENCES fisma_metrics(id),
+			ref_type           TEXT    NOT NULL,
+			ref_text           TEXT    NOT NULL DEFAULT '',
+			control_id         TEXT,   -- populated when ref_type = 'nist_800_53'
+			csf_subcategory_id TEXT    -- populated when ref_type = 'nist_csf'
 		);
 
 		CREATE INDEX idx_fisma_criteria_metric   ON fisma_criteria(metric_id);
 		CREATE INDEX idx_fisma_criteria_ctrl     ON fisma_criteria(control_id);
+		CREATE INDEX idx_fisma_criteria_csf      ON fisma_criteria(csf_subcategory_id);
 		CREATE INDEX idx_fisma_maturity_metric   ON fisma_maturity_levels(metric_id);
 
 		CREATE VIRTUAL TABLE fisma_metrics_fts USING fts5(
@@ -311,11 +315,33 @@ func seedFismaMetrics(db *sql.DB, metrics []fisma.Metric) error {
 		}
 
 		for _, c := range m.Criteria {
+			if c.RefType == "nist_csf" {
+				ids := parseCsfSubcategoryIDs(c.RefText)
+				if len(ids) == 0 {
+					if _, err := tx.Exec(
+						`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id, csf_subcategory_id)
+						 VALUES (?, ?, ?, NULL, NULL)`,
+						m.ID, c.RefType, c.RefText,
+					); err != nil {
+						return fmt.Errorf("insert csf criterion metric %d: %w", m.ID, err)
+					}
+					continue
+				}
+				for _, csfID := range ids {
+					if _, err := tx.Exec(
+						`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id, csf_subcategory_id)
+						 VALUES (?, ?, ?, NULL, ?)`,
+						m.ID, c.RefType, c.RefText, csfID,
+					); err != nil {
+						return fmt.Errorf("insert csf criterion metric %d sub %s: %w", m.ID, csfID, err)
+					}
+				}
+				continue
+			}
 			if len(c.ControlIDs) == 0 {
-				// Stub record: no control linkage yet
 				if _, err := tx.Exec(
-					`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id)
-					 VALUES (?, ?, ?, NULL)`,
+					`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id, csf_subcategory_id)
+					 VALUES (?, ?, ?, NULL, NULL)`,
 					m.ID, c.RefType, c.RefText,
 				); err != nil {
 					return fmt.Errorf("insert criterion metric %d: %w", m.ID, err)
@@ -324,8 +350,8 @@ func seedFismaMetrics(db *sql.DB, metrics []fisma.Metric) error {
 			}
 			for _, ctrlID := range c.ControlIDs {
 				if _, err := tx.Exec(
-					`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id)
-					 VALUES (?, ?, ?, ?)`,
+					`INSERT INTO fisma_criteria (metric_id, ref_type, ref_text, control_id, csf_subcategory_id)
+					 VALUES (?, ?, ?, ?, NULL)`,
 					m.ID, c.RefType, c.RefText, ctrlID,
 				); err != nil {
 					return fmt.Errorf("insert nist criterion metric %d ctrl %s: %w", m.ID, ctrlID, err)
@@ -357,9 +383,10 @@ type FismaMaturityLevel struct {
 
 // FismaCriterion holds one criteria reference.
 type FismaCriterion struct {
-	RefType   string
-	RefText   string
-	ControlID string // empty when ref_type != "nist_800_53"
+	RefType          string
+	RefText          string
+	ControlID        string // populated when ref_type = "nist_800_53"
+	CSFSubcategoryID string // populated when ref_type = "nist_csf"
 }
 
 func (r *relationalDB) getFismaMetric(ctx context.Context, id int) (*FismaMetric, error) {
@@ -391,7 +418,7 @@ func (r *relationalDB) getFismaMetric(ctx context.Context, id int) (*FismaMetric
 	}
 
 	crows, err := r.db.QueryContext(ctx,
-		`SELECT ref_type, ref_text, COALESCE(control_id,'')
+		`SELECT ref_type, ref_text, COALESCE(control_id,''), COALESCE(csf_subcategory_id,'')
 		 FROM fisma_criteria WHERE metric_id = ? ORDER BY rowid`, id)
 	if err != nil {
 		return nil, err
@@ -399,7 +426,7 @@ func (r *relationalDB) getFismaMetric(ctx context.Context, id int) (*FismaMetric
 	defer crows.Close()
 	for crows.Next() {
 		var c FismaCriterion
-		if err := crows.Scan(&c.RefType, &c.RefText, &c.ControlID); err != nil {
+		if err := crows.Scan(&c.RefType, &c.RefText, &c.ControlID, &c.CSFSubcategoryID); err != nil {
 			return nil, err
 		}
 		m.Criteria = append(m.Criteria, c)
@@ -1169,6 +1196,85 @@ func (r *relationalDB) searchFedRAMPReqFTS(ctx context.Context, ftsQuery string,
 		}
 	}
 	return results, nil
+}
+
+// parseCsfSubcategoryIDs extracts normalized NIST CSF 2.0 subcategory IDs from
+// a FISMA criteria ref_text string. It handles spacing typos, a digit-for-letter
+// typo (0→O in category abbreviations), single-digit numbers, and range notation
+// ("GV.SC-01 through GV.SC-07").
+func parseCsfSubcategoryIDs(refText string) []string {
+	// Normalize: collapse spaces around separators.
+	spaceDot := regexp.MustCompile(`\s*\.\s*`)
+	spaceHyphen := regexp.MustCompile(`\s*-\s*`)
+	normalized := spaceDot.ReplaceAllString(strings.ToUpper(refText), ".")
+	normalized = spaceHyphen.ReplaceAllString(normalized, "-")
+
+	// Fix digit-for-letter typo in category segment: e.g. "GV.0C" → "GV.OC".
+	digitForO := regexp.MustCompile(`([A-Z]{2}\.)0([A-Z])`)
+	normalized = digitForO.ReplaceAllString(normalized, "${1}O${2}")
+
+	// Match subcategory IDs: FN.CAT-NN (function . category - number).
+	idPat := regexp.MustCompile(`\b([A-Z]{2}\.[A-Z]{2,3}-\d{1,2})\b`)
+
+	// Detect "X through Y" range and expand it.
+	rangePat := regexp.MustCompile(`\b([A-Z]{2}\.[A-Z]{2,3})-(\d{2})\s+THROUGH\s+[A-Z]{2}\.[A-Z]{2,3}-(\d{2})\b`)
+
+	var ids []string
+	seen := map[string]bool{}
+
+	add := func(id string) {
+		// Zero-pad single-digit number: "GV.OC-1" → "GV.OC-01".
+		parts := strings.SplitN(id, "-", 2)
+		if len(parts) == 2 {
+			if n, err := strconv.Atoi(parts[1]); err == nil {
+				id = fmt.Sprintf("%s-%02d", parts[0], n)
+			}
+		}
+		if !seen[id] {
+			seen[id] = true
+			ids = append(ids, id)
+		}
+	}
+
+	// Expand ranges first.
+	for _, m := range rangePat.FindAllStringSubmatch(normalized, -1) {
+		prefix := m[1] // e.g. "GV.SC"
+		from, _ := strconv.Atoi(m[2])
+		to, _ := strconv.Atoi(m[3])
+		for i := from; i <= to; i++ {
+			add(fmt.Sprintf("%s-%02d", prefix, i))
+		}
+	}
+
+	// Extract remaining individual IDs.
+	for _, id := range idPat.FindAllString(normalized, -1) {
+		add(id)
+	}
+
+	return ids
+}
+
+func (r *relationalDB) getMetricsByCSFSubcategory(ctx context.Context, subcategoryID string) ([]FismaMetric, error) {
+	id := strings.ToUpper(subcategoryID)
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT DISTINCT m.id, m.domain, m.question, m.review_cycle
+		 FROM fisma_metrics m
+		 JOIN fisma_criteria c ON c.metric_id = m.id
+		 WHERE c.csf_subcategory_id = ?
+		 ORDER BY m.id`, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []FismaMetric
+	for rows.Next() {
+		var m FismaMetric
+		if err := rows.Scan(&m.ID, &m.Domain, &m.Question, &m.ReviewCycle); err != nil {
+			return nil, err
+		}
+		out = append(out, m)
+	}
+	return out, rows.Err()
 }
 
 // sanitizeFTS strips characters that have special meaning in FTS5 query syntax,
