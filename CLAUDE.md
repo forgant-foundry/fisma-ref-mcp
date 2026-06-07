@@ -177,9 +177,8 @@ First decide: is this document independently searchable, or is it metadata for a
 
 ### Forglet
 
-`go.mod` is managed by forglet. After any `forglet synth`:
+`go.mod` is managed by forglet. `forglet synth` runs `go mod tidy` automatically, so no manual chmod or tidy step is needed. To add a new dependency:
 ```
-chmod 644 go.mod
-go get <any new deps>
-go mod tidy
+go get <new dep>
+forglet synth
 ```

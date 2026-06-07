@@ -1,5 +1,0 @@
-[
-  ".github/workflows/ci.yml",
-  ".github/workflows/delivery.yml",
-  "go.mod"
-]
