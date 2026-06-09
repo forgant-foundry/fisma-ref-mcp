@@ -1,0 +1,9 @@
+{
+  "provider": "onnx",
+  "model": "all-MiniLM-L6-v2-int8",
+  "built_at": "2026-06-09T18:13:38.819505Z",
+  "control_count": 1196,
+  "metric_count": 35,
+  "subcategory_count": 185,
+  "term_count": 49
+}

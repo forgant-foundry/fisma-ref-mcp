@@ -1,4 +1,4 @@
-//go:build !embed_nomic && !embed_qwen3 && !embed_openai_small
+//go:build !embed_nomic && !embed_qwen3 && !embed_openai_small && !embed_onnx
 
 package vec_store
 
@@ -35,7 +35,7 @@ type VectorDB struct{}
 func NewVectorDB(_ context.Context, _ EmbedConfig, _ []nist_800_53.Control, _ []fisma.Metric, _ []nist_csf.Subcategory, _ *fedramp.Catalog) (*VectorDB, error) {
 	return nil, fmt.Errorf(
 		"this binary was built without an embedded vector index; " +
-			"use make build-nomic, build-qwen3, or build-openai-small for vector search",
+			"use make build-nomic, build-qwen3, build-openai-small, or build-onnx for vector search",
 	)
 }
 

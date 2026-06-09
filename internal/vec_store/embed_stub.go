@@ -1,4 +1,4 @@
-//go:build !embed_nomic && !embed_qwen3 && !embed_openai_small
+//go:build !embed_nomic && !embed_qwen3 && !embed_openai_small && !embed_onnx
 
 package vec_store
 

@@ -1,4 +1,4 @@
-//go:build embed_nomic || embed_qwen3 || embed_openai_small
+//go:build embed_nomic || embed_qwen3 || embed_openai_small || embed_onnx
 
 package vec_store
 
@@ -255,8 +255,10 @@ func embeddingFunc(cfg EmbedConfig) (chromem.EmbeddingFunc, error) {
 			base += "/api"
 		}
 		return chromem.NewEmbeddingFuncOllama(model, base), nil
+	case "onnx":
+		return newONNXEmbeddingFunc()
 	default:
-		return nil, fmt.Errorf("unsupported embedding provider %q (use \"openai\" or \"ollama\")", cfg.Provider)
+		return nil, fmt.Errorf("unsupported embedding provider %q (use \"openai\", \"ollama\", or \"onnx\")", cfg.Provider)
 	}
 }
 
@@ -269,6 +271,8 @@ func effectiveModel(cfg EmbedConfig) string {
 		return string(chromem.EmbeddingModelOpenAI3Small)
 	case "ollama":
 		return "nomic-embed-text"
+	case "onnx":
+		return "all-MiniLM-L6-v2-int8"
 	}
 	return ""
 }

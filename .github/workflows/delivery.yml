@@ -3,6 +3,8 @@ jobs:
     delivery:
         needs:
             - test
+        outputs:
+            tag: ${{ steps.version.outputs.tag }}
         permissions:
             contents: write
         runs-on: ubuntu-latest
@@ -88,6 +90,64 @@ jobs:
               run: |-
                 VERSION="${{ steps.version.outputs.tag }}"
                 gh release create "$VERSION" --title "${VERSION#v}" --generate-notes dist/*
+    build-onnx:
+        # CGo build — runs natively on each target OS; cross-compilation not supported.
+        # Manually maintained: forglet does not handle CGo delivery builds.
+        if: startsWith(needs.delivery.outputs.tag, 'v')
+        needs:
+            - delivery
+        permissions:
+            contents: write
+        strategy:
+            matrix:
+                include:
+                    - os: ubuntu-latest
+                      arch_label: linux_amd64
+                      ort_version: "1.20.1"
+                    - os: macos-latest
+                      arch_label: darwin_arm64
+                    - os: macos-13
+                      arch_label: darwin_amd64
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-go@v5
+              with:
+                go-version-file: go.mod
+            - name: Install ONNX Runtime (macOS)
+              if: runner.os == 'macOS'
+              run: brew install onnxruntime
+            - name: Install ONNX Runtime (Linux)
+              if: runner.os == 'Linux'
+              run: |-
+                ORT_VERSION="${{ matrix.ort_version }}"
+                curl -fSL -o /tmp/ort.tgz \
+                  "https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz"
+                tar -xzf /tmp/ort.tgz -C /tmp
+                sudo cp "/tmp/onnxruntime-linux-x64-${ORT_VERSION}/lib/libonnxruntime.so.${ORT_VERSION}" /usr/local/lib/
+                sudo ln -sf "/usr/local/lib/libonnxruntime.so.${ORT_VERSION}" /usr/local/lib/libonnxruntime.so
+                sudo ldconfig
+            - name: Download libtokenizers.a
+              run: |-
+                OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+                ARCH=$(uname -m | sed 's/arm64/aarch64/')
+                mkdir -p internal/vec_store/data/onnx/lib
+                curl -fSL -o /tmp/libtokenizers.tar.gz \
+                  "https://github.com/daulet/tokenizers/releases/download/v1.27.0/libtokenizers.${OS}-${ARCH}.tar.gz"
+                tar -xzf /tmp/libtokenizers.tar.gz -C internal/vec_store/data/onnx/lib
+            - name: Build onnx binary
+              run: |-
+                SEM="${{ needs.delivery.outputs.tag }}"
+                SEM="${SEM#v}"
+                CGO_ENABLED=1 CGO_LDFLAGS="-L$(pwd)/internal/vec_store/data/onnx/lib" \
+                  go build -tags embed_onnx -ldflags="-s -w" -o /tmp/fisma-ref-mcp .
+                mkdir -p dist
+                tar czf "dist/fisma-ref-mcp_${SEM}_${{ matrix.arch_label }}_onnx.tar.gz" -C /tmp fisma-ref-mcp
+                cd dist && sha256sum *.tar.gz > "fisma-ref-mcp_${SEM}_${{ matrix.arch_label }}_onnx_checksums.txt"
+            - env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              name: Upload to release
+              run: gh release upload "${{ needs.delivery.outputs.tag }}" dist/*
     test:
         runs-on: ubuntu-latest
         steps:
